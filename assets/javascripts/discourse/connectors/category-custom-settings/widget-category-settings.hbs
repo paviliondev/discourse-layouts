@@ -1,0 +1,26 @@
+{{#if hasChoices}}
+  <section class='field'>
+    <label>{{i18n 'category.sidebar_left_enabled'}}</label>
+    {{list-setting settingValue=category.custom_fields.sidebar_left_enabled
+                   choices=enableChoices
+                   settingName='category.sidebar_left_enabled'}}
+  </section>
+  <section class='field'>
+    <label>{{i18n 'category.sidebar_right_enabled'}}</label>
+    {{list-setting settingValue=category.custom_fields.sidebar_right_enabled
+                   choices=enableChoices
+                   settingName='category.sidebar_right_enabled'}}
+  </section>
+  <section class='field'>
+    <label>{{i18n 'category.sidebar_left_widgets'}}</label>
+    {{list-setting settingValue=category.custom_fields.sidebar_left_widgets
+                   choices=leftWidgetChoices
+                   settingName='category.sidebar_left_widgets'}}
+  </section>
+  <section class='field'>
+    <label>{{i18n 'category.sidebar_right_widgets'}}</label>
+    {{list-setting settingValue=category.custom_fields.sidebar_right_widgets
+                   choices=rightWidgetChoices
+                   settingName='category.sidebar_right_widgets'}}
+  </section>
+{{/if}}

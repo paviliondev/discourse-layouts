@@ -1,0 +1,57 @@
+plugins:
+  sidebar_left_enabled:
+    client: true
+    type: list
+    default: ''
+    choices:
+     - latest
+     - new
+     - unread
+     - top
+     - category
+     - categories
+     - topic
+  sidebar_right_enabled:
+    client: true
+    type: list
+    default: ''
+    choices:
+     - latest
+     - new
+     - unread
+     - top
+     - category
+     - categories
+     - topic
+  sidebar_list_navigation_disabled:
+    client: true
+    default: false
+  sidebar_list_header_disabled:
+    client: true
+    default: false
+  sidebar_list_btn_labels_disabled:
+    client: true
+    default: false
+  sidebar_left_widgets:
+    client: true
+    default: ''
+    type: list
+    default: ''
+    choices: []
+  sidebar_right_widgets:
+    client: true
+    type: list
+    default: ''
+    choices: []
+  sidebar_left_width:
+    client: true
+    default: 250
+  sidebar_right_width:
+    client: true
+    default: 250
+  sidebar_left_fixed:
+    client: true
+    default: true
+  sidebar_right_fixed:
+    client: true
+    default: true

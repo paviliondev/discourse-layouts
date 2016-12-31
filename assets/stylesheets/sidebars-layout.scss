@@ -1,0 +1,108 @@
+
+.content-wrapper {
+  text-align: center;
+}
+
+aside.sidebar {
+  display: inline-block;
+  vertical-align: top;
+  text-align: left;
+  z-index: 1;
+}
+
+.sidebar-container {
+  width: inherit;
+  z-index: 1;
+  &.fixed {
+    position: fixed;
+  }
+}
+
+.main-content {
+  display: inline-block;
+  vertical-align: top;
+  text-align: left;
+  margin-bottom: 100px;
+  border-radius: 4px;
+  &.has-sidebars {
+    box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.4);
+  }
+  &.left-sidebar {
+    margin-left: 10px;
+  }
+  &.right-sidebar {
+    margin-right: 10px;
+  }
+  &.loading {
+    box-shadow: none;
+  }
+}
+
+.widget-container {
+  background-color: #fff;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  padding: 7px;
+  box-shadow: 0 2px 6px -2px rgba(0,0,0,0.4);
+  position: relative;
+  .widget-inner {
+    width: 100%;
+  }
+  .widget-header {
+    width: 100%;
+    padding-bottom: 8px;
+    .title {
+      font-weight: 700;
+    }
+  }
+  .widget-sub-header {
+    color: $tertiary;
+  }
+}
+
+// sidebar_list_btn_labels_disabled setting changes applied by default to avoid render issues with jQuery
+.main-content .list-controls {
+  .category-navigation {
+    padding: 7px;
+  }
+  button {
+    font-size: 0;
+    width: 35px;
+    height: 30px;
+    .fa {
+      font-size: 14px;
+      line-height: 19px;
+    }
+    span {
+      display: none;
+    }
+  }
+}
+
+.main-content.navigation-disabled {
+  .topic-list > tbody > tr:first-of-type {
+    border-top: 1px solid #e9e9e9;
+  }
+}
+
+.main-content.header-disabled {
+  .category-list tbody tr:first-of-type {
+    border-top: 1px solid #e9e9e9;
+  }
+}
+
+.topic-list-bottom {
+  margin: 20px 10px;
+}
+
+#list-area {
+  margin-bottom: 0;
+}
+
+.topic-area #suggested-topics {
+  margin-bottom: 0;
+}
+
+.widget-category-settings .select2-container {
+  width: 100%;
+}
