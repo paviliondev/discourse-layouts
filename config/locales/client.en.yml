@@ -1,7 +1,7 @@
 en:
   js:
     category:
-      sidebar_left_enabled: "Enable left sidebar for these topic lists in this category"
-      sidebar_right_enabled: "Enable right sidebar for these topic lists in this category"
+      sidebar_left_enabled: "Enable left sidebar for selected routes in this category"
+      sidebar_right_enabled: "Enable right sidebar for selected routes in this category"
       sidebar_left_widgets: "Left widgets for this category"
       sidebar_right_widgets: "Right widgets for this category"

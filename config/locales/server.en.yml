@@ -1,13 +1,13 @@
 en:
   site_settings:
-    sidebar_left_enabled: "Enable left sidebar"
-    sidebar_right_enabled: "Enable right sidebar"
-    sidebar_list_navigation_disabled: "Disable discovery list navigation"
-    sidebar_list_header_disabled: "Disable discovery list header"
+    sidebar_left_enabled: "Enable left sidebar for selected routes"
+    sidebar_right_enabled: "Enable right sidebar for selected routes"
+    sidebar_list_navigation_disabled: "Disable discovery list navigation for selected routes"
+    sidebar_list_header_disabled: "Disable discovery list header for selected routes"
     sidebar_left_widgets: "Left sidebar widgets"
     sidebar_right_widgets: "Right sidebar widgets"
     sidebar_left_width: "Left sidebar width (pixels)"
     sidebar_right_width: "Right sidebar width (pixels)"
     sidebar_left_fixed: "Left sidebar uses fixed positioning"
     sidebar_right_fixed: "Right sidebar uses fixed positioning"
-    sidebar_list_btn_labels_disabled: "Hide list button labels in discovery streams"
+    sidebar_list_btn_labels_disabled: "Hide list button labels for selected routes"

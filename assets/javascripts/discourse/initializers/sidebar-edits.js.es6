@@ -10,6 +10,8 @@ import EditCategorySettings from 'discourse/components/edit-category-settings';
 import ButtonComponent from 'discourse/components/d-button';
 import { on, observes, default as computed } from 'ember-addons/ember-computed-decorators';
 import { withPluginApi } from 'discourse/lib/plugin-api';
+import { settingEnabled } from '../helpers/settings';
+import { getOwner } from 'discourse-common/lib/get-owner';
 
 const getContentWidth = (leftSidebarEnabled, rightSidebarEnabled, topic) => {
   const settings = Discourse.SiteSettings;
@@ -38,12 +40,15 @@ export default {
 
     DiscoveryController.reopen({
       mainContent: 'discovery',
+      path: Ember.computed.alias('application.currentPath'),
 
       @on('init')
-      @observes('application.currentPath')
+      @observes('path')
       discoveryDomEdits() {
+        if (!this.get('path')) { return }
+
         // text hidden by default to avoid 'flicker' on render
-        if (!Discourse.SiteSettings.sidebar_list_btn_labels_disabled) {
+        if (!this.get('btnLabelsDisabled')) {
           Ember.run.schedule('afterRender', this, () => {
             const listButton = $('.list-controls button');
             listButton.css({
@@ -59,68 +64,56 @@ export default {
           })
         }
         // necessary because discovery categories component does not use skipHeader
-        if (Discourse.SiteSettings.sidebar_list_header_disabled) {
+        if (this.get('headerDisabled')) {
           Ember.run.scheduleOnce('afterRender', function() {
             $('.main-content thead').hide()
           })
         }
-      },
 
-      sidebarEnabled(side) {
-        const childRoutes = this.childRoutes();
-        if (!childRoutes) { return false }
-
-        const siteEnabled = Discourse.SiteSettings[`sidebar_${side}_enabled`].split('|');
-        const filter = this.get('filter');
-
-        if (childRoutes.indexOf('category') > -1) {
-          const categoryEnabled = this.get(`category.sidebar_${side}_enabled`)
-          return siteEnabled.indexOf('category') > -1 ||
-                 categoryEnabled && categoryEnabled.split('|').indexOf(filter) > -1
+        if (this.get('path').indexOf('categories') > -1) {
+          this.set('filterMode', 'categories')
         }
-        if (childRoutes.indexOf('categories') > -1) {
-          return siteEnabled.indexOf('categories') > -1;
-        }
-        return siteEnabled.indexOf(filter) > -1;
       },
 
-      childRoutes() {
-        const path = this.get('application.currentPath');
-        if (!path) { return false }
-        let pathArr = path.split('.')
-        pathArr.shift()
-        return pathArr[0].split(/(?=[A-Z])/).map(function(x){return x.toLowerCase()});
-      },
-
-      @computed('application.currentPath')
-      filter() {
-        let childRoutes = this.childRoutes();
-        return childRoutes[0] === 'category' || childRoutes[0] === 'parent' ?
-               'latest' : childRoutes[0];
-      },
-
-      @computed('application.currentPath')
+      @computed('path')
       leftSidebarEnabled() {
-        return this.sidebarEnabled('left')
+        return settingEnabled('sidebar_left_enabled', this.get('category'), this.get('path'))
       },
 
-      @computed('application.currentPath')
+      @computed('path')
       rightSidebarEnabled() {
-        return this.sidebarEnabled('right')
+        return settingEnabled('sidebar_right_enabled', this.get('category'), this.get('path'))
       },
 
-      @computed('application.currentPath')
+      @computed('path')
+      navigationDisabled() {
+        return settingEnabled('sidebar_list_navigation_disabled', this.get('category'), this.get('path'))
+      },
+
+      @computed('path')
+      headerDisabled() {
+        return settingEnabled('sidebar_list_header_disabled', this.get('category'), this.get('path'))
+      },
+
+      @computed('path')
+      btnLabelsDisabled() {
+        return settingEnabled('sidebar_list_btn_labels_disabled', this.get('category'), this.get('path'))
+      },
+
+      @computed('path')
       mainStyle() {
         const left = this.get('leftSidebarEnabled');
         const right = this.get('rightSidebarEnabled');
         return `width: ${getContentWidth(left, right)};`;
       },
 
-      @computed('application.currentPath', 'loading')
+      @computed('path', 'loading')
       mainClasses() {
         const left = this.get('leftSidebarEnabled');
         const right = this.get('rightSidebarEnabled');
-        let classes = 'discovery'
+        const navigationDisabled = this.get('navigationDisabled');
+        const headerDisabled = this.get('headerDisabled');
+        let classes = 'discovery';
 
         if (this.get('loading')) {
           return classes + ' loading'
@@ -134,10 +127,10 @@ export default {
         if (right) {
           classes += ' right-sidebar'
         }
-        if (Discourse.SiteSettings.sidebar_list_navigation_disabled) {
+        if (navigationDisabled) {
           classes += ' navigation-disabled'
         }
-        if (Discourse.SiteSettings.sidebar_list_header_disabled) {
+        if (headerDisabled) {
           classes += ' header-disabled'
         }
         return classes
@@ -220,7 +213,9 @@ export default {
 
     TopicList.reopen({
       skipHeader: function() {
-        return this.site.mobileView || Discourse.SiteSettings.sidebar_list_header_disabled
+        const path = getOwner(this).lookup('controller:application').get('currentPath');
+        let disabled = settingEnabled('sidebar_list_header_disabled', this.get('category'), path);
+        return this.site.mobileView || disabled
       }.property()
     });
 

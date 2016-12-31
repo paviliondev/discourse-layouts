@@ -1,4 +1,5 @@
 import DiscoveryCategoriesRoute from 'discourse/routes/discovery-categories';
+import { settingEnabled } from '../helpers/settings';
 
 export default {
   name: 'sidebar-discovery-routes',
@@ -32,19 +33,15 @@ export default {
       ])
     })
 
-    const renderTemplateTopic = function(self) {
-      if (Discourse.SiteSettings.sidebar_list_navigation_disabled) {
-        Ember.run.scheduleOnce('afterRender', function() {
-          $('.main-content').addClass('navigation-disabled')
-        })
-      } else {
+    const renderTemplateTopic = function(self, category, path) {
+      if (!settingEnabled('sidebar_list_navigation_disabled', category, path)) {
         self.render('navigation/default', { outlet: 'navigation-bar' });
       }
       self.render('discovery/topics', { controller: 'discovery/topics', outlet: 'list-container' });
     }
 
-    const renderTemplateCategory = function(self) {
-      if (!Discourse.SiteSettings.sidebar_list_navigation_disabled) {
+    const renderTemplateCategory = function(self, category, path) {
+      if (!settingEnabled('sidebar_list_navigation_disabled', category, path)) {
         self.render('navigation/category', { outlet: 'navigation-bar' });
       }
       if (self._categoryList) {
@@ -56,24 +53,28 @@ export default {
     discoveryTopicRoutes.forEach(function(route){
       var route = container.lookup(`route:discovery.${route}`)
       route.reopen({
-        renderTemplate() { renderTemplateTopic(this) }
+        renderTemplate() {
+          renderTemplateTopic(this, false, this.get('routeName'))
+        }
       })
     })
 
     discoveryCategoryRoutes.forEach(function(route){
       var route = container.lookup(`route:discovery.${route}`)
       route.reopen({
-        renderTemplate() { renderTemplateCategory(this) }
+        renderTemplate(controller, model) {
+          renderTemplateCategory(this, model.category, this.get('routeName'))
+        }
       })
     })
 
     DiscoveryCategoriesRoute.reopen({
-      renderTemplate() {
-        if (!Discourse.SiteSettings.sidebar_list_navigation_disabled) {
-          this.render('navigation/category', { outlet: 'navigation-bar' });
+      renderTemplate(controller, model) {
+        if (!settingEnabled('sidebar_list_navigation_disabled', false, 'categories')) {
+          this.render('navigation/categories', { outlet: 'navigation-bar' });
         }
         this.render("discovery/categories", { outlet: "list-container" });
-      },
+      }
     })
   }
 }

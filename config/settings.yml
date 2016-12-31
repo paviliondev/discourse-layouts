@@ -25,13 +25,37 @@ plugins:
      - topic
   sidebar_list_navigation_disabled:
     client: true
-    default: false
+    type: list
+    default: ''
+    choices:
+     - latest
+     - new
+     - unread
+     - top
+     - category
+     - categories
   sidebar_list_header_disabled:
     client: true
-    default: false
+    type: list
+    default: ''
+    choices:
+     - latest
+     - new
+     - unread
+     - top
+     - category
+     - categories
   sidebar_list_btn_labels_disabled:
     client: true
-    default: false
+    type: list
+    default: ''
+    choices:
+     - latest
+     - new
+     - unread
+     - top
+     - category
+     - categories
   sidebar_left_widgets:
     client: true
     default: ''
