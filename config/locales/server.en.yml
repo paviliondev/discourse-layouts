@@ -10,4 +10,4 @@ en:
     sidebar_right_width: "Right sidebar width (pixels)"
     sidebar_left_fixed: "Left sidebar uses fixed positioning"
     sidebar_right_fixed: "Right sidebar uses fixed positioning"
-    sidebar_list_btn_labels_disabled: "Hide list button labels for selected routes"
+    sidebar_list_nav_menu: "Use list navigation menu for selected routes"

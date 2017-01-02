@@ -13,10 +13,12 @@ after_initialize do
   Category.register_custom_field_type('sidebar_right_enabled', :string)
   Category.register_custom_field_type('sidebar_list_navigation_disabled', :string)
   Category.register_custom_field_type('sidebar_list_header_disabled', :string)
+  Category.register_custom_field_type('sidebar_list_nav_menu', :string)
   add_to_serializer(:basic_category, :sidebar_right_widgets) {object.custom_fields["sidebar_right_widgets"]}
   add_to_serializer(:basic_category, :sidebar_left_widgets) {object.custom_fields["sidebar_left_widgets"]}
   add_to_serializer(:basic_category, :sidebar_left_enabled) {object.custom_fields["sidebar_left_enabled"]}
   add_to_serializer(:basic_category, :sidebar_right_enabled) {object.custom_fields["sidebar_right_enabled"]}
   add_to_serializer(:basic_category, :sidebar_list_navigation_disabled) {object.custom_fields["sidebar_list_navigation_disabled"]}
   add_to_serializer(:basic_category, :sidebar_list_header_disabled) {object.custom_fields["sidebar_list_header_disabled"]}
+  add_to_serializer(:basic_category, :sidebar_list_nav_menu) {object.custom_fields["sidebar_list_nav_menu"]}
 end

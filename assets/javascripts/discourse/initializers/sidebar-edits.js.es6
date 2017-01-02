@@ -6,8 +6,8 @@ import TopicRoute from 'discourse/routes/topic';
 import TopicNavigation from 'discourse/components/topic-navigation';
 import TopicList from 'discourse/components/topic-list';
 import ShowModal from 'discourse/lib/show-modal';
-import EditCategorySettings from 'discourse/components/edit-category-settings';
-import ButtonComponent from 'discourse/components/d-button';
+import NavigationBar from 'discourse/components/navigation-bar';
+import NavigationItem from 'discourse/components/navigation-item';
 import { on, observes, default as computed } from 'ember-addons/ember-computed-decorators';
 import { withPluginApi } from 'discourse/lib/plugin-api';
 import { settingEnabled } from '../helpers/settings';
@@ -45,33 +45,14 @@ export default {
       @on('init')
       @observes('path')
       discoveryDomEdits() {
-        if (!this.get('path')) { return }
+        const path = this.get('path')
+        if (!path || path === 'discovery.loading') { return }
 
-        // text hidden by default to avoid 'flicker' on render
-        if (!this.get('btnLabelsDisabled')) {
-          Ember.run.schedule('afterRender', this, () => {
-            const listButton = $('.list-controls button');
-            listButton.css({
-              'font-size': '1.143em',
-              'width': 'initial',
-              'height': 'initial'
-            })
-            listButton.find('.fa').css({
-              'font-size': 'initial',
-              'line-height': 'initial'
-            })
-            listButton.find('span').css('display', 'inline-block')
-          })
-        }
         // necessary because discovery categories component does not use skipHeader
         if (this.get('headerDisabled')) {
           Ember.run.scheduleOnce('afterRender', function() {
             $('.main-content thead').hide()
           })
-        }
-
-        if (this.get('path').indexOf('categories') > -1) {
-          this.set('filterMode', 'categories')
         }
       },
 
@@ -96,8 +77,8 @@ export default {
       },
 
       @computed('path')
-      btnLabelsDisabled() {
-        return settingEnabled('sidebar_list_btn_labels_disabled', this.get('category'), this.get('path'))
+      navMenuEnabled() {
+        return settingEnabled('sidebar_list_nav_menu', this.get('category'), this.get('path'))
       },
 
       @computed('path')
@@ -111,8 +92,6 @@ export default {
       mainClasses() {
         const left = this.get('leftSidebarEnabled');
         const right = this.get('rightSidebarEnabled');
-        const navigationDisabled = this.get('navigationDisabled');
-        const headerDisabled = this.get('headerDisabled');
         let classes = 'discovery';
 
         if (this.get('loading')) {
@@ -127,11 +106,14 @@ export default {
         if (right) {
           classes += ' right-sidebar'
         }
-        if (navigationDisabled) {
+        if (this.get('navigationDisabled')) {
           classes += ' navigation-disabled'
         }
-        if (headerDisabled) {
+        if (this.get('headerDisabled')) {
           classes += ' header-disabled'
+        }
+        if (this.get('navMenuEnabled')) {
+          classes += ' nav-menu-enabled'
         }
         return classes
       }
@@ -213,15 +195,31 @@ export default {
 
     TopicList.reopen({
       skipHeader: function() {
-        const path = getOwner(this).lookup('controller:application').get('currentPath');
-        let disabled = settingEnabled('sidebar_list_header_disabled', this.get('category'), path);
-        return this.site.mobileView || disabled
+        const headerDisabled = getOwner(this).lookup('controller:discovery').get('headerDisabled');
+        return this.site.mobileView || headerDisabled
       }.property()
     });
 
-    EditCategorySettings.reopen({
-      leftChoices: Ember.A(),
-      rightChoices: Ember.A()
+    NavigationBar.reopen({
+      @computed('navItems')
+      navMenuEnabled() {
+        return getOwner(this).lookup('controller:discovery').get('navMenuEnabled');
+      }
+    })
+
+    NavigationItem.reopen({
+      buildBuffer(buffer) {
+        const content = this.get('content');
+        const linkDisabled = this.get('linkDisabled');
+        let attrs = linkDisabled ? '' : "href='" + content.get('href') + "'";
+
+        buffer.push(`<a ${attrs}>`);
+        if (content.get('hasIcon')) {
+          buffer.push("<span class='" + content.get('name') + "'></span>");
+        }
+        buffer.push(this.get('content.displayName'));
+        buffer.push("</a>");
+      }
     })
   }
 }

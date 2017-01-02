@@ -1,0 +1,9 @@
+{{#if navMenuEnabled}}
+  {{nav-drop navItems=navItems selectedNavItem=selectedNavItem filterMode=filterMode}}
+{{else}}
+  {{#each navItems as |navItem|}}
+    {{navigation-item content=navItem filterMode=filterMode}}
+  {{/each}}
+{{/if}}
+{{custom-html name="extraNavItem"}}
+{{plugin-outlet name="extra-nav-item" connectorTagName="li"}}

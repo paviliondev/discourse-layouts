@@ -45,7 +45,7 @@ plugins:
      - top
      - category
      - categories
-  sidebar_list_btn_labels_disabled:
+  sidebar_list_nav_menu:
     client: true
     type: list
     default: ''

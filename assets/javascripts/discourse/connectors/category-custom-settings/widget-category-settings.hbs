@@ -23,4 +23,22 @@
                    choices=rightWidgetChoices
                    settingName='category.sidebar_right_widgets'}}
   </section>
+  <section class='field'>
+    <label>{{i18n 'category.sidebar_list_navigation_disabled'}}</label>
+    {{list-setting settingValue=category.custom_fields.sidebar_list_navigation_disabled
+                   choices=enableChoices
+                   settingName='category.sidebar_list_navigation_disabled'}}
+  </section>
+  <section class='field'>
+    <label>{{i18n 'category.sidebar_list_header_disabled'}}</label>
+    {{list-setting settingValue=category.custom_fields.sidebar_list_header_disabled
+                   choices=enableChoices
+                   settingName='category.sidebar_list_header_disabled'}}
+  </section>
+  <section class='field'>
+    <label>{{i18n 'category.sidebar_list_nav_menu'}}</label>
+    {{list-setting settingValue=category.custom_fields.sidebar_list_nav_menu
+                   choices=enableChoices
+                   settingName='category.sidebar_list_nav_menu'}}
+  </section>
 {{/if}}

@@ -5,3 +5,8 @@ en:
       sidebar_right_enabled: "Enable right sidebar for selected routes in this category"
       sidebar_left_widgets: "Left widgets for this category"
       sidebar_right_widgets: "Right widgets for this category"
+      sidebar_list_navigation_disabled: "Disable discovery list navigation for selected routes in this category"
+      sidebar_list_header_disabled: "Disable discovery list header for selected routes in this category"
+      sidebar_list_nav_menu: "Use list navigation menu for selected routes in this category"
+    filters:
+      nav_drop: "Navigation"
