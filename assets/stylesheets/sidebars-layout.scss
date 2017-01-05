@@ -48,6 +48,11 @@ aside.sidebar {
   &.loading {
     box-shadow: none;
   }
+  &.navigation-disabled {
+    .list-controls {
+      padding: 0;
+    }
+  }
   &.nav-menu-enabled {
     ol.category-breadcrumb {
       margin: 0;
