@@ -31,6 +31,8 @@ const getContentWidth = (leftSidebarEnabled, rightSidebarEnabled, topic) => {
 export default {
   name: 'sidebar-edits',
   initialize(container){
+    const site = container.lookup('site:main');
+    if (site.mobileView) { return }
 
     DiscoveryRoute.reopen({
       renderTemplate() {
