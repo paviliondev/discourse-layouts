@@ -1,6 +1,6 @@
 <div class="content-wrapper">
   {{#if leftSidebarEnabled}}
-    <aside class="sidebar" style="width: {{siteSettings.sidebar_left_width}}px">
+    <aside class="sidebar" style="width: {{siteSettings.layouts_sidebar_left_width}}px">
       {{sidebar-container side="left" topic=model category=category filter=filter context=mainContent}}
     </aside>
   {{/if}}
@@ -10,7 +10,7 @@
   </div>
 
   {{#if rightSidebarEnabled}}
-    <aside class="sidebar" style="width: {{siteSettings.sidebar_right_width}}px">
+    <aside class="sidebar" style="width: {{siteSettings.layouts_sidebar_right_width}}px">
       {{sidebar-container side="right" topic=model category=category filter=filter context=mainContent}}
     </aside>
   {{/if}}

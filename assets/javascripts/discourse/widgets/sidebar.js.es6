@@ -4,18 +4,18 @@ export default createWidget('sidebar', {
   tagName: 'div.sidebar',
 
   html(args) {
-    const siteWidgets = Discourse.SiteSettings[`sidebar_${args.side}_widgets`].split('|');
-    const siteEnabled = Discourse.SiteSettings[`sidebar_${args.side}_enabled`].split('|');
+    const siteWidgets = Discourse.SiteSettings[`layouts_sidebar_${args.side}_widgets`].split('|');
+    const siteEnabled = Discourse.SiteSettings[`layouts_sidebar_${args.side}_enabled`].split('|');
     let contents = [];
     let widgets = [];
 
     if (args.context === 'discovery') {
-      let categoryEnabled = args.category ? args.category.get(`sidebar_${args.side}_enabled`) : ''
+      let categoryEnabled = args.category ? args.category.get(`layouts_sidebar_${args.side}_enabled`) : ''
       if (!args.category || siteEnabled.indexOf('category') > -1) {
         widgets.push(...siteWidgets)
       }
       if (categoryEnabled && categoryEnabled.split('|').indexOf(args.filter) > -1) {
-        args.category.get(`sidebar_${args.side}_widgets`).split('|').forEach((widget) => {
+        args.category.get(`layouts_sidebar_${args.side}_widgets`).split('|').forEach((widget) => {
           if (widgets.indexOf(widget) === -1) {
             widgets.push(widget)
           }

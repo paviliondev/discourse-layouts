@@ -1,5 +1,5 @@
 plugins:
-  sidebar_left_enabled:
+  layouts_sidebar_left_enabled:
     client: true
     type: list
     default: ''
@@ -11,7 +11,7 @@ plugins:
      - category
      - categories
      - topic
-  sidebar_right_enabled:
+  layouts_sidebar_right_enabled:
     client: true
     type: list
     default: ''
@@ -23,59 +23,59 @@ plugins:
      - category
      - categories
      - topic
-  sidebar_list_navigation_disabled:
-    client: true
-    type: list
-    default: ''
-    choices:
-     - latest
-     - new
-     - unread
-     - top
-     - category
-     - categories
-  sidebar_list_header_disabled:
-    client: true
-    type: list
-    default: ''
-    choices:
-     - latest
-     - new
-     - unread
-     - top
-     - category
-     - categories
-  sidebar_list_nav_menu:
-    client: true
-    type: list
-    default: ''
-    choices:
-     - latest
-     - new
-     - unread
-     - top
-     - category
-     - categories
-  sidebar_left_widgets:
+  layouts_sidebar_left_widgets:
     client: true
     default: ''
     type: list
     default: ''
     choices: []
-  sidebar_right_widgets:
+  layouts_sidebar_right_widgets:
     client: true
     type: list
     default: ''
     choices: []
-  sidebar_left_width:
+  layouts_sidebar_left_width:
     client: true
     default: 250
-  sidebar_right_width:
+  layouts_sidebar_right_width:
     client: true
     default: 250
-  sidebar_left_fixed:
+  layouts_sidebar_left_fixed:
     client: true
     default: true
-  sidebar_right_fixed:
+  layouts_sidebar_right_fixed:
     client: true
     default: true
+  layouts_list_navigation_disabled:
+    client: true
+    type: list
+    default: ''
+    choices:
+     - latest
+     - new
+     - unread
+     - top
+     - category
+     - categories
+  layouts_list_header_disabled:
+    client: true
+    type: list
+    default: ''
+    choices:
+     - latest
+     - new
+     - unread
+     - top
+     - category
+     - categories
+  layouts_list_nav_menu:
+    client: true
+    type: list
+    default: ''
+    choices:
+     - latest
+     - new
+     - unread
+     - top
+     - category
+     - categories

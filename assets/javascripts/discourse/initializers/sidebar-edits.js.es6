@@ -17,13 +17,13 @@ const getContentWidth = (leftSidebarEnabled, rightSidebarEnabled, topic) => {
   const settings = Discourse.SiteSettings;
   let offset = 0
   if (leftSidebarEnabled) {
-    offset += settings.sidebar_left_width + 15
+    offset += settings.layouts_sidebar_left_width + 15
   }
   if (rightSidebarEnabled) {
-    offset += settings.sidebar_right_width + 15
+    offset += settings.layouts_sidebar_right_width + 15
   }
   if (leftSidebarEnabled && !rightSidebarEnabled && topic) {
-    offset += settings.sidebar_right_width + 15
+    offset += settings.layouts_sidebar_right_width + 15
   }
   return offset > 0 ? `calc(100% - ${offset}px)` : '100%'
 }
@@ -58,27 +58,27 @@ export default {
 
       @computed('path')
       leftSidebarEnabled() {
-        return settingEnabled('sidebar_left_enabled', this.get('category'), this.get('path'))
+        return settingEnabled('layouts_sidebar_left_enabled', this.get('category'), this.get('path'))
       },
 
       @computed('path')
       rightSidebarEnabled() {
-        return settingEnabled('sidebar_right_enabled', this.get('category'), this.get('path'))
+        return settingEnabled('layouts_sidebar_right_enabled', this.get('category'), this.get('path'))
       },
 
       @computed('path')
       navigationDisabled() {
-        return settingEnabled('sidebar_list_navigation_disabled', this.get('category'), this.get('path'))
+        return settingEnabled('layouts_list_navigation_disabled', this.get('category'), this.get('path'))
       },
 
       @computed('path')
       headerDisabled() {
-        return settingEnabled('sidebar_list_header_disabled', this.get('category'), this.get('path'))
+        return settingEnabled('layouts_list_header_disabled', this.get('category'), this.get('path'))
       },
 
       @computed('path')
       navMenuEnabled() {
-        return settingEnabled('sidebar_list_nav_menu', this.get('category'), this.get('path'))
+        return settingEnabled('layouts_list_nav_menu', this.get('category'), this.get('path'))
       },
 
       @computed('path')
@@ -119,8 +119,8 @@ export default {
       }
     });
 
-    const joined = Discourse.SiteSettings.sidebar_left_enabled
-                   .concat(' ' + Discourse.SiteSettings.sidebar_right_enabled);
+    const joined = Discourse.SiteSettings.layouts_sidebar_left_enabled
+                   .concat(' ' + Discourse.SiteSettings.layouts_sidebar_right_enabled);
     const topicSidebars = joined.indexOf('topic') > -1;
 
     if (topicSidebars) {
@@ -135,12 +135,12 @@ export default {
 
         @computed('application.currentPath')
         leftSidebarEnabled() {
-          return Discourse.SiteSettings.sidebar_left_enabled.split('|').indexOf('topic') > -1
+          return Discourse.SiteSettings.layouts_sidebar_left_enabled.split('|').indexOf('topic') > -1
         },
 
         @computed('application.currentPath')
         rightSidebarEnabled() {
-          return Discourse.SiteSettings.sidebar_right_enabled.split('|').indexOf('topic') > -1
+          return Discourse.SiteSettings.layouts_sidebar_right_enabled.split('|').indexOf('topic') > -1
         },
 
         @computed('application.currentPath')
@@ -150,7 +150,7 @@ export default {
           let width = getContentWidth(left, right, true);
           let style = `width: ${width};`
           if (left && !right) {
-            style += ` margin-right: ${Discourse.SiteSettings.sidebar_right_width}px;`
+            style += ` margin-right: ${Discourse.SiteSettings.layouts_sidebar_right_width}px;`
           }
           return style
         },
@@ -175,7 +175,7 @@ export default {
       });
 
       // disables the topic timeline when right sidebar enabled in topics
-      if (Discourse.SiteSettings.sidebar_right_enabled.indexOf('topic') > -1) {
+      if (Discourse.SiteSettings.layouts_sidebar_right_enabled.indexOf('topic') > -1) {
         TopicNavigation.reopen({
           _performCheckSize() {
             if (!this.element || this.isDestroying || this.isDestroyed) { return; }

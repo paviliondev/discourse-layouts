@@ -34,14 +34,14 @@ export default {
     })
 
     const renderTemplateTopic = function(self, category, path) {
-      if (!settingEnabled('sidebar_list_navigation_disabled', category, path)) {
+      if (!settingEnabled('layouts_list_navigation_disabled', category, path)) {
         self.render('navigation/default', { outlet: 'navigation-bar' });
       }
       self.render('discovery/topics', { controller: 'discovery/topics', outlet: 'list-container' });
     }
 
     const renderTemplateCategory = function(self, category, path) {
-      if (!settingEnabled('sidebar_list_navigation_disabled', category, path)) {
+      if (!settingEnabled('layouts_list_navigation_disabled', category, path)) {
         self.render('navigation/category', { outlet: 'navigation-bar' });
       }
       if (self._categoryList) {
@@ -70,7 +70,7 @@ export default {
 
     DiscoveryCategoriesRoute.reopen({
       renderTemplate(controller, model) {
-        if (!settingEnabled('sidebar_list_navigation_disabled', false, 'categories')) {
+        if (!settingEnabled('layouts_list_navigation_disabled', false, 'categories')) {
           this.render('navigation/categories', { outlet: 'navigation-bar' });
         }
         this.render("discovery/categories", { outlet: "list-container" });
