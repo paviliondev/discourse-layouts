@@ -7,7 +7,7 @@ export default MountWidget.extend({
 
   @computed()
   fixed() {
-    return Discourse.SiteSettings[`sidebar_${this.get('side')}_fixed`]
+    return Discourse.SiteSettings[`layouts_sidebar_${this.get('side')}_fixed`]
   },
 
   buildArgs() {
