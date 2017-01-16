@@ -41,8 +41,11 @@ aside.sidebar {
     .qa-post {
       padding: 0 5px 0 20px;
     }
-    #suggested-topics h3 {
+    .topic-list-bottom h3, #suggested-topics h3 {
       font-size: 14px;
+    }
+    .topic-list-bottom {
+      margin: 10px;
     }
   }
   &.left-sidebar {
