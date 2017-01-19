@@ -89,10 +89,13 @@
     padding: 10px;
   }
 
+  #topic-closing-info + .btn-primary {
+    margin-left: 10px;
+  }
+
   #suggested-topics {
     background: white;
     padding: 10px;
-    margin-top: 10px;
     border-radius: 4px;
     box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.4);
     p {
@@ -127,6 +130,11 @@
 
   #topic-closing-info {
     display: none;
+  }
+
+  #share-link {
+    left: initial !important;
+    right: 0 !important;
   }
 
   .topic-post {
