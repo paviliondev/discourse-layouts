@@ -11,6 +11,7 @@ plugins:
      - category
      - categories
      - topic
+     - tags
   layouts_sidebar_right_enabled:
     client: true
     type: list
@@ -23,6 +24,7 @@ plugins:
      - category
      - categories
      - topic
+     - tags
   layouts_sidebar_left_widgets:
     client: true
     default: ''
@@ -57,6 +59,7 @@ plugins:
      - top
      - category
      - categories
+     - tags
   layouts_list_header_disabled:
     client: true
     type: list

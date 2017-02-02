@@ -154,6 +154,18 @@ aside.sidebar {
   }
 }
 
+#list-area .main-content.tags {
+  .tag-notification-menu, .dropdown-toggle {
+    margin: 0;
+  }
+  .admin-tag {
+    margin: 0 8px;
+  }
+  .tag-show-heading {
+    margin: 7px 7px 0 7px;
+  }
+}
+
 .top-lists {
   padding: 0 7px;
 }

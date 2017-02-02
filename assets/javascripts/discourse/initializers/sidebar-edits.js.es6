@@ -5,6 +5,8 @@ import TopicController from 'discourse/controllers/topic';
 import TopicRoute from 'discourse/routes/topic';
 import TopicNavigation from 'discourse/components/topic-navigation';
 import TopicList from 'discourse/components/topic-list';
+import TagsShowRoute from 'discourse/routes/tags-show';
+import TagsShowController from 'discourse/controllers/tags-show';
 import ShowModal from 'discourse/lib/show-modal';
 import NavigationBar from 'discourse/components/navigation-bar';
 import NavigationItem from 'discourse/components/navigation-item';
@@ -200,6 +202,63 @@ export default {
         const headerDisabled = getOwner(this).lookup('controller:discovery').get('headerDisabled');
         return this.site.mobileView || headerDisabled
       }.property()
+    });
+
+    TagsShowRoute.reopen({
+      renderTemplate() {
+        this.render('sidebar-wrapper');
+      }
+    });
+
+    TagsShowController.reopen({
+      mainContent: 'tags/show',
+
+      @computed('application.currentPath')
+      leftSidebarEnabled() {
+        return Discourse.SiteSettings.layouts_sidebar_left_enabled.split('|').indexOf('tags') > -1
+      },
+
+      @computed('application.currentPath')
+      rightSidebarEnabled() {
+        return Discourse.SiteSettings.layouts_sidebar_right_enabled.split('|').indexOf('tags') > -1
+      },
+
+      @computed('application.currentPath')
+      mainStyle() {
+        const left = this.get('leftSidebarEnabled');
+        const right = this.get('rightSidebarEnabled');
+        return `width: ${getContentWidth(left, right)};`;
+      },
+
+      @computed('application.currentPath', 'loading')
+      mainClasses() {
+        const left = this.get('leftSidebarEnabled');
+        const right = this.get('rightSidebarEnabled');
+        let classes = 'tags';
+
+        if (this.get('loading')) {
+          return classes + ' loading'
+        }
+        if (left || right) {
+          classes += ' has-sidebars'
+        }
+        if (left) {
+          classes += ' left-sidebar'
+        }
+        if (right) {
+          classes += ' right-sidebar'
+        }
+        if (this.get('navigationDisabled')) {
+          classes += ' navigation-disabled'
+        }
+        if (this.get('headerDisabled')) {
+          classes += ' header-disabled'
+        }
+        if (this.get('navMenuEnabled')) {
+          classes += ' nav-menu-enabled'
+        }
+        return classes
+      }
     });
 
     NavigationBar.reopen({

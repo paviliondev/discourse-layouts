@@ -9,7 +9,7 @@ export default createWidget('sidebar', {
     let contents = [];
     let widgets = [];
 
-    if (args.context === 'discovery') {
+    if (args.context === 'discovery' || args.context === 'tags/show') {
       let categoryEnabled = args.category ? args.category.get(`layouts_sidebar_${args.side}_enabled`) : ''
       if (!args.category || siteEnabled.indexOf('category') > -1) {
         widgets.push(...siteWidgets)

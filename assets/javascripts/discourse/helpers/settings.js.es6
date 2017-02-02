@@ -28,9 +28,15 @@ var settingEnabled = function(setting, category, path) {
     return siteEnabled.indexOf('category') > -1 ||
            categoryEnabled && categoryEnabled.split('|').indexOf(filter) > -1
   }
+
   if (routes.indexOf('categories') > -1) {
     return siteEnabled.indexOf('categories') > -1;
   }
+
+  if (routes.indexOf('tags') > -1) {
+    return siteEnabled.indexOf('tags') > -1;
+  }
+
   return siteEnabled.indexOf(filter) > -1;
 }
 
