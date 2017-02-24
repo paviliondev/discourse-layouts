@@ -23,7 +23,7 @@ var settingEnabled = function(setting, category, path) {
   const siteEnabled = Discourse.SiteSettings[setting].split('|');
   const filter = getFilter(path);
 
-  if (routes.indexOf('category') > -1) {
+  if (routes.indexOf('category') > -1 && category) {
     const categoryEnabled = category.get(setting)
     return siteEnabled.indexOf('category') > -1 ||
            categoryEnabled && categoryEnabled.split('|').indexOf(filter) > -1
