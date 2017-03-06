@@ -118,7 +118,6 @@
   }
 
   .posts-wrapper {
-    background-color: rgba(255,255,255,1);
     border-radius: 0 0 4px 4px;
     .small-action {
       width: 100%;
@@ -251,10 +250,6 @@
       vertical-align: middle;
       font-size: 15px;
     }
-  }
-
-  .similar-topics {
-    background-color: dark-light-diff($primary, $secondary, 90%, -65%);
   }
 
   .gap {
