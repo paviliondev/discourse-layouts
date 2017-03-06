@@ -45,6 +45,7 @@ export default {
     DiscoveryController.reopen({
       mainContent: 'discovery',
       path: Ember.computed.alias('application.currentPath'),
+      navigationDefault: Ember.inject.controller('navigation/default'),
 
       @on('init')
       @observes('path')
@@ -58,6 +59,13 @@ export default {
             $('.main-content thead').hide()
           })
         }
+      },
+
+      @computed('navigationDefault.filterMode', 'navigationCategory.filterMode')
+      filter() {
+        let filterMode = this.get('navigationDefault.filterMode') || this.get('navigationCategory.filterMode'),
+            filterArr = filterMode.split('/');
+        return filterArr[filterArr.length - 1]
       },
 
       @computed('path')
