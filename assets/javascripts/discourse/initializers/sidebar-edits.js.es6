@@ -93,6 +93,12 @@ export default {
         return settingEnabled('layouts_list_nav_menu', this.get('category'), this.get('path'))
       },
 
+      @computed('category')
+      showCategoryEditBtn() {
+        const category = this.get('category');
+        return category && category.get('can_edit') && this.get('navigationDisabled');
+      },
+
       @computed('path')
       mainStyle() {
         const left = this.get('leftSidebarEnabled');
