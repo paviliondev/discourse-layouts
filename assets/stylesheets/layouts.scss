@@ -12,14 +12,10 @@ aside.sidebar {
 
 .sidebar-container {
   width: inherit;
-  z-index: 9999;
+  z-index: 10;
   &.fixed {
     position: fixed;
   }
-}
-
-#reply-control {
-  z-index: 99999;
 }
 
 .main-content {
