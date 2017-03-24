@@ -31,7 +31,7 @@ export default MountWidget.extend({
     return args;
   },
 
-  @observes('topic', 'category')
+  @observes('topic', 'category', 'topic.details.created_by')
   updateOnModelChange() {
     this.queueRerender()
   }
