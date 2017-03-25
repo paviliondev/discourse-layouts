@@ -46,6 +46,7 @@ export default {
       mainContent: 'discovery',
       path: Ember.computed.alias('application.currentPath'),
       navigationDefault: Ember.inject.controller('navigation/default'),
+      navigationCategories: Ember.inject.controller("navigation/categories"),
 
       @on('init')
       @observes('path')
