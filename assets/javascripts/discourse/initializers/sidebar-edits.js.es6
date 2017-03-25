@@ -64,7 +64,7 @@ export default {
       @computed('navigationDefault.filterMode', 'navigationCategory.filterMode')
       filter() {
         let filterMode = this.get('navigationDefault.filterMode') || this.get('navigationCategory.filterMode'),
-            filterArr = filterMode.split('/');
+            filterArr = filterMode ? filterMode.split('/') : [];
         return filterArr[filterArr.length - 1]
       },
 
