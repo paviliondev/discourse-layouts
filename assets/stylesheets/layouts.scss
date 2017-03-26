@@ -85,9 +85,7 @@ aside.sidebar {
   .widget-header {
     width: 100%;
     padding-bottom: 8px;
-    .title {
-      font-weight: 700;
-    }
+    text-decoration: underline;
   }
   .widget-sub-header {
     color: $tertiary;
