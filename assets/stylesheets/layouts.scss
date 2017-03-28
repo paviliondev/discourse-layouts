@@ -83,12 +83,23 @@ aside.sidebar {
     width: 100%;
   }
   .widget-header {
-    width: 100%;
-    padding-bottom: 8px;
+    display: inline-block;
     text-decoration: underline;
+    padding-bottom: 5px;
   }
   .widget-sub-header {
     color: $tertiary;
+  }
+  .widget-category {
+    float: right;
+  }
+  .widget-description {
+    padding-bottom: 5px;
+  }
+  .widget-controls {
+    padding-bottom: 5px;
+    display: inline-block;
+    width: 100%;
   }
 }
 

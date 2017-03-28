@@ -5,7 +5,6 @@
 
 register_asset 'stylesheets/layouts.scss'
 register_asset 'stylesheets/layouts-topic.scss'
-register_asset 'stylesheets/layouts-civil.scss'
 
 after_initialize do
   Category.register_custom_field_type('layouts_sidebar_right_widgets', :string)
