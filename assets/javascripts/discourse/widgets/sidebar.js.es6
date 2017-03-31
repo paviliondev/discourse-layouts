@@ -29,10 +29,13 @@ export default createWidget('sidebar', {
 
     widgets.forEach((widget) => {
       if (widget.length) {
-        contents.push(this.attach(widget, {
-          topic: args.topic,
-          category: args.category
-        }))
+        const exists = this.register.lookupFactory(`widget:${widget}`);
+        if (exists) {
+          contents.push(this.attach(widget, {
+            topic: args.topic,
+            category: args.category
+          }))
+        }
       }
     })
 
