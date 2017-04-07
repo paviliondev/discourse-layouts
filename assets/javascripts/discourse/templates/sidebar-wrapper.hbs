@@ -1,16 +1,16 @@
 <div class="content-wrapper">
   {{#if leftSidebarEnabled}}
-    <aside class="sidebar" style="width: {{siteSettings.layouts_sidebar_left_width}}px">
+    <aside class="sidebar" style={{leftStyle}}>
       {{sidebar-container side="left" topic=model category=category filter=filter context=mainContent}}
     </aside>
   {{/if}}
 
-  <div class="main-content {{mainClasses}}" style="{{mainStyle}}">
+  <div class="main-content {{mainClasses}}" style={{mainStyle}}>
     {{partial mainContent}}
   </div>
 
   {{#if rightSidebarEnabled}}
-    <aside class="sidebar" style="width: {{siteSettings.layouts_sidebar_right_width}}px">
+    <aside class="sidebar" style={{rightStyle}}>
       {{sidebar-container side="right" topic=model category=category filter=filter context=mainContent}}
     </aside>
   {{/if}}
