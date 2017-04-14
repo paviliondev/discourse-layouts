@@ -5,30 +5,14 @@ import TopicController from 'discourse/controllers/topic';
 import TopicRoute from 'discourse/routes/topic';
 import TopicNavigation from 'discourse/components/topic-navigation';
 import TopicList from 'discourse/components/topic-list';
-import TagsShowRoute from 'discourse/routes/tags-show';
-import TagsShowController from 'discourse/controllers/tags-show';
 import ShowModal from 'discourse/lib/show-modal';
 import NavigationBar from 'discourse/components/navigation-bar';
 import NavigationItem from 'discourse/components/navigation-item';
 import { on, observes, default as computed } from 'ember-addons/ember-computed-decorators';
 import { withPluginApi } from 'discourse/lib/plugin-api';
-import { settingEnabled } from '../helpers/settings';
+import { settingEnabled } from '../lib/settings';
+import { getContentWidth } from '../lib/display';
 import { getOwner } from 'discourse-common/lib/get-owner';
-
-const getContentWidth = (leftSidebarEnabled, rightSidebarEnabled, topic) => {
-  const settings = Discourse.SiteSettings;
-  let offset = 0
-  if (leftSidebarEnabled) {
-    offset += settings.layouts_sidebar_left_width + 15
-  }
-  if (rightSidebarEnabled) {
-    offset += settings.layouts_sidebar_right_width + 15
-  }
-  if (leftSidebarEnabled && !rightSidebarEnabled && topic) {
-    offset += settings.layouts_sidebar_right_width + 15
-  }
-  return offset > 0 ? `calc(100% - ${offset}px)` : '100%'
-}
 
 export default {
   name: 'sidebar-edits',
@@ -237,73 +221,6 @@ export default {
         const headerDisabled = getOwner(this).lookup('controller:discovery').get('headerDisabled');
         return this.site.mobileView || headerDisabled
       }.property()
-    });
-
-    TagsShowRoute.reopen({
-      renderTemplate() {
-        this.render('sidebar-wrapper');
-      }
-    });
-
-    TagsShowController.reopen({
-      mainContent: 'tags/show',
-
-      @computed('application.currentPath')
-      leftSidebarEnabled() {
-        return Discourse.SiteSettings.layouts_sidebar_left_enabled.split('|').indexOf('tags') > -1
-      },
-
-      @computed('application.currentPath')
-      rightSidebarEnabled() {
-        return Discourse.SiteSettings.layouts_sidebar_right_enabled.split('|').indexOf('tags') > -1
-      },
-
-      @computed('application.currentPath')
-      mainStyle() {
-        const left = this.get('leftSidebarEnabled');
-        const right = this.get('rightSidebarEnabled');
-        return Ember.String.htmlSafe(`width: ${getContentWidth(left, right)};`);
-      },
-
-      @computed('application.currentPath')
-      leftStyle() {
-        return Ember.String.htmlSafe(`width: ${this.siteSettings.layouts_sidebar_left_width}px;`);
-      },
-
-      @computed('application.currentPath')
-      rightStyle() {
-        return Ember.String.htmlSafe(`width: ${this.siteSettings.layouts_sidebar_right_width}px;`);
-      },
-
-      @computed('application.currentPath', 'loading')
-      mainClasses() {
-        const left = this.get('leftSidebarEnabled');
-        const right = this.get('rightSidebarEnabled');
-        let classes = 'tags';
-
-        if (this.get('loading')) {
-          return classes + ' loading'
-        }
-        if (left || right) {
-          classes += ' has-sidebars'
-        }
-        if (left) {
-          classes += ' left-sidebar'
-        }
-        if (right) {
-          classes += ' right-sidebar'
-        }
-        if (this.get('navigationDisabled')) {
-          classes += ' navigation-disabled'
-        }
-        if (this.get('headerDisabled')) {
-          classes += ' header-disabled'
-        }
-        if (this.get('navMenuEnabled')) {
-          classes += ' nav-menu-enabled'
-        }
-        return classes
-      }
     });
 
     NavigationBar.reopen({

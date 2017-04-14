@@ -1,12 +1,12 @@
 import DiscoveryCategoriesRoute from 'discourse/routes/discovery-categories';
-import { settingEnabled } from '../helpers/settings';
+import { settingEnabled } from '../lib/settings';
 
 export default {
   name: 'sidebar-discovery-routes',
   initialize(container){
     const site = container.lookup('site:main');
     if (site.mobileView) { return }
-    
+
     let discoveryTopicRoutes = []
     let discoveryCategoryRoutes = [
       'Category',
