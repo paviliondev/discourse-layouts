@@ -262,7 +262,17 @@ export default {
       mainStyle() {
         const left = this.get('leftSidebarEnabled');
         const right = this.get('rightSidebarEnabled');
-        return `width: ${getContentWidth(left, right)};`;
+        return Ember.String.htmlSafe(`width: ${getContentWidth(left, right)};`);
+      },
+
+      @computed('application.currentPath')
+      leftStyle() {
+        return Ember.String.htmlSafe(`width: ${this.siteSettings.layouts_sidebar_left_width}px;`);
+      },
+
+      @computed('application.currentPath')
+      rightStyle() {
+        return Ember.String.htmlSafe(`width: ${this.siteSettings.layouts_sidebar_right_width}px;`);
       },
 
       @computed('application.currentPath', 'loading')
