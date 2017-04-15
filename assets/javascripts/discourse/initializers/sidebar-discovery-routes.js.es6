@@ -1,4 +1,5 @@
 import DiscoveryCategoriesRoute from 'discourse/routes/discovery-categories';
+import { renderTemplateTopic, renderTemplateCategory } from '../lib/display';
 import { settingEnabled } from '../lib/settings';
 
 export default {
@@ -34,23 +35,6 @@ export default {
         `Top${periodCapitalized}CategoryNone`
       ])
     })
-
-    const renderTemplateTopic = function(self, category, path) {
-      if (!settingEnabled('layouts_list_navigation_disabled', category, path)) {
-        self.render('navigation/default', { outlet: 'navigation-bar' });
-      }
-      self.render('discovery/topics', { controller: 'discovery/topics', outlet: 'list-container' });
-    }
-
-    const renderTemplateCategory = function(self, category, path) {
-      if (!settingEnabled('layouts_list_navigation_disabled', category, path)) {
-        self.render('navigation/category', { outlet: 'navigation-bar' });
-      }
-      if (self._categoryList) {
-        self.render('discovery/categories', { outlet: 'header-list-container', model: self._categoryList });
-      }
-      self.render('discovery/topics', { controller: 'discovery/topics', outlet: 'list-container' });
-    }
 
     discoveryTopicRoutes.forEach(function(route){
       var route = container.lookup(`route:discovery.${route}`)

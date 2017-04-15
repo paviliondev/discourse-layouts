@@ -208,3 +208,19 @@ aside.sidebar {
 .pref-location {
   display: none;
 }
+
+.map-category-settings {
+  background-color: #f1f1f1;
+  padding: 5px;
+  .field-title {
+    font-size: 16px;
+  }
+  input[type="file"] {
+    line-height: initial;
+    margin-bottom: 10px;
+  }
+  .current-geojson {
+    display: inline-block;
+    margin-right: 5px;
+  }
+}

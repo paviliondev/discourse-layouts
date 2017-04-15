@@ -8,5 +8,6 @@ en:
       layouts_list_navigation_disabled: "Disable discovery list navigation for selected routes in this category"
       layouts_list_header_disabled: "Disable discovery list header for selected routes in this category"
       layouts_list_nav_menu: "Use list navigation menu for selected routes in this category"
+      current_geojson: "Current:"
     filters:
       nav_drop: "Navigation"
