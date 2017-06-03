@@ -4,6 +4,12 @@ en:
     layouts_sidebar_right_enabled: "Enable right sidebar for selected routes"
     layouts_sidebar_left_widgets: "Left sidebar widgets"
     layouts_sidebar_right_widgets: "Right sidebar widgets"
+    layouts_sidebar_left_widgets_pinned_bottom: "Widgets pinned at the bottom of the left sidebar"
+    layouts_sidebar_right_widgets_pinned_bottom: "Widgets pinned at the bottom of the right sidebar"
+    layouts_sidebar_left_widgets_pinned_top: "Widgets pinned at the top of the left sidebar"
+    layouts_sidebar_right_widgets_pinned_top: "Widgets pinned at the top of the right sidebar"
+    layouts_sidebar_user_selected_widgets: "Allow user to determine what widgets appear in sidebars. Requires an additional plugin,
+                                            for example the Pavilion App plugin."
     layouts_sidebar_left_width: "Left sidebar width (pixels)"
     layouts_sidebar_right_width: "Right sidebar width (pixels)"
     layouts_sidebar_left_fixed: "Left sidebar uses fixed positioning"
