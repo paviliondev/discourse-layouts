@@ -1,5 +1,4 @@
 import { setting } from 'discourse/lib/computed';
-var get = Ember.get;
 
 export default Ember.Component.extend({
   classNames: ['nav-drop'],
@@ -40,7 +39,7 @@ export default Ember.Component.extend({
           self.close();
         });
       });
-      
+
       return false
     }
   },

@@ -1,32 +1,31 @@
 
-var getRoutes = function(path) {
-  if (!path) { return false }
-  let pathArr = path.split('.')
+let getRoutes = function(path) {
+  if (!path) { return false; }
+  let pathArr = path.split('.');
   if (pathArr[0] === 'discovery') {
-    pathArr.shift()
+    pathArr.shift();
   }
   return pathArr[0].split(/(?=[A-Z])/).map(function(x){
-    return x.toLowerCase()
+    return x.toLowerCase();
   });
 }
 
-var getFilter = function(path) {
+let getFilter = function(path) {
   let routes = getRoutes(path);
-  return routes[0] === 'category' || routes[0] === 'parent' ?
-         'latest' : routes[0];
+  return routes[0] === 'category' || routes[0] === 'parent' ? 'latest' : routes[0];
 }
 
-var settingEnabled = function(setting, category, path) {
+let settingEnabled = function(setting, category, path) {
   let routes = getRoutes(path);
-  if (!routes) { return false }
+  if (!routes) { return false; }
 
   const siteEnabled = Discourse.SiteSettings[setting].split('|');
   const filter = getFilter(path);
 
   if (routes.indexOf('category') > -1 && category) {
-    const categoryEnabled = category.get(setting)
+    const categoryEnabled = category.get(setting);
     return siteEnabled.indexOf('category') > -1 ||
-           categoryEnabled && categoryEnabled.split('|').indexOf(filter) > -1
+           categoryEnabled && categoryEnabled.split('|').indexOf(filter) > -1;
   }
 
   if (routes.indexOf('categories') > -1) {

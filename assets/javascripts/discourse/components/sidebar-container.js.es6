@@ -2,7 +2,7 @@ import MountWidget from 'discourse/components/mount-widget';
 import { observes, on, default as computed } from 'ember-addons/ember-computed-decorators';
 
 export default MountWidget.extend({
-  classNameBindings: [':sidebar-container', 'fixed'],
+  classNameBindings: [':sidebar-container', 'fixed', 'editing'],
   widget: 'sidebar',
 
   @computed()
@@ -13,26 +13,24 @@ export default MountWidget.extend({
   buildArgs() {
     const context = this.get('context');
     const side = this.get('side');
-    let args = {
-      context: context,
-      side: side
-    }
+    const editing = this.get('editing');
+    const category = this.get('category');
+    let args = { context, side, editing, category };
 
     if (context === 'discovery') {
       args['filter'] = this.get('filter');
-      args['category'] = this.get('category');
     }
 
     if (context === 'topic') {
       args['topic'] = this.get('topic');
-      args['category'] = this.get('topic.category');
     }
 
     return args;
   },
 
-  @observes('topic', 'category', 'topic.details.created_by')
+  @observes('topic', 'category', 'topic.details.created_by', 'editing', 'currentUser.left_apps', 'currentUser.right_apps')
   updateOnModelChange() {
-    this.queueRerender()
+    this.queueRerender();
+    this.appEvents.trigger('sidebars:rerender');
   }
 });

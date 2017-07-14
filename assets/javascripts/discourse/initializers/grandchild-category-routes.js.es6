@@ -1,7 +1,4 @@
-import DiscoveryCategoriesRoute from 'discourse/routes/discovery-categories';
-import Category from 'discourse/models/category';
 import { renderTemplateCategory } from '../lib/display';
-import { settingEnabled } from '../lib/settings';
 
 export default {
   name: 'grandchild-category-routes',

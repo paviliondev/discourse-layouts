@@ -107,3 +107,6 @@ plugins:
      - top
      - category
      - categories
+  layouts_topic_header_navigation:
+    client: true
+    default: false

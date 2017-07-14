@@ -1,0 +1,16 @@
+<div class="header-nav-left">
+  {{#if nextTopic}}
+    {{#d-button action='goTo' actionParam='next'}}
+      {{fa-icon 'chevron-left'}}
+      <div class="topic-title">{{nextTopicTitle}}</div>
+    {{/d-button}}
+  {{/if}}
+</div>
+<div class="header-nav-right">
+  {{#if previousTopic}}
+    {{#d-button action='goTo' actionParam='previous'}}
+      <div class="topic-title">{{previousTopicTitle}}</div>
+      {{fa-icon 'chevron-right'}}
+    {{/d-button}}
+  {{/if}}
+</div>

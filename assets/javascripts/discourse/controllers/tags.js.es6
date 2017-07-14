@@ -33,12 +33,12 @@ export default Ember.Controller.extend({
   },
 
   @computed('application.currentPath', 'loading')
-  mainClasses() {
+  mainClasses(path, loading) {
     const left = this.get('leftSidebarEnabled');
     const right = this.get('rightSidebarEnabled');
     let classes = 'tags';
 
-    if (this.get('loading')) {
+    if (loading) {
       return classes + ' loading'
     }
     if (left || right) {

@@ -1,0 +1,27 @@
+{{#unless topic.isPrivateMessage}}
+  {{#if site.mobileView}}
+    {{topic-footer-mobile-dropdown topic=topic
+                                   showInvite=showInvite
+                                   showFlagTopic=showFlagTopic}}
+  {{else}}
+    {{d-button class=bookmarkClass
+               title=bookmarkTitle
+               label=bookmarkLabel
+               icon="bookmark"
+               action="toggleBookmark"}}
+
+    <button class="btn share" data-share-url={{topic.shareUrl}} title={{i18n "topic.share.help"}}>
+      {{fa-icon "link"}}
+      {{i18n "topic.share.title"}}
+    </button>
+  {{/if}}
+{{/unless}}
+
+{{#if canInviteTo}}
+  {{d-button class="invite-topic"
+             title="topic.invite_reply.help"
+             label="topic.invite_reply.title"
+             icon="users"
+             action="showInvite"
+             disabled=inviteDisabled}}
+{{/if}}

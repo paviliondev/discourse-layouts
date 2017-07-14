@@ -1,3 +1,10 @@
+body {
+  background-color: #fbfeff;
+}
+
+.d-header {
+  z-index: 999;
+}
 
 .content-wrapper {
   text-align: center;
@@ -8,13 +15,51 @@ aside.sidebar {
   vertical-align: top;
   text-align: left;
   z-index: 1;
+  position: relative;
 }
 
 .sidebar-container {
   width: inherit;
   z-index: 10;
+  padding-bottom: 25px;
+
   &.fixed {
     position: fixed;
+  }
+
+  .sidebar-user-controls {
+    position: absolute;
+    bottom: 0;
+
+    &.right {
+      right: 0;
+    }
+
+    &.left {
+      left: 0;
+    }
+
+    .user-control {
+      width: 30px;
+      display: inline-block;
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    a {
+      color: dark-light-diff($primary, $secondary, 60%, -65%);
+    }
+  }
+
+  .sidebar-content {
+    > div {
+      position: relative;
+      margin-bottom: 10px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
   }
 }
 
@@ -24,48 +69,81 @@ aside.sidebar {
   text-align: left;
   margin-bottom: 100px;
   border-radius: 4px;
+
   .list-controls {
     padding: 0;
   }
+
   &.has-sidebars {
-    border: 1px solid #eee;
     .list-controls {
       padding: 7px 7px 0 7px;
       .nav {
         margin: 0;
       }
     }
+
     .topic-list .posters {
       min-width: initial;
     }
+
     .qa-post {
       padding: 0 5px 0 20px;
     }
+
     .signup-cta {
       width: initial;
       margin-bottom: 0;
     }
+
     .topic-list-bottom h3, #suggested-topics h3 {
       font-size: 14px;
     }
+
     .topic-list-bottom {
       margin: 10px;
     }
+
+    #topic-title {
+      position: relative;
+      border-left: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+      border-right: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+    }
+
+    .container.list-container {
+      width: 100%;
+      background-color: $secondary;
+      border: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+      border-radius: 4px;
+    }
+
+    .container.posts {
+      border-left: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+      border-right: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+      border-bottom: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+      background-color: $secondary;
+      border-radius: 0 0 4px 4px;
+      width: 100%;
+    }
   }
+
   &.left-sidebar {
     margin-left: 10px;
   }
+
   &.right-sidebar {
     margin-right: 10px;
   }
+
   &.loading {
     box-shadow: none;
   }
+
   &.navigation-disabled {
     .list-controls {
       padding: 0;
     }
   }
+
   &.nav-menu-enabled {
     ol.category-breadcrumb {
       margin: 0;
@@ -73,31 +151,74 @@ aside.sidebar {
   }
 }
 
+.topic-header-navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-top: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+  border-left: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+  border-right: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+  border-radius: 4px 4px 0 0;
+  background-color: $secondary;
+  padding-top: 15px;
+
+  .header-nav-left, .header-nav-right {
+    margin: 0 15px;
+
+    .topic-title {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
+      vertical-align: middle;
+      overflow: hidden;
+      max-width: 200px;
+    }
+
+    .fa {
+      vertical-align: middle;
+    }
+  }
+
+  .header-nav-left {
+    float: left;
+
+    .fa {
+      margin-right: 7px;
+    }
+  }
+
+  .header-nav-right {
+    float: right;
+
+    .fa {
+      margin-left: 7px;
+    }
+  }
+}
+
 .widget-container {
-  margin-bottom: 10px;
   border-radius: 4px;
   padding: 7px;
-  border: 1px solid #eee;
+  border: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
   position: relative;
+
   .widget-inner {
     width: 100%;
   }
+
   .widget-title {
     display: inline-block;
     text-decoration: underline;
+    margin-bottom: 3px;
   }
-  .widget-category {
-    float: right;
-  }
+
   .widget-description {
     padding-bottom: 5px;
   }
+
   .widget-controls {
     display: inline-block;
     width: 100%;
-  }
-  .widget-link {
-    margin-right: 8px;
   }
 }
 
@@ -106,16 +227,19 @@ aside.sidebar {
     color: $primary;
     font-size: 1.143em;
   }
+
   .selected-nav-item {
     display: inline-block;
     padding: 5px 8px;
     line-height: 20px;
     background-color: $quaternary !important;
     cursor: pointer;
+
     a {
       color: $secondary;
     }
   }
+
   a.nav-dropdown-btn {
     display: inline-block;
     margin-left: -4px;
@@ -124,10 +248,12 @@ aside.sidebar {
     width: 13px;
     color: $secondary;
     background-color: $quaternary;
+
     .fa-caret-right {
       margin-left: 2px;
     }
   }
+
   .nav-dropdown-menu {
     overflow-x: hidden;
     overflow-y: auto;
@@ -135,12 +261,14 @@ aside.sidebar {
     border: 1px solid dark-light-diff($primary, $secondary, 90%, -60%);
     background-color: $secondary;
     z-index: 100;
+
     a {
       display: block;
       border: none;
       padding: 5px 12px;
       line-height: 20px;
       transition: background .15s;
+
       &:hover {
         color: $quaternary;
         background-color: dark-light-diff($quaternary, $secondary, 70%, -70%);
@@ -151,13 +279,13 @@ aside.sidebar {
 
 .main-content.navigation-disabled {
   .topic-list > tbody > tr:first-of-type {
-    border-top: 1px solid #e9e9e9;
+    border-top: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
   }
 }
 
 .main-content.header-disabled {
   .category-list tbody tr:first-of-type {
-    border-top: 1px solid #e9e9e9;
+    border-top: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
   }
 }
 
@@ -165,9 +293,11 @@ aside.sidebar {
   .tag-notification-menu, .dropdown-toggle {
     margin: 0;
   }
+
   .admin-tag {
     margin: 0 8px;
   }
+
   .tag-show-heading {
     margin: 7px 7px 0 7px;
   }
@@ -195,7 +325,7 @@ aside.sidebar {
 
 .edit-category.backup {
   position: fixed;
-  top: 75px;
+  bottom: 10px;
   right: 10px;
 }
 
@@ -210,15 +340,18 @@ aside.sidebar {
 }
 
 .map-category-settings {
-  background-color: #f1f1f1;
+  background-color: dark-light-diff($primary, $secondary, 90%, -65%);
   padding: 5px;
+
   .field-title {
     font-size: 16px;
   }
+
   input[type="file"] {
     line-height: initial;
     margin-bottom: 10px;
   }
+
   .current-geojson {
     display: inline-block;
     margin-right: 5px;

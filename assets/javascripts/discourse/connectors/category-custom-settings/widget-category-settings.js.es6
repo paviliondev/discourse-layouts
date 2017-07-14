@@ -1,6 +1,6 @@
 import { ajax } from 'discourse/lib/ajax';
 
-const enableChoices = ['latest', 'new', 'unread', 'top']
+const enableChoices = ['latest', 'new', 'unread', 'top'];
 
 export default {
   setupComponent(args, component) {

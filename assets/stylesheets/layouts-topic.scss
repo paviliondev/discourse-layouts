@@ -2,38 +2,48 @@
   box-shadow: none;
   position: relative;
 
+  .show-topic-admin {
+    right: 15px;
+    z-index: initial;
+  }
+
   #topic-title {
     margin-bottom: 0;
     padding-top: 0;
     background: #fff;
     width: 100%;
-    border-radius: 4px 4px 0 0;
-    h1 {
-      font-size: 1.3em;
-    }
+    z-index: initial;
+
     .container {
       padding: 15px 15px 0 15px;
+
       .title-wrapper {
         width: 100%;
+
         .topic-icon-wrapper {
           display: inline-block;
           margin-right: 4px;
           vertical-align: middle;
         }
+
         h1 {
           display: inline-block;
           vertical-align: top;
         }
+
         .badge-wrapper {
           display: none;
         }
+
         .list-tags {
           margin: 0;
         }
+
         #edit-title {
           width: 425px;
           margin-bottom: 0;
         }
+
         .category-combobox, .tag-chooser {
           border: 1px solid #e9e9e9;
           margin: 0;
@@ -43,29 +53,40 @@
           border-radius: 3px;
           width: 400px;
         }
+
         .select2-choices{
           border: none;
         }
+
         .select2-search-field {
           min-width: 200px;
+
           input {
             padding: 4px;
           }
         }
+
         .edit-buttons {
           display: inline-block;
           vertical-align: top;
+
           button {
             margin: 0;
             margin-left: 7px;
           }
+
           .submit-edit:after {
             content: "save";
           }
+
           .cancel-edit:after {
             content: "cancel";
           }
         }
+      }
+
+      .topic-category-links {
+        margin-bottom: 10px;
       }
     }
   }
@@ -86,6 +107,9 @@
 
   #topic-footer-buttons {
     padding: 10px;
+    .btn {
+      margin-right: 6px;
+    }
   }
 
   #topic-closing-info + .btn-primary {
