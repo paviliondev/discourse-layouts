@@ -26,7 +26,7 @@ export default {
         @computed('category', 'postStream.loading')
         showTopicHeaderNavigation(category, loading) {
           return Discourse.SiteSettings.layouts_topic_header_navigation &&
-                 Discourse.User.current() && !loading && (category && category.home_status !== 'founding');
+                 Discourse.User.current() && !loading && (category && category.community_status !== 'founding');
         }
       });
 

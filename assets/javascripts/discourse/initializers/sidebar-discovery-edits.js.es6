@@ -23,6 +23,7 @@ export default {
     DiscoveryController.reopen(LayoutsFunctionality, {
       mainContent: 'discovery',
       navigationDefault: Ember.inject.controller('navigation/default'),
+      navigationCategories: Ember.inject.controller('navigation/categories'),
       navigationCategory: Ember.inject.controller("navigation/category"),
       sidebarCategory: Ember.computed.alias('application.pavilion'),
 
@@ -73,9 +74,8 @@ export default {
       },
 
       @computed('category')
-      showCategoryEditBtn() {
-        const category = this.get('category');
-        return category && category.get('can_edit') && this.get('navigationDisabled');
+      showCategoryEditBtn(category) {
+        return category && category.get('can_edit');
       },
 
       @computed('path')

@@ -8,9 +8,9 @@ export default {
     ApplicationController.reopen({
       navigationCategory: Ember.inject.controller("navigation/category"),
 
-      @computed('navigationCategory.category', 'currentUser.home_id')
-      pavilion(navCat, homeId){
-        return navCat || Category.findById(homeId);
+      @computed('navigationCategory.category', 'currentUser.community_id')
+      pavilion(navCat, communityId){
+        return navCat || Category.findById(communityId);
       }
     })
   }
