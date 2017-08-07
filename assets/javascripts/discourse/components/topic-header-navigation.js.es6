@@ -9,9 +9,14 @@ export default Ember.Component.extend({
   @on('init')
   setup() {
     const store = getOwner(this).lookup('store:main');
-    const application = getOwner(this).lookup('controller:application');
+    const navCatController = getOwner(this).lookup('controller:navigation/category');
     const topic = this.get('topic');
-    const category = application.get('pavilion');
+    const category = navCatController.get('category');
+
+    console.log(category)
+
+    if (!category) return;
+
     const filter = 'c/' + Category.slugFor(category);
 
     store.findFiltered('topicList', {filter}).then((list) => {
@@ -26,7 +31,7 @@ export default Ember.Component.extend({
       let previousTopic = topics.filter((t, i) => i === previousIndex)[0];
       let nextTopic = topics.filter((t, i) => i === nextIndex)[0];
 
-      this.setProperties({ previousTopic, nextTopic });
+      this.setProperties({ previousTopic, nextTopic, visible: true });
     })
   },
 

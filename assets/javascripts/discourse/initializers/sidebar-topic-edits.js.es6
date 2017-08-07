@@ -38,11 +38,7 @@ export default {
 
       TopicController.reopen(LayoutsFunctionality, {
         mainContent: 'topic',
-
-        @computed('application.pavilion', 'model.category')
-        sidebarCategory(pavilion, topicCat) {
-          return pavilion || topicCat;
-        },
+        category: Ember.computed.alias('model.category'),
 
         @computed('path')
         leftSidebarEnabled() {

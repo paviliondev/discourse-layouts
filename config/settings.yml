@@ -25,39 +25,6 @@ plugins:
      - categories
      - topic
      - tags
-  layouts_sidebar_left_widgets:
-    client: true
-    default: ''
-    type: list
-    default: ''
-    choices: []
-  layouts_sidebar_right_widgets:
-    client: true
-    type: list
-    default: ''
-    choices: []
-  layouts_sidebar_left_widgets_pinned_bottom:
-    client: true
-    default: ''
-    type: list
-    default: ''
-    choices: []
-  layouts_sidebar_right_widgets_pinned_bottom:
-    client: true
-    type: list
-    default: ''
-    choices: []
-  layouts_sidebar_left_widgets_pinned_top:
-    client: true
-    default: ''
-    type: list
-    default: ''
-    choices: []
-  layouts_sidebar_right_widgets_pinned_top:
-    client: true
-    type: list
-    default: ''
-    choices: []
   layouts_sidebar_user_selected_widgets:
     client: true
     default: false

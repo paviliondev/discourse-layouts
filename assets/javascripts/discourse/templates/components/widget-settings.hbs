@@ -1,0 +1,18 @@
+<div class="col value first medium-label">
+  {{widget.name}}
+</div>
+<div class="col value medium-label position">
+  {{combo-box content=positionOptions value=buffered.position none='admin.layouts.widgets.position_none'}}
+</div>
+<div class="col value medium-label">
+  {{combo-box content=pinOptions value=buffered.pinned none='admin.layouts.widgets.pinned_none'}}
+</div>
+<div class="col value medium-label controls">
+  {{#if dirty}}
+    {{#if saving}}
+      {{loading-spinner size="small"}}
+    {{else}}
+      {{d-button action='save' class='btn btn-primary' label='admin.layouts.widgets.save'}}
+    {{/if}}
+  {{/if}}
+</div>

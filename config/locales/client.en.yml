@@ -18,3 +18,18 @@ en:
     topic:
       no_previous: "No older topics"
       no_next: "No newer topics"
+    widget:
+      disabled: "Widget disabled"
+
+  admin_js:
+    admin:
+      layouts:
+        label: "Layouts"
+        widgets:
+          label: "Widgets"
+          name: "Name"
+          position: "Position"
+          position_none: "Select a position"
+          pinned: "Pinned"
+          pinned_none: "Pin widget at"
+          save: "Save"

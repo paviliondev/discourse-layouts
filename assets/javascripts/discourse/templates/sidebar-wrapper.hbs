@@ -1,7 +1,7 @@
 <div class="content-wrapper">
   {{#if leftSidebarEnabled}}
     <aside class="sidebar" style={{leftStyle}}>
-      {{#sidebar-container side="left" topic=model category=sidebarCategory filter=filter context=mainContent editing=editing_left}}
+      {{#sidebar-container side="left" topic=model category=sidebarCategory navCategory=category filter=filter context=mainContent editing=editing_left}}
         {{#if showUserControls}}
           <div class="sidebar-user-controls left">
             <div class='user-control'>
@@ -19,7 +19,7 @@
 
   {{#if rightSidebarEnabled}}
     <aside class="sidebar" style={{rightStyle}}>
-      {{#sidebar-container side="right" topic=model category=sidebarCategory filter=filter context=mainContent editing=editing_right}}
+      {{#sidebar-container side="right" topic=model category=sidebarCategory navCategory=category filter=filter context=mainContent editing=editing_right}}
         {{#if showUserControls}}
           <div class="sidebar-user-controls right">
             <div class='user-control'>

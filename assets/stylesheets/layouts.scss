@@ -1,3 +1,5 @@
+@import "common/admin/admin_base";
+
 body {
   background-color: #fbfeff;
 }
@@ -220,6 +222,10 @@ aside.sidebar {
     display: inline-block;
     width: 100%;
   }
+
+  .widget-disabled {
+    font-style: italic;
+  }
 }
 
 .main-content .nav-drop {
@@ -355,5 +361,46 @@ aside.sidebar {
   .current-geojson {
     display: inline-block;
     margin-right: 5px;
+  }
+}
+
+.layouts-nav-button {
+  @extend .nav-pills;
+}
+
+.layouts {
+  @extend .staff-actions;
+  width: 100%;
+
+  .heading-container, .table-item {
+    display: flex;
+  }
+
+  .first {
+    margin-left: 10px;
+  }
+
+  .label {
+    width: 10%;
+    flex: 0 1 auto;
+  }
+
+  .medium-label {
+    width: 20%;
+    flex: 0 1 auto;
+  }
+
+  .large-label {
+    width: 30%;
+    flex: 0 1 auto;
+  }
+
+  .position .select2-container {
+    width: 150px !important;
+    min-width: 150px !important;
+  }
+
+  .controls {
+    text-align: center;
   }
 }

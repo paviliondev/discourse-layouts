@@ -4,20 +4,23 @@ export default createWidget('sidebar', {
   tagName: 'div.sidebar-content',
 
   html(args) {
-    const siteWidgets = Discourse.SiteSettings[`layouts_sidebar_${args.side}_widgets`].split('|');
+    const sideWidgets = this.site.get('widgets').filter((w) => w.position === args.side);
+    const generalWidgets = sideWidgets.filter((w) => !w.pinned);
+    const topWidgets = sideWidgets.filter((w) => w.pinned === 'top');
+    const bottomWidgets = sideWidgets.filter((w) => w.pinned === 'bottom');
+
     const siteEnabled = Discourse.SiteSettings[`layouts_sidebar_${args.side}_enabled`].split('|');
-    const pinnedTop = Discourse.SiteSettings[`layouts_sidebar_${args.side}_widgets_pinned_top`].split('|');
-    const pinnedBottom = Discourse.SiteSettings[`layouts_sidebar_${args.side}_widgets_pinned_bottom`].split('|');
-    const userSelected = Discourse.SiteSettings.layouts_sidebar_user_selected_widgets;
+    const userSelectionEnabled = Discourse.SiteSettings.layouts_sidebar_user_selected_widgets;
     const user = this.currentUser;
+
     let contents = [];
     let widgets = [];
     let index = null;
     let isUser = false;
 
-    widgets.push(...pinnedTop);
+    topWidgets.forEach((w) => widgets.push(w.name));
 
-    if (user && userSelected) {
+    if (user && userSelectionEnabled) {
       var userApps = user.get(`${args.side}_apps`) || [];
       if (userApps.length > 0) {
         widgets.push(...userApps);
@@ -26,7 +29,7 @@ export default createWidget('sidebar', {
       if (args.context === 'discovery' || args.context === 'tags') {
         let categoryEnabled = args.category ? args.category.get(`layouts_sidebar_${args.side}_enabled`) : '';
         if (!args.category || siteEnabled.indexOf('category') > -1) {
-          widgets.push(...siteWidgets);
+          generalWidgets.forEach((w) => widgets.push(w.name));
         }
         if (categoryEnabled && categoryEnabled.split('|').indexOf(args.filter) > -1) {
           args.category.get(`layouts_sidebar_${args.side}_widgets`).split('|').forEach((widget) => {
@@ -37,20 +40,18 @@ export default createWidget('sidebar', {
         }
       }
       if (args.context === 'topic' && siteEnabled.indexOf('topic') > -1) {
-        widgets.push(...siteWidgets);
+        generalWidgets.forEach((w) => widgets.push(w.name));
       }
     }
 
-    if (args.editing) {
-      widgets.push(...pinnedBottom);
-    }
+    bottomWidgets.forEach((w) => widgets.push(w.name));
 
     widgets.forEach((widget) => {
       if (widget.length) {
         const exists = this.register.lookupFactory(`widget:${widget}`);
 
         if (exists) {
-          if (user && userSelected) {
+          if (user && userSelectionEnabled) {
             let userIndex = userApps.indexOf(widget);
             let index = null;
             if (userIndex > -1) {
@@ -62,6 +63,7 @@ export default createWidget('sidebar', {
           contents.push(this.attach(widget, {
             topic: args.topic,
             category: args.category,
+            navCategory: args.navCategory,
             isUser,
             editing: args.editing,
             side: args.side,

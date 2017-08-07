@@ -25,7 +25,6 @@ export default {
       navigationDefault: Ember.inject.controller('navigation/default'),
       navigationCategories: Ember.inject.controller('navigation/categories'),
       navigationCategory: Ember.inject.controller("navigation/category"),
-      sidebarCategory: Ember.computed.alias('application.pavilion'),
 
       @on('init')
       @observes('path')
