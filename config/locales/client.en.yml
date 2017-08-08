@@ -30,6 +30,6 @@ en:
           name: "Name"
           position: "Position"
           position_none: "Select a position"
-          pinned: "Pinned"
-          pinned_none: "Pin widget at"
+          order: "Order"
+          order_none: "Fix order at"
           save: "Save"

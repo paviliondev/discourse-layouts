@@ -47,7 +47,11 @@ after_initialize do
   class DiscourseLayouts::WidgetHelper
     def self.add_widget(name)
       widgets = PluginStore.get("discourse-layouts", "widgets") || []
-      widgets = widgets | [{name: name }]
+
+      if widgets.length < 1 || !widgets.any?{|w| w['name'] == name}
+        widgets = widgets.push({name: name })
+      end
+
       PluginStore.set("discourse-layouts", "widgets", widgets)
     end
   end
@@ -68,7 +72,7 @@ after_initialize do
 
       name = params[:name]
       position = params[:position]
-      pinned = params[:pinned]
+      order = params[:order]
 
       widget = {name: name}
 
@@ -76,8 +80,8 @@ after_initialize do
         widget['position'] = position
       end
 
-      if pinned.length > 1
-        widget['pinned'] = pinned
+      if order.length > 0
+        widget['order'] = order
       end
 
       widgets = PluginStore.get("discourse-layouts", "widgets") || []

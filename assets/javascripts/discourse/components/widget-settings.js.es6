@@ -4,13 +4,11 @@ import { ajax } from 'discourse/lib/ajax';
 
 export default Ember.Component.extend(BufferedContent, {
   content: Ember.computed.alias('widget'),
-  pinOptions: ['top', 'bottom'],
-  positionOptions: ['left', 'right'],
 
-  @computed('buffered.position', 'buffered.pinned')
-  dirty(position, pinned) {
+  @computed('buffered.position', 'buffered.order')
+  dirty(position, order) {
     const widget = this.get('widget');
-    return position != widget.position || pinned != widget.pinned;
+    return position != widget.position || order != widget.order;
   },
 
   actions: {

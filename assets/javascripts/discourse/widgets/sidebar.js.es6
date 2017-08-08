@@ -1,5 +1,9 @@
 import { createWidget } from 'discourse/widgets/widget';
 
+var isNumeric = function(val) {
+  return !isNaN(parseFloat(val)) && isFinite(val)
+}
+
 export default createWidget('sidebar', {
   tagName: 'div.sidebar-content',
 
@@ -7,19 +11,19 @@ export default createWidget('sidebar', {
     const siteEnabled = Discourse.SiteSettings[`layouts_sidebar_${args.side}_enabled`].split('|');
     const userSelectionEnabled = Discourse.SiteSettings.layouts_sidebar_user_selected_widgets;
     const user = this.currentUser;
-    
+
     let generalWidgets = [];
-    let topWidgets = [];
-    let bottomWidgets = [];
+    let orderedWidgets = [];
 
     const siteWidgets = this.site.get('widgets');
     if (siteWidgets) {
       let sideWidgets = siteWidgets.filter((w) => w.position === args.side);
 
       if (sideWidgets) {
-        generalWidgets = sideWidgets.filter((w) => !w.pinned);
-        topWidgets = sideWidgets.filter((w) => w.pinned === 'top');
-        bottomWidgets = sideWidgets.filter((w) => w.pinned === 'bottom');
+        generalWidgets = sideWidgets.filter((w) => !w.order);
+        orderedWidgets = sideWidgets.filter((w) => {
+          return isNumeric(w.order) || (w.order === 'start' || w.order === 'end')
+        });
       }
     };
 
@@ -27,8 +31,6 @@ export default createWidget('sidebar', {
     let widgets = [];
     let index = null;
     let isUser = false;
-
-    topWidgets.forEach((w) => widgets.push(w.name));
 
     if (user && userSelectionEnabled) {
       var userApps = user.get(`${args.side}_apps`) || [];
@@ -54,7 +56,21 @@ export default createWidget('sidebar', {
       }
     }
 
-    bottomWidgets.forEach((w) => widgets.push(w.name));
+    orderedWidgets.forEach((w) => {
+      if (isNumeric(w.order)) {
+        widgets.splice(w.order, 0, w.name)
+      }
+    });
+
+    // 'start' & 'end' overide numbered ordering
+    orderedWidgets.forEach((w) => {
+      if (w.order === 'start') {
+        widgets.unshift(w.name)
+      }
+      if (w.order === 'end') {
+        widgets.push(w.name)
+      }
+    })
 
     widgets.forEach((widget) => {
       if (widget.length) {
