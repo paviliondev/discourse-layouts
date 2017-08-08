@@ -5,9 +5,9 @@
     <div class="col heading medium-label">{{i18n 'admin.layouts.widgets.pinned'}}</div>
   </div>
 
-  {{#each model.widgets as |w|}}
+  {{#each widgets as |w|}}
     <div class="admin-list-item">
-      {{widget-settings widget=w}}
+      {{widget-settings widget=w clear='clear'}}
     </div>
   {{/each}}
 </div>

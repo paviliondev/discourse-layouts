@@ -4,14 +4,24 @@ export default createWidget('sidebar', {
   tagName: 'div.sidebar-content',
 
   html(args) {
-    const sideWidgets = this.site.get('widgets').filter((w) => w.position === args.side);
-    const generalWidgets = sideWidgets.filter((w) => !w.pinned);
-    const topWidgets = sideWidgets.filter((w) => w.pinned === 'top');
-    const bottomWidgets = sideWidgets.filter((w) => w.pinned === 'bottom');
-
     const siteEnabled = Discourse.SiteSettings[`layouts_sidebar_${args.side}_enabled`].split('|');
     const userSelectionEnabled = Discourse.SiteSettings.layouts_sidebar_user_selected_widgets;
     const user = this.currentUser;
+    
+    let generalWidgets = [];
+    let topWidgets = [];
+    let bottomWidgets = [];
+
+    const siteWidgets = this.site.get('widgets');
+    if (siteWidgets) {
+      let sideWidgets = siteWidgets.filter((w) => w.position === args.side);
+
+      if (sideWidgets) {
+        generalWidgets = sideWidgets.filter((w) => !w.pinned);
+        topWidgets = sideWidgets.filter((w) => w.pinned === 'top');
+        bottomWidgets = sideWidgets.filter((w) => w.pinned === 'bottom');
+      }
+    };
 
     let contents = [];
     let widgets = [];

@@ -31,6 +31,10 @@ export default Ember.Component.extend(BufferedContent, {
           'saving': false
         })
       })
+    },
+
+    clear() {
+      this.sendAction('clear', this.get('widget')['name']);
     }
   }
 })

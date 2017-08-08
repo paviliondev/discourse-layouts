@@ -41,13 +41,14 @@ after_initialize do
     get "" => "widget#index"
     get "widgets" => "widget#all"
     put "save-widget" => "widget#save"
+    put "clear-widget" => "widget#clear"
   end
 
   class DiscourseLayouts::WidgetHelper
-    def self.add_widget(widget)
-      available = PluginStore.get("discourse-layouts", "widgets") || []
-      available = available | [widget]
-      PluginStore.set("discourse-layouts", "widgets", available)
+    def self.add_widget(name)
+      widgets = PluginStore.get("discourse-layouts", "widgets") || []
+      widgets = widgets | [{name: name }]
+      PluginStore.set("discourse-layouts", "widgets", widgets)
     end
   end
 
@@ -57,20 +58,9 @@ after_initialize do
     end
 
     def all
-      available = PluginStore.get("discourse-layouts", "widgets") | []
-      enabled = PluginStore.get("discourse-layouts", "site_widgets") || []
-      all = []
+      widgets = PluginStore.get("discourse-layouts", "widgets") | []
 
-      enabled.each do |e|
-        all.push(e)
-        available.delete(e['name'])
-      end
-
-      available.each do |a|
-        all.push({name: a})
-      end
-
-      render json: success_json.merge(widgets: all)
+      render json: success_json.merge(widgets: widgets)
     end
 
     def save
@@ -90,13 +80,24 @@ after_initialize do
         widget['pinned'] = pinned
       end
 
-      site_widgets = PluginStore.get("discourse-layouts", "site_widgets") || []
-      site_widgets.delete_if {|w| w['name'] == name}
-      site_widgets.push(widget)
+      widgets = PluginStore.get("discourse-layouts", "widgets") || []
+      widgets.delete_if {|w| w['name'] == name}
+      widgets.push(widget)
 
-      PluginStore.set("discourse-layouts", "site_widgets", site_widgets)
+      PluginStore.set("discourse-layouts", "widgets", widgets)
 
       render json: success_json.merge(widget: widget)
+    end
+
+    def clear
+      params.require(:name)
+
+      widgets = PluginStore.get("discourse-layouts", "widgets") || []
+      widgets.delete_if {|w| w['name'] == params[:name]}
+
+      PluginStore.set("discourse-layouts", "widgets", widgets)
+
+      render json: success_json
     end
   end
 
@@ -104,7 +105,7 @@ after_initialize do
     attributes :widgets
 
     def widgets
-      PluginStore.get("discourse-layouts", "site_widgets") || []
+      PluginStore.get("discourse-layouts", "widgets") || []
     end
   end
 end
