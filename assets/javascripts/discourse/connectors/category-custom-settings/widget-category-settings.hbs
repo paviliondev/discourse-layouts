@@ -1,4 +1,4 @@
-{{#if hasChoices}}
+{{#if choices}}
   <section class='field'>
     <label>{{i18n 'category.layouts_sidebar_left_enabled'}}</label>
     {{list-setting settingValue=category.custom_fields.layouts_sidebar_left_enabled
@@ -14,13 +14,13 @@
   <section class='field'>
     <label>{{i18n 'category.layouts_sidebar_left_widgets'}}</label>
     {{list-setting settingValue=category.custom_fields.layouts_sidebar_left_widgets
-                   choices=leftWidgetChoices
+                   choices=choices
                    settingName='category.layouts_sidebar_left_widgets'}}
   </section>
   <section class='field'>
     <label>{{i18n 'category.layouts_sidebar_right_widgets'}}</label>
     {{list-setting settingValue=category.custom_fields.layouts_sidebar_right_widgets
-                   choices=rightWidgetChoices
+                   choices=choices
                    settingName='category.layouts_sidebar_right_widgets'}}
   </section>
   <section class='field'>
