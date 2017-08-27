@@ -16,6 +16,10 @@ let getFilter = function(path) {
 }
 
 let settingEnabled = function(setting, category, path) {
+
+  if (Discourse.SiteSettings[`${setting}_global`]) return true;
+  if (category && category.get(`${setting}_global`)) return true;
+
   let routes = getRoutes(path);
   if (!routes) { return false; }
 

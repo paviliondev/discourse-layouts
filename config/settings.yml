@@ -12,6 +12,9 @@ plugins:
      - categories
      - topic
      - tags
+  layouts_sidebar_left_enabled_global:
+    client: true
+    default: false
   layouts_sidebar_right_enabled:
     client: true
     type: list
@@ -25,6 +28,9 @@ plugins:
      - categories
      - topic
      - tags
+  layouts_sidebar_right_enabled_global:
+    client: true
+    default: false
   layouts_sidebar_user_selected_widgets:
     client: true
     default: false
@@ -52,6 +58,9 @@ plugins:
      - category
      - categories
      - tags
+  layouts_list_navigation_disabled_global:
+    client: true
+    default: false
   layouts_list_header_disabled:
     client: true
     type: list
@@ -63,6 +72,9 @@ plugins:
      - top
      - category
      - categories
+  layouts_list_header_disabled_global:
+    client: true
+    default: false
   layouts_list_nav_menu:
     client: true
     type: list
@@ -74,6 +86,9 @@ plugins:
      - top
      - category
      - categories
+  layouts_list_nav_menu_global:
+    client: true
+    default: false
   layouts_topic_header_navigation:
     client: true
     default: false

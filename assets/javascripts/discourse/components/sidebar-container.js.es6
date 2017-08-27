@@ -14,9 +14,9 @@ export default MountWidget.extend({
     const context = this.get('context');
     const side = this.get('side');
     const editing = this.get('editing');
-    const category = this.get('category');
+    const customCategory = this.get('customCategory');
     const navCategory = this.get('navCategory');
-    let args = { context, side, editing, category, navCategory };
+    let args = { context, side, editing, customCategory, navCategory };
 
     if (context === 'discovery') {
       args['filter'] = this.get('filter');

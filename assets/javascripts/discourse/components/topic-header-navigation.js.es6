@@ -13,8 +13,6 @@ export default Ember.Component.extend({
     const topic = this.get('topic');
     const category = navCatController.get('category');
 
-    console.log(category)
-
     if (!category) return;
 
     const filter = 'c/' + Category.slugFor(category);

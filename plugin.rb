@@ -30,6 +30,18 @@ after_initialize do
     end
   end
 
+  class DiscourseLayouts::WidgetHelper
+    def self.add_widget(name)
+      widgets = PluginStore.get("discourse-layouts", "widgets") || []
+
+      if widgets.length < 1 || !widgets.any?{|w| w['name'] == name}
+        widgets = widgets.push({name: name })
+      end
+
+      PluginStore.set("discourse-layouts", "widgets", widgets)
+    end
+  end
+
   require_dependency "admin_constraint"
   Discourse::Application.routes.append do
     namespace :admin, constraints: AdminConstraint.new do
@@ -42,18 +54,6 @@ after_initialize do
     get "widgets" => "widget#all"
     put "save-widget" => "widget#save"
     put "clear-widget" => "widget#clear"
-  end
-
-  class DiscourseLayouts::WidgetHelper
-    def self.add_widget(name)
-      widgets = PluginStore.get("discourse-layouts", "widgets") || []
-
-      if widgets.length < 1 || !widgets.any?{|w| w['name'] == name}
-        widgets = widgets.push({name: name })
-      end
-
-      PluginStore.set("discourse-layouts", "widgets", widgets)
-    end
   end
 
   class DiscourseLayouts::WidgetController < ::ApplicationController

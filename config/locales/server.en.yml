@@ -1,14 +1,18 @@
 en:
   site_settings:
     layouts_sidebar_left_enabled: "Enable left sidebar for selected routes"
+    layouts_sidebar_left_enabled_global: "Enable left sidebar globally"
     layouts_sidebar_right_enabled: "Enable right sidebar for selected routes"
-    layouts_sidebar_user_selected_widgets: "Allow user to determine what widgets appear in sidebars. Requires an additional plugin,
-                                            for example the Pavilion App plugin."
+    layouts_sidebar_right_enabled_global: "Enable right sidebar globally"
+    layouts_sidebar_user_selected_widgets: "Allow user to determine what widgets appear in sidebars. Requires an additional plugin."
     layouts_sidebar_left_width: "Left sidebar width (pixels)"
     layouts_sidebar_right_width: "Right sidebar width (pixels)"
     layouts_sidebar_left_fixed: "Left sidebar uses fixed positioning"
     layouts_sidebar_right_fixed: "Right sidebar uses fixed positioning"
     layouts_list_navigation_disabled: "Disable discovery list navigation for selected routes"
+    layouts_list_navigation_disabled_global: "Disable discovery list navigation globally"
     layouts_list_header_disabled: "Disable discovery list header for selected routes"
+    layouts_list_header_disabled_global: "Disable discovery list header globally"
     layouts_list_nav_menu: "Use list navigation menu for selected routes"
-    layouts_topic_header_navigation: "This setting only works in conjunction with the Pavilion community plugin."
+    layouts_list_nav_menu_global: "Use list navigation menu globally"
+    layouts_topic_header_navigation: "This setting only works in conjunction with the Pavilion place plugin."

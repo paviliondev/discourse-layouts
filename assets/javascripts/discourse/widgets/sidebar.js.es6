@@ -8,7 +8,9 @@ export default createWidget('sidebar', {
   tagName: 'div.sidebar-content',
 
   html(args) {
+    const navCategory = args.navCategory;
     const siteEnabled = Discourse.SiteSettings[`layouts_sidebar_${args.side}_enabled`].split('|');
+    const siteEnabledGlobal = Discourse.SiteSettings[`layouts_sidebar_${args.side}_enabled_global`];
     const userSelectionEnabled = Discourse.SiteSettings.layouts_sidebar_user_selected_widgets;
     const user = this.currentUser;
 
@@ -39,19 +41,23 @@ export default createWidget('sidebar', {
       }
     } else {
       if (args.context === 'discovery' || args.context === 'tags') {
-        let categoryEnabled = args.category ? args.category.get(`layouts_sidebar_${args.side}_enabled`) : '';
-        if (!args.category || siteEnabled.indexOf('category') > -1) {
+        const categoryEnabled = navCategory ? navCategory.get(`layouts_sidebar_${args.side}_enabled`) : '';
+
+        if (!navCategory || siteEnabledGlobal || siteEnabled.indexOf('category') > -1) {
           generalWidgets.forEach((w) => widgets.push(w.name));
         }
-        if (categoryEnabled && categoryEnabled.split('|').indexOf(args.filter) > -1) {
-          args.category.get(`layouts_sidebar_${args.side}_widgets`).split('|').forEach((widget) => {
+
+        if (navCategory && navCategory.get(`layouts_sidebar_${args.side}_enabled_global`) ||
+           (categoryEnabled && categoryEnabled.split('|').indexOf(args.filter) > -1)) {
+          navCategory.get(`layouts_sidebar_${args.side}_widgets`).split('|').forEach((widget) => {
             if (widgets.indexOf(widget) === -1) {
               widgets.push(widget);
             }
           })
         }
       }
-      if (args.context === 'topic' && siteEnabled.indexOf('topic') > -1) {
+
+      if (args.context === 'topic' && (siteEnabledGlobal || siteEnabled.indexOf('topic') > -1)) {
         generalWidgets.forEach((w) => widgets.push(w.name));
       }
     }
@@ -67,6 +73,7 @@ export default createWidget('sidebar', {
       if (w.order === 'start') {
         widgets.unshift(w.name)
       }
+
       if (w.order === 'end') {
         widgets.push(w.name)
       }
@@ -80,6 +87,7 @@ export default createWidget('sidebar', {
           if (user && userSelectionEnabled) {
             let userIndex = userApps.indexOf(widget);
             let index = null;
+
             if (userIndex > -1) {
               isUser = true;
               index = userIndex;
@@ -88,8 +96,8 @@ export default createWidget('sidebar', {
 
           contents.push(this.attach(widget, {
             topic: args.topic,
-            category: args.category,
-            navCategory: args.navCategory,
+            customCategory: args.customCategory,
+            navCategory,
             isUser,
             editing: args.editing,
             side: args.side,

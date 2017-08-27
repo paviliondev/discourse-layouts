@@ -2,12 +2,17 @@ en:
   js:
     category:
       layouts_sidebar_left_enabled: "Enable left sidebar for selected routes in this category"
+      layouts_sidebar_left_enabled_global: "Enable left sidebar globally in this category"
       layouts_sidebar_right_enabled: "Enable right sidebar for selected routes in this category"
+      layouts_sidebar_right_enabled_global: "Enable right sidebar globally in this category"
       layouts_sidebar_left_widgets: "Left widgets for this category"
       layouts_sidebar_right_widgets: "Right widgets for this category"
       layouts_list_navigation_disabled: "Disable discovery list navigation for selected routes in this category"
+      layouts_list_navigation_disabled_global: "Disable discovery list navigation globally in this category"
       layouts_list_header_disabled: "Disable discovery list header for selected routes in this category"
+      layouts_list_header_disabled_global: "Disable discovery list header globally in this category"
       layouts_list_nav_menu: "Use list navigation menu for selected routes in this category"
+      layouts_list_nav_menu_global: "Use list navigation menu globally in this category"
       current_geojson: "Current:"
     filters:
       nav_drop: "Navigation"

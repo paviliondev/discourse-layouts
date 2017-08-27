@@ -17,16 +17,18 @@ export default {
     const site = container.lookup('site:main');
     if (site.mobileView) { return }
 
+    const global = Discourse.SiteSettings.layouts_sidebar_left_enabled_global ||
+                   Discourse.SiteSettings.layouts_sidebar_right_enabled_global;
     const joined = Discourse.SiteSettings.layouts_sidebar_left_enabled
                    .concat(' ' + Discourse.SiteSettings.layouts_sidebar_right_enabled);
-    const topicSidebars = joined.indexOf('topic') > -1;
+    const topicSidebars = global || joined.indexOf('topic') > -1;
 
     if (topicSidebars) {
       Topic.reopen({
         @computed('category', 'postStream.loading')
         showTopicHeaderNavigation(category, loading) {
           return Discourse.SiteSettings.layouts_topic_header_navigation &&
-                 Discourse.User.current() && !loading && (category && category.community_status !== 'founding');
+                 Discourse.User.current() && !loading && (category && category.place_status !== 'founding');
         }
       });
 
@@ -42,12 +44,16 @@ export default {
 
         @computed('path')
         leftSidebarEnabled() {
-          return Discourse.SiteSettings.layouts_sidebar_left_enabled.split('|').indexOf('topic') > -1;
+          const select = Discourse.SiteSettings.layouts_sidebar_left_enabled.split('|');
+          const global = Discourse.SiteSettings.layouts_sidebar_left_enabled_global;
+          return global || select.indexOf('topic') > -1;
         },
 
         @computed('path')
         rightSidebarEnabled() {
-          return Discourse.SiteSettings.layouts_sidebar_right_enabled.split('|').indexOf('topic') > -1;
+          const select = Discourse.SiteSettings.layouts_sidebar_right_enabled.split('|');
+          const global = Discourse.SiteSettings.layouts_sidebar_right_enabled_global;
+          return global || select.indexOf('topic') > -1;
         },
 
         @computed('path')
