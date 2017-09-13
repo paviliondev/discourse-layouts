@@ -122,6 +122,10 @@ aside.sidebar {
       border-radius: 0 0 4px 4px;
       width: 100%;
     }
+
+    .timeline-container {
+      z-index: 1;
+    }
   }
 
   &.left-sidebar {
@@ -226,6 +230,10 @@ aside.sidebar {
 
   .widget-disabled {
     font-style: italic;
+  }
+
+  &.hidden {
+    display: none;
   }
 }
 
