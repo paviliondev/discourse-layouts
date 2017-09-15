@@ -24,7 +24,7 @@ export default createWidget('sidebar', {
       if (sideWidgets) {
         generalWidgets = sideWidgets.filter((w) => !w.order);
         orderedWidgets = sideWidgets.filter((w) => {
-          return isNumeric(w.order) || (w.order === 'start' || w.order === 'end')
+          return isNumeric(w.order) || (w.order === 'start' || w.order === 'end');
         });
       }
     };
@@ -40,16 +40,22 @@ export default createWidget('sidebar', {
         widgets.push(...userApps);
       }
     } else {
+      let categoryWidgets;
+      let categoryEnabled;
+
+      if (navCategory) {
+        categoryWidgets = navCategory.get(`layouts_sidebar_${args.side}_widgets`).split('|');
+        categoryEnabled = navCategory.get(`layouts_sidebar_${args.side}_enabled`).split('|');
+      }
+
       if (args.context === 'discovery' || args.context === 'tags') {
-        const categoryEnabled = navCategory ? navCategory.get(`layouts_sidebar_${args.side}_enabled`) : '';
 
         if (!navCategory || siteEnabledGlobal || siteEnabled.indexOf('category') > -1) {
           generalWidgets.forEach((w) => widgets.push(w.name));
         }
 
-        if (navCategory && navCategory.get(`layouts_sidebar_${args.side}_enabled_global`) ||
-           (categoryEnabled && categoryEnabled.split('|').indexOf(args.filter) > -1)) {
-          navCategory.get(`layouts_sidebar_${args.side}_widgets`).split('|').forEach((widget) => {
+        if (categoryEnabled.indexOf(args.filter) > -1) {
+          categoryWidgets.forEach((widget) => {
             if (widgets.indexOf(widget) === -1) {
               widgets.push(widget);
             }
@@ -57,8 +63,18 @@ export default createWidget('sidebar', {
         }
       }
 
-      if (args.context === 'topic' && (siteEnabledGlobal || siteEnabled.indexOf('topic') > -1)) {
-        generalWidgets.forEach((w) => widgets.push(w.name));
+      if (args.context === 'topic') {
+        if (siteEnabledGlobal || siteEnabled.indexOf('topic') > -1) {
+          generalWidgets.forEach((w) => widgets.push(w.name));
+        }
+
+        if (categoryEnabled.indexOf('topic') > -1) {
+          categoryWidgets.forEach((widget) => {
+            if (widgets.indexOf(widget) === -1) {
+              widgets.push(widget);
+            }
+          })
+        }
       }
     }
 

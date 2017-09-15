@@ -43,4 +43,14 @@ let settingEnabled = function(setting, category, path) {
   return siteEnabled.indexOf(filter) > -1;
 }
 
-export { settingEnabled }
+let sidebarEnabled = function(side, category) {
+  const global = Discourse.SiteSettings[`layouts_sidebar_${side}_enabled_global`];
+  const select = Discourse.SiteSettings[`layouts_sidebar_${side}_enabled`].split('|');
+  return global || select.indexOf('topic') > -1 ||
+         category && category.get(`layouts_sidebar_${side}_enabled`) &&
+         category.get(`layouts_sidebar_left_enabled`)
+                 .split('|')
+                 .indexOf('topic') > -1;
+}
+
+export { settingEnabled, sidebarEnabled }

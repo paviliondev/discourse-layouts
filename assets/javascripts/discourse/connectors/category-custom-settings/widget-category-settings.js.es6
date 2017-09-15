@@ -5,7 +5,7 @@ export default {
     const choices = this.site.get('widgets').map((w) => w.name);
     component.setProperties({
       choices,
-      enableChoices: ['latest', 'new', 'unread', 'top']
-    })
+      enableChoices: ['latest', 'new', 'unread', 'top', 'topic']
+    });
   }
 }

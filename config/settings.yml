@@ -1,4 +1,7 @@
 plugins:
+  layouts_enabled:
+    client: true
+    default: true
   layouts_sidebar_left_enabled:
     client: true
     type: list

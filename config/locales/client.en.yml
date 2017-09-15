@@ -38,3 +38,5 @@ en:
           order: "Order"
           order_none: "Fix order at"
           save: "Save"
+        settings:
+          label: "Settings"

@@ -6,7 +6,9 @@ export default {
   name: 'sidebar-discovery-routes',
   initialize(container){
     const site = container.lookup('site:main');
-    if (site.mobileView) { return }
+    const siteSettings = container.lookup('site-settings:main');
+
+    if (site.mobileView || !siteSettings.layouts_enabled) { return }
 
     let discoveryTopicRoutes = []
     let discoveryCategoryRoutes = [
