@@ -54,7 +54,7 @@ export default createWidget('sidebar', {
           generalWidgets.forEach((w) => widgets.push(w.name));
         }
 
-        if (categoryEnabled.indexOf(args.filter) > -1) {
+        if (categoryEnabled && categoryEnabled.indexOf(args.filter) > -1) {
           categoryWidgets.forEach((widget) => {
             if (widgets.indexOf(widget) === -1) {
               widgets.push(widget);
@@ -68,7 +68,7 @@ export default createWidget('sidebar', {
           generalWidgets.forEach((w) => widgets.push(w.name));
         }
 
-        if (categoryEnabled.indexOf('topic') > -1) {
+        if (categoryEnabled && categoryEnabled.indexOf('topic') > -1) {
           categoryWidgets.forEach((widget) => {
             if (widgets.indexOf(widget) === -1) {
               widgets.push(widget);
