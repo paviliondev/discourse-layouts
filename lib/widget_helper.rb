@@ -2,7 +2,7 @@ class DiscourseLayouts::WidgetHelper
   def self.add_widget(name)
     widgets = get_widgets
 
-    if widgets.length < 1 || !widgets.any? { |w| w['name'] == name }
+    if widgets.length < 1 || !widgets.any? { |w| w["name"] == name }
       widgets = widgets.push({ name: name })
     end
 
@@ -12,7 +12,10 @@ class DiscourseLayouts::WidgetHelper
   def self.update_widget(widget)
     widgets = get_widgets
 
-    widgets.delete_if { |w| w['name'] == widget }
+    widgets.delete_if { |w|
+      w["name"] == widget[:name]
+    }
+
     widgets.push(widget)
 
     set_widgets(widgets)
