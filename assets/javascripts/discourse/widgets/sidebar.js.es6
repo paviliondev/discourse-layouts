@@ -44,8 +44,10 @@ export default createWidget('sidebar', {
       let categoryEnabled;
 
       if (navCategory) {
-        categoryWidgets = navCategory.get(`layouts_sidebar_${args.side}_widgets`).split('|');
-        categoryEnabled = navCategory.get(`layouts_sidebar_${args.side}_enabled`).split('|');
+        const widgets = navCategory.get(`layouts_sidebar_${args.side}_widgets`);
+        const enabled = navCategory.get(`layouts_sidebar_${args.side}_enabled`);
+        categoryWidgets = widgets ? widgets.split('|') : [];
+        categoryEnabled = enabled ? enabled.split('|') : false;
       }
 
       if (args.context === 'discovery' || args.context === 'tags') {
