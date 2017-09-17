@@ -77,6 +77,8 @@ export default {
             renderTimeline: false,
             renderAdminMenuButton: true
           });
+        } else {
+          this._super(...arguments);
         }
       }
     })

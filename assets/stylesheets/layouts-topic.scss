@@ -89,15 +89,21 @@
     }
   }
 
+  &.right-sidebar #topic-progress-wrapper {
+    bottom: 0 !important;
+    position: fixed !important;
+  }
+
   #topic-progress, #topic-progress-expanded {
     left: -75px;
   }
 
   .timeline-container {
-    right: -100px;
+    right: -80px;
     position: absolute;
     margin-left: 0;
     transform: none;
+
     .topic-timeline {
       position: fixed;
     }
