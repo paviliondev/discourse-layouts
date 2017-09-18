@@ -23,8 +23,6 @@ en:
     topic:
       no_previous: "No older topics"
       no_next: "No newer topics"
-    widget:
-      disabled: "Widget disabled"
 
   admin_js:
     admin:
