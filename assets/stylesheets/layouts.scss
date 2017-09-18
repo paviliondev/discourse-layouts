@@ -240,6 +240,16 @@ aside.sidebar {
   &.hidden {
     display: none;
   }
+
+  .widget-list {
+    ul {
+      list-style: none;
+      margin: 0;
+    }
+    li {
+      margin: 5px 0;
+    }
+  }
 }
 
 .main-content .nav-drop {
