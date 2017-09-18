@@ -16,4 +16,3 @@ en:
     layouts_list_header_disabled_global: "Disable discovery list header globally"
     layouts_list_nav_menu: "Use list navigation menu for selected routes"
     layouts_list_nav_menu_global: "Use list navigation menu globally"
-    layouts_topic_header_navigation: "This setting only works in conjunction with the Pavilion place plugin."

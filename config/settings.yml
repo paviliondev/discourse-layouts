@@ -92,6 +92,3 @@ plugins:
   layouts_list_nav_menu_global:
     client: true
     default: false
-  layouts_topic_header_navigation:
-    client: true
-    default: false
