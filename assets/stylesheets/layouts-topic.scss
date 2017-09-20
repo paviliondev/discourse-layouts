@@ -214,66 +214,6 @@
     }
   }
 
-  nav.post-controls {
-    button {
-      padding: 2px 5px;
-      vertical-align: middle;
-      font-size: 1em;
-    }
-  }
-
-  .solved-panel, .post-controls .accepted, .fa.accepted, .accepted-text {
-    background-color: #3AB54A !important;
-    color: white !important;
-    opacity: 1 !important;
-    line-height: 25px;
-    padding: 0 5px;
-    border-radius: 0 4px 4px 0;
-    a {
-      color: white;
-      text-decoration: underline;
-    }
-  }
-
-  .post-controls {
-    .accepted-text, .accept-text {
-      display: inline-block;
-      font-size: inherit;
-      vertical-align: middle;
-      line-height: 25px;
-      margin-right: -5px;
-      z-index: 999;
-      border-radius: 4px 0 0 4px;
-    }
-    .accept-text {
-      color: #c8c8c8;
-    }
-  }
-
-  .solved-panel {
-    margin-bottom: 0px;
-    border-radius: 4px;
-  }
-
-  .topic-statuses {
-    .fa-check-square-o:after {
-      content: " " "Solved";
-      font-family: Helvetica, Arial, sans-serif;
-      font-size: 13px;
-      background-color: #3AB54A;
-      color: white;
-      padding: 2px 3px 2px 0px;
-      vertical-align: middle;
-    }
-    .fa-check-square-o:before {
-      background-color: #3AB54A;
-      color: white;
-      padding: 2px 0 2px 3px;
-      vertical-align: middle;
-      font-size: 15px;
-    }
-  }
-
   .gap {
     width: 100%;
   }
