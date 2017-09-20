@@ -1,8 +1,8 @@
 import { createWidget } from 'discourse/widgets/widget';
 
 var isNumeric = function(val) {
-  return !isNaN(parseFloat(val)) && isFinite(val)
-}
+  return !isNaN(parseFloat(val)) && isFinite(val);
+};
 
 export default createWidget('sidebar', {
   tagName: 'div.sidebar-content',
@@ -31,11 +31,11 @@ export default createWidget('sidebar', {
 
     let contents = [];
     let widgets = [];
-    let index = null;
     let isUser = false;
+    let userApps;
 
     if (user && userSelectionEnabled) {
-      var userApps = user.get(`${args.side}_apps`) || [];
+      userApps = user.get(`${args.side}_apps`) || [];
       if (userApps.length > 0) {
         widgets.push(...userApps);
       }
@@ -44,10 +44,10 @@ export default createWidget('sidebar', {
       let categoryEnabled;
 
       if (navCategory) {
-        const widgets = navCategory.get(`layouts_sidebar_${args.side}_widgets`);
-        const enabled = navCategory.get(`layouts_sidebar_${args.side}_enabled`);
-        categoryWidgets = widgets ? widgets.split('|') : [];
-        categoryEnabled = enabled ? enabled.split('|') : false;
+        const cw = navCategory.get(`layouts_sidebar_${args.side}_widgets`);
+        const ce = navCategory.get(`layouts_sidebar_${args.side}_enabled`);
+        categoryWidgets = cw ? cw.split('|') : [];
+        categoryEnabled = ce ? ce.split('|') : false;
       }
 
       if (args.context === 'discovery' || args.context === 'tags') {
@@ -61,7 +61,7 @@ export default createWidget('sidebar', {
             if (widgets.indexOf(widget) === -1) {
               widgets.push(widget);
             }
-          })
+          });
         }
       }
 
@@ -75,36 +75,37 @@ export default createWidget('sidebar', {
             if (widgets.indexOf(widget) === -1) {
               widgets.push(widget);
             }
-          })
+          });
         }
       }
     }
 
     orderedWidgets.forEach((w) => {
       if (isNumeric(w.order)) {
-        widgets.splice(w.order, 0, w.name)
+        widgets.splice(w.order, 0, w.name);
       }
     });
 
     // 'start' & 'end' overide numbered ordering
     orderedWidgets.forEach((w) => {
       if (w.order === 'start') {
-        widgets.unshift(w.name)
+        widgets.unshift(w.name);
       }
 
       if (w.order === 'end') {
-        widgets.push(w.name)
+        widgets.push(w.name);
       }
-    })
+    });
 
     widgets.forEach((widget) => {
       if (widget.length) {
         const exists = this.register.lookupFactory(`widget:${widget}`);
 
         if (exists) {
+          let index = null;
+
           if (user && userSelectionEnabled) {
             let userIndex = userApps.indexOf(widget);
-            let index = null;
 
             if (userIndex > -1) {
               isUser = true;
@@ -120,11 +121,11 @@ export default createWidget('sidebar', {
             editing: args.editing,
             side: args.side,
             index
-          }))
+          }));
         }
       }
-    })
+    });
 
     return contents;
   }
-})
+});

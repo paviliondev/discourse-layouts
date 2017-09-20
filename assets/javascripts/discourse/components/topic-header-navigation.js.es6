@@ -30,7 +30,7 @@ export default Ember.Component.extend({
       let nextTopic = topics.filter((t, i) => i === nextIndex)[0];
 
       this.setProperties({ previousTopic, nextTopic, visible: true });
-    })
+    });
   },
 
   @computed('nextTopic')
@@ -48,4 +48,4 @@ export default Ember.Component.extend({
       DiscourseURL.routeTo('/t/' + this.get(`${direction}Topic.slug`));
     }
   }
-})
+});

@@ -22,17 +22,17 @@ export default Ember.Component.extend(BufferedContent, {
         this.setProperties({
           'widget': result.widget,
           'saving': false
-        })
+        });
       }).catch(() => {
         this.setProperties({
           'buffered.buffer': this.get('widget'),
           'saving': false
-        })
-      })
+        });
+      });
     },
 
     clear() {
       this.sendAction('clear', this.get('widget')['name']);
     }
   }
-})
+});

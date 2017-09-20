@@ -1,5 +1,3 @@
-import { setting } from 'discourse/lib/computed';
-
 export default Ember.Component.extend({
   classNames: ['nav-drop'],
   expanded: false,
@@ -28,19 +26,18 @@ export default Ember.Component.extend({
       }
 
       this.set('expanded', true);
-      var $dropdown = this.$()[0];
 
       this.$('a[data-drop-close]').on('click.nav-drop', function() {
         self.close();
       });
 
       Em.run.next(function(){
-        self.$('.nav a').add('html').on(self.get('clickEventName'), function(e) {
+        self.$('.nav a').add('html').on(self.get('clickEventName'), function() {
           self.close();
         });
       });
 
-      return false
+      return false;
     }
   },
 

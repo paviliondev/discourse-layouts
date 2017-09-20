@@ -7,12 +7,12 @@ export default Ember.Controller.extend({
 
   @computed('application.currentPath')
   leftSidebarEnabled() {
-    return Discourse.SiteSettings.layouts_sidebar_left_enabled.split('|').indexOf('tags') > -1
+    return Discourse.SiteSettings.layouts_sidebar_left_enabled.split('|').indexOf('tags') > -1;
   },
 
   @computed('application.currentPath')
   rightSidebarEnabled() {
-    return Discourse.SiteSettings.layouts_sidebar_right_enabled.split('|').indexOf('tags') > -1
+    return Discourse.SiteSettings.layouts_sidebar_right_enabled.split('|').indexOf('tags') > -1;
   },
 
   @computed('application.currentPath')
@@ -39,26 +39,26 @@ export default Ember.Controller.extend({
     let classes = 'tags';
 
     if (loading) {
-      return classes + ' loading'
+      return classes + ' loading';
     }
     if (left || right) {
-      classes += ' has-sidebars'
+      classes += ' has-sidebars';
     }
     if (left) {
-      classes += ' left-sidebar'
+      classes += ' left-sidebar';
     }
     if (right) {
-      classes += ' right-sidebar'
+      classes += ' right-sidebar';
     }
     if (this.get('navigationDisabled')) {
-      classes += ' navigation-disabled'
+      classes += ' navigation-disabled';
     }
     if (this.get('headerDisabled')) {
-      classes += ' header-disabled'
+      classes += ' header-disabled';
     }
     if (this.get('navMenuEnabled')) {
-      classes += ' nav-menu-enabled'
+      classes += ' nav-menu-enabled';
     }
-    return classes
+    return classes;
   }
-})
+});

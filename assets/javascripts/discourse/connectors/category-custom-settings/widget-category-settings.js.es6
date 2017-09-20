@@ -1,5 +1,3 @@
-import { ajax } from 'discourse/lib/ajax';
-
 export default {
   setupComponent(args, component) {
     const choices = this.site.get('widgets').map((w) => w.name);
@@ -8,4 +6,4 @@ export default {
       enableChoices: ['latest', 'new', 'unread', 'top', 'topic']
     });
   }
-}
+};

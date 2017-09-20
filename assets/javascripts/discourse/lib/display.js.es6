@@ -13,14 +13,14 @@ let getContentWidth = (leftSidebarEnabled, rightSidebarEnabled, topic) => {
     offset += settings.layouts_sidebar_right_width + 15;
   }
   return offset > 0 ? `calc(100% - ${offset}px)` : '100%';
-}
+};
 
 let renderTemplateTopic = function(self, category, path) {
   if (!settingEnabled('layouts_list_navigation_disabled', category, path)) {
     self.render('navigation/default', { outlet: 'navigation-bar' });
   }
   self.render('discovery/topics', { controller: 'discovery/topics', outlet: 'list-container' });
-}
+};
 
 let renderTemplateCategory = function(self, category, path) {
   if (!settingEnabled('layouts_list_navigation_disabled', category, path)) {
@@ -30,6 +30,6 @@ let renderTemplateCategory = function(self, category, path) {
     self.render('discovery/categories', { outlet: 'header-list-container', model: self._categoryList });
   }
   self.render('discovery/topics', { controller: 'discovery/topics', outlet: 'list-container' });
-}
+};
 
-export { getContentWidth, renderTemplateTopic, renderTemplateCategory }
+export { getContentWidth, renderTemplateTopic, renderTemplateCategory };

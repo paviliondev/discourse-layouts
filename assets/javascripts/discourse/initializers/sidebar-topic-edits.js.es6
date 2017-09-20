@@ -2,12 +2,9 @@ import TopicController from 'discourse/controllers/topic';
 import TopicRoute from 'discourse/routes/topic';
 import TopicNavigation from 'discourse/components/topic-navigation';
 import TopicList from 'discourse/components/topic-list';
-import Topic from 'discourse/models/topic';
-import Category from 'discourse/models/category';
 import LayoutsFunctionality from '../mixins/layouts';
-import { on, observes, default as computed } from 'ember-addons/ember-computed-decorators';
-import { withPluginApi } from 'discourse/lib/plugin-api';
-import { settingEnabled, sidebarEnabled } from '../lib/settings';
+import { default as computed } from 'ember-addons/ember-computed-decorators';
+import { sidebarEnabled } from '../lib/settings';
 import { getContentWidth } from '../lib/display';
 import { getOwner } from 'discourse-common/lib/get-owner';
 
@@ -20,7 +17,7 @@ export default {
     if (site.mobileView || !siteSettings.layouts_enabled) return;
 
     TopicRoute.reopen({
-      renderTemplate(controller, model) {
+      renderTemplate() {
         this.render('sidebar-wrapper');
       }
     });
@@ -44,7 +41,7 @@ export default {
         const left = this.get('leftSidebarEnabled');
         const right = this.get('rightSidebarEnabled');
         let width = getContentWidth(left, right, true);
-        let style = `width: ${width};`
+        let style = `width: ${width};`;
         if (left && !right) {
           style += ` margin-right: ${Discourse.SiteSettings.layouts_sidebar_right_width}px;`;
         }
@@ -81,7 +78,7 @@ export default {
           this._super(...arguments);
         }
       }
-    })
+    });
 
     TopicList.reopen({
       @computed()
@@ -89,6 +86,6 @@ export default {
         const headerDisabled = getOwner(this).lookup('controller:discovery').get('headerDisabled');
         return this.site.mobileView || headerDisabled;
       }
-    })
+    });
   }
-}
+};

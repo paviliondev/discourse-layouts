@@ -8,61 +8,61 @@ export default {
     const site = container.lookup('site:main');
     const siteSettings = container.lookup('site-settings:main');
 
-    if (site.mobileView || !siteSettings.layouts_enabled) { return }
+    if (site.mobileView || !siteSettings.layouts_enabled) { return; }
 
-    let discoveryTopicRoutes = []
+    let discoveryTopicRoutes = [];
     let discoveryCategoryRoutes = [
       'Category',
       'ParentCategory',
       'CategoryNone',
-    ]
-    let filters = site.get('filters')
-    filters.push('top')
+    ];
+    let filters = site.get('filters');
+    filters.push('top');
     filters.forEach(filter => {
       const filterCapitalized = filter.capitalize();
-      discoveryTopicRoutes.push(filterCapitalized)
+      discoveryTopicRoutes.push(filterCapitalized);
       discoveryCategoryRoutes.push(...[
         `${filterCapitalized}Category`,
         `${filterCapitalized}ParentCategory`,
         `${filterCapitalized}CategoryNone`
-      ])
-    })
+      ]);
+    });
 
     site.get('periods').forEach(period => {
       const periodCapitalized = period.capitalize();
-      discoveryTopicRoutes.push(`Top${periodCapitalized}`)
+      discoveryTopicRoutes.push(`Top${periodCapitalized}`);
       discoveryCategoryRoutes.push(...[
         `Top${periodCapitalized}Category`,
         `Top${periodCapitalized}ParentCategory`,
         `Top${periodCapitalized}CategoryNone`
-      ])
-    })
+      ]);
+    });
 
     discoveryTopicRoutes.forEach(function(route){
-      var route = container.lookup(`route:discovery.${route}`)
+      var route = container.lookup(`route:discovery.${route}`);
       route.reopen({
         renderTemplate() {
-          renderTemplateTopic(this, false, this.get('routeName'))
+          renderTemplateTopic(this, false, this.get('routeName'));
         }
-      })
-    })
+      });
+    });
 
     discoveryCategoryRoutes.forEach(function(route){
-      var route = container.lookup(`route:discovery.${route}`)
+      var route = container.lookup(`route:discovery.${route}`);
       route.reopen({
         renderTemplate(controller, model) {
-          renderTemplateCategory(this, model.category, this.get('routeName'))
+          renderTemplateCategory(this, model.category, this.get('routeName'));
         }
-      })
-    })
+      });
+    });
 
     DiscoveryCategoriesRoute.reopen({
-      renderTemplate(controller, model) {
+      renderTemplate() {
         if (!settingEnabled('layouts_list_navigation_disabled', false, 'categories')) {
           this.render('navigation/categories', { outlet: 'navigation-bar' });
         }
         this.render("discovery/categories", { outlet: "list-container" });
       }
-    })
+    });
   }
-}
+};

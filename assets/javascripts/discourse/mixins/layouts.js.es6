@@ -12,4 +12,4 @@ export default Ember.Mixin.create({
   rightStyle() {
     return Ember.String.htmlSafe(`width: ${this.siteSettings.layouts_sidebar_right_width}px;`);
   }
-})
+});

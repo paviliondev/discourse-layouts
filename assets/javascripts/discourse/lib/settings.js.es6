@@ -8,12 +8,12 @@ let getRoutes = function(path) {
   return pathArr[0].split(/(?=[A-Z])/).map(function(x){
     return x.toLowerCase();
   });
-}
+};
 
 let getFilter = function(path) {
   let routes = getRoutes(path);
   return routes[0] === 'category' || routes[0] === 'parent' ? 'latest' : routes[0];
-}
+};
 
 let settingEnabled = function(setting, category, path) {
 
@@ -41,7 +41,7 @@ let settingEnabled = function(setting, category, path) {
   }
 
   return siteEnabled.indexOf(filter) > -1;
-}
+};
 
 let sidebarEnabled = function(side, category) {
   const global = Discourse.SiteSettings[`layouts_sidebar_${side}_enabled_global`];
@@ -51,6 +51,6 @@ let sidebarEnabled = function(side, category) {
          category.get(`layouts_sidebar_left_enabled`)
                  .split('|')
                  .indexOf('topic') > -1;
-}
+};
 
-export { settingEnabled, sidebarEnabled }
+export { settingEnabled, sidebarEnabled };

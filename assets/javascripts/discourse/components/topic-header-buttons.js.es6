@@ -21,4 +21,4 @@ export default TopicFooterButtons.extend({
       controller.send('replyToPost');
     }
   }
-})
+});

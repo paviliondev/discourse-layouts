@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DiscourseLayouts::WidgetController < ::ApplicationController
   before_filter :ensure_admin
 
@@ -15,7 +17,7 @@ class DiscourseLayouts::WidgetController < ::ApplicationController
 
     widget = { name: params[:name] }
     widget['position'] = params[:position] if params[:position].length > 1
-    widget['order'] = params[:order] if params[:order].length > 0
+    widget['order'] = params[:order] unless params[:order].empty?
 
     result = DiscourseLayouts::WidgetHelper.update_widget(widget)
 

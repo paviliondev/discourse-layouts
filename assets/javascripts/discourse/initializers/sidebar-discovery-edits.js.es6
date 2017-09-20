@@ -14,7 +14,7 @@ export default {
     const site = container.lookup('site:main');
     const siteSettings = container.lookup('site-settings:main');
 
-    if (site.mobileView || !siteSettings.layouts_enabled) { return }
+    if (site.mobileView || !siteSettings.layouts_enabled) { return; }
 
     DiscoveryRoute.reopen({
       renderTemplate() {
@@ -38,7 +38,7 @@ export default {
         if (this.get('headerDisabled')) {
           Ember.run.scheduleOnce('afterRender', function() {
             $('.main-content thead').hide();
-          })
+          });
         }
       },
 
@@ -110,7 +110,7 @@ export default {
       navMenuEnabled(){
         return getOwner(this).lookup('controller:discovery').get('navMenuEnabled');
       }
-    })
+    });
 
     NavigationItem.reopen({
       buildBuffer(buffer){
@@ -126,6 +126,6 @@ export default {
         buffer.push(this.get('content.displayName'));
         buffer.push("</a>");
       }
-    })
+    });
   }
-}
+};
