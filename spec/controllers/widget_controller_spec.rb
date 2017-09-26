@@ -13,7 +13,7 @@ describe ::DiscourseLayouts::WidgetController do
 
   describe 'all' do
     it "works" do
-      xhr :get, :all
+      get :all, format: :json
       expect(response).to be_success
       json = ::JSON.parse(response.body)
       expect(json['widgets'][0]['name']).to eq('test-widget')
@@ -22,7 +22,7 @@ describe ::DiscourseLayouts::WidgetController do
 
   describe 'save' do
     it 'works' do
-      xhr :put, :save, name: 'test-widget', position: 'start', order: 'left'
+      put :save, params: { name: 'test-widget', position: 'start', order: 'left' }, format: :json
       expect(response).to be_success
       json = ::JSON.parse(response.body)
       expect(json['widget']['name']).to eq('test-widget')
@@ -33,7 +33,7 @@ describe ::DiscourseLayouts::WidgetController do
 
   describe 'clear' do
     it 'works' do
-      xhr :put, :clear, name: 'test-widget'
+      put :clear, params: { name: 'test-widget' }, format: :json
       expect(response).to be_success
       widgets = DiscourseLayouts::WidgetHelper.get_widgets
       expect(widgets.any? { |w| w.name == 'test-widget' }).to eq(false)
