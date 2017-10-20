@@ -6,16 +6,6 @@ export default Discourse.Route.extend({
   },
 
   setupController(controller, model) {
-    let widgets = [];
-    model.widgets.forEach((w) => {
-      if (w !== null && typeof w === 'object') {
-        widgets.push(w);
-      } else if (typeof w === 'string') {
-        widgets.push({ name: w });
-      } else {
-        widgets.push({ name: null });
-      }
-    });
-    controller.set('widgets', widgets);
+    controller.set('widgets', model.widgets);
   }
 });
