@@ -121,7 +121,6 @@ aside.sidebar {
       border-bottom: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
       background-color: $secondary;
       border-radius: 0 0 4px 4px;
-      width: 100%;
     }
 
     .timeline-container {
@@ -222,6 +221,25 @@ aside.sidebar {
 
   .widget-multi-title {
     display: inline-block;
+
+    a.widget-link.list-title {
+      color: $primary;
+      padding: 0 8px;
+      margin-right: 0;
+      text-decoration: none;
+
+      &:first-of-type {
+        padding-left: 0;
+      }
+
+      &:last-of-type {
+        border-right: none;
+      }
+
+      &.active {
+        text-decoration: underline;
+      }
+    }
   }
 
   .widget-description {
@@ -402,6 +420,7 @@ aside.sidebar {
 
 .layouts-nav-button {
   @extend .nav-pills;
+  float: left;
 }
 
 .layouts {

@@ -13,7 +13,6 @@
     margin-bottom: 0;
     padding-top: 0;
     background: #fff;
-    width: 100%;
     z-index: initial;
 
     .container {
@@ -199,6 +198,8 @@
       width: initial;
       .topic-avatar {
         width: 20px;
+        padding: 7px 10px;
+        margin: 0;
         i {
           font-size: 20px;
           width: 20px;
@@ -207,6 +208,11 @@
       .small-action-desc {
         padding: 0;
         padding-left: 25px;
+        line-height: 37px;
+        margin-top: 0;
+        .avatar {
+          padding: 5px 0;
+        }
         p {
           padding: 0;
         }
