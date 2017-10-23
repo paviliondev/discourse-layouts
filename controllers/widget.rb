@@ -39,4 +39,8 @@ class DiscourseLayouts::WidgetController < ::ApplicationController
       render json: failed_json
     end
   end
+
+  def clear_all
+    PluginStoreRow.where(plugin_name: 'discourse-layouts').delete_all
+  end
 end

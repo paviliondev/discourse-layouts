@@ -18,6 +18,10 @@ export default Ember.Controller.extend({
       ajax('/admin/layouts/clear-widget', { type: 'PUT', data: { name } }).then(() => {
         this.set('widgets', this.get('widgets').filter((w) => w.name !== name));
       });
+    },
+
+    clearAll() {
+      ajax('/admin/layouts/clear-all', { type: 'PUT' });
     }
   }
 });

@@ -46,6 +46,7 @@ after_initialize do
     get 'widgets' => 'widget#all'
     put 'save-widget' => 'widget#save'
     put 'clear-widget' => 'widget#clear'
+    put 'clear-all' => 'widget#clear_all'
   end
 
   load File.expand_path('../controllers/widget.rb', __FILE__)

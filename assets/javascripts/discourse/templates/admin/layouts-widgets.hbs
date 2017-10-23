@@ -3,6 +3,7 @@
     <div class="col heading first medium-label">{{i18n 'admin.layouts.widgets.name'}}</div>
     <div class="col heading medium-label">{{i18n 'admin.layouts.widgets.position'}}</div>
     <div class="col heading medium-label">{{i18n 'admin.layouts.widgets.order'}}</div>
+    {{d-button action="clearAll" label="admin.layouts.widgets.clear_all" class="pull-right"}}
   </div>
 
   {{#each widgets as |w|}}

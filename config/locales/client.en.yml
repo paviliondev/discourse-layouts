@@ -36,5 +36,6 @@ en:
           order: "Order"
           order_none: "Fix order at"
           save: "Save"
+          clear_all: "Clear All Widget Records"
         settings:
           label: "Settings"
