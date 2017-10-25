@@ -6,10 +6,13 @@ export default Ember.Controller.extend({
 
   @computed('widgets')
   orderOptions(widgets) {
-    const numberOfWidgets = widgets.length;
-    let numbers = Array.from(Array(numberOfWidgets).keys());
     let orderOptions = ['start', 'end'];
-    orderOptions.push(...numbers);
+    const numberOfWidgets = widgets.length;
+    if (numberOfWidgets > 0) {
+      for (let i=1; i<=numberOfWidgets; i++) {
+        orderOptions.push(i.toString());
+      }
+    }
     return orderOptions;
   },
 

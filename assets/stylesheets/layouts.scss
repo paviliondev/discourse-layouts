@@ -440,9 +440,14 @@ aside.sidebar {
     flex: 0 1 auto;
   }
 
+  .admin-list-item .select-box-kit {
+    width: initial;
+  }
+
   .medium-label {
     width: 20%;
     flex: 0 1 auto;
+    overflow: initial;
   }
 
   .large-label {
