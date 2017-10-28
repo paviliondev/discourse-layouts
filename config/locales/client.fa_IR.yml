@@ -1,0 +1,40 @@
+fa_IR:
+  js:
+    category:
+      layouts_sidebar_left_enabled: "سایدبار سمت چپ را برای مسیرهای زیر در این کتگوری فعال کن"
+      layouts_sidebar_left_enabled_global: "سایدبار سمت چپ را در این کتگوری برای همه ی مسیرها فعال کن"
+      layouts_sidebar_right_enabled: "سایدبار سمت راست را برای مسیرهای زیر در این کتگوری فعال کن"
+      layouts_sidebar_right_enabled_global: "سایدبار سمت راست را در این کتگوری برای همه ی مسیرها فعال کن"
+      layouts_sidebar_left_widgets: "ویجت های سمت چپ برای این کتگوری"
+      layouts_sidebar_right_widgets: "ویجت های سمت راست برای این کتگوری"
+      layouts_list_navigation_disabled: "منوی جابجا شدن در مسیرهای زیر در این کتگوری را غیرفعال کن"
+      layouts_list_navigation_disabled_global: "منوی جابجا شدن را در همه مسیرهای این کتگوری غیرفعال کن"
+      layouts_list_header_disabled: "هدر را برای مسیرهای زیر در این کتگوری غیرفعال کن"
+      layouts_list_header_disabled_global: "هدر را برای همه ی مسیرهای این کتگوری غیرفعال کن"
+      layouts_list_nav_menu: "از منوی لیستی در مسیرهای زیر در این کتگوری استفاده کن"
+      layouts_list_nav_menu_global: "از منوی لیستی در همه مسیرهای این کتگوری استفاده کن"
+      current_geojson: "کنونی:"
+    filters:
+      nav_drop: "منوی ناوبر"
+    layout:
+      add: "اضافه کن"
+      edit: "ادیت"
+      save: "ذخیره"
+    topic:
+      no_previous: "موضوع قدیمی تری نیست"
+      no_next: "موضوع جدید تری نیست"
+
+  admin_js:
+    admin:
+      layouts:
+        label: "چارچوب"
+        widgets:
+          label: "ویجت"
+          name: "نام"
+          position: "مکان"
+          position_none: "یک مکان را انتخاب کن"
+          order: "ترتیب"
+          order_none: "به ترتیب"
+          save: "ذخیره"
+        settings:
+label: "تنظیمات"
