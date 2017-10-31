@@ -37,4 +37,4 @@ fa_IR:
           order_none: "به ترتیب"
           save: "ذخیره"
         settings:
-label: "تنظیمات"
+          label: "تنظیمات"
