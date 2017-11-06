@@ -36,6 +36,6 @@
   {{d-button class="btn-default edit-category backup" action="editCategory" actionParam=category icon="wrench"}}
 {{/if}}
 
-{{#if navigationCategories.canCreateCategory}}
-  {{categories-admin-dropdown}}
+{{#if showCategoryAdmin}}
+  {{categories-admin-dropdown create=(action "createCategory") reorder=(action "reorderCategories")}}
 {{/if}}

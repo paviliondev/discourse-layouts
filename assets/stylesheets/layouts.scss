@@ -8,7 +8,7 @@ aside.sidebar {
   display: inline-block;
   vertical-align: top;
   text-align: left;
-  z-index: 4;
+  z-index: 1;
   position: relative;
 }
 
@@ -258,6 +258,10 @@ aside.sidebar {
   .widget-list {
     margin-top: 5px;
 
+    .spinner {
+      margin-left: 110px;
+    }
+
     ul {
       list-style: none;
       margin: 0;
@@ -268,6 +272,14 @@ aside.sidebar {
 
       &:first-of-type {
         margin-top: 0;
+      }
+    }
+
+    .widget-list-controls {
+      margin-top: 5px;
+
+      a {
+        font-size: 0.95em;
       }
     }
   }
@@ -463,4 +475,10 @@ aside.sidebar {
   .controls {
     text-align: center;
   }
+}
+
+.categories-admin-dropdown {
+  top: 80px;
+  position: absolute;
+  right: 0;
 }

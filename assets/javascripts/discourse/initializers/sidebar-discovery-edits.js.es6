@@ -27,6 +27,7 @@ export default {
       navigationDefault: Ember.inject.controller('navigation/default'),
       navigationCategories: Ember.inject.controller('navigation/categories'),
       navigationCategory: Ember.inject.controller("navigation/category"),
+      showCategoryAdmin: Ember.computed.alias('navigationCategories.showCategoryAdmin'),
 
       @on('init')
       @observes('path')
@@ -102,6 +103,18 @@ export default {
         if (editing) classes += ' editing';
 
         return classes;
+      },
+
+      actions: {
+        createCategory() {
+          const navigationCategories = this.get('navigationCategories');
+          navigationCategories.send('createCategory');
+        },
+
+        reorderCategories() {
+          const navigationCategories = this.get('navigationCategories');
+          navigationCategories.send('reorderCategories');
+        }
       }
     });
 
