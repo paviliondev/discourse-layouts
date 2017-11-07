@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 class DiscourseLayouts::WidgetHelper
-  def self.add_widget(name)
+  def self.add_widget(name, opts)
     widgets = get_widgets
 
     if widgets.empty? || widgets.none? { |w| w['name'] == name }
-      widgets = widgets.push(name: name)
+      widget = { name: name }
+      widget[:position] = opts[:position] if opts[:position]
+      widget[:order] = opts[:order] if opts[:order]
+      widgets = widgets.push(widget)
     end
 
     set_widgets(widgets)
