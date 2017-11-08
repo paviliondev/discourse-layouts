@@ -8,7 +8,7 @@ describe ::DiscourseLayouts::WidgetController do
   before do
     log_in(:admin)
     DiscourseLayouts::WidgetHelper.set_widgets([])
-    DiscourseLayouts::WidgetHelper.add_widget('test-widget')
+    DiscourseLayouts::WidgetHelper.add_widget('test-widget', position: 'right', order: 'start')
   end
 
   describe 'all' do
