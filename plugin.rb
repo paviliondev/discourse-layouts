@@ -58,4 +58,6 @@ after_initialize do
       DiscourseLayouts::WidgetHelper.get_widgets
     end
   end
+
+  DiscourseEvent.trigger(:layouts_ready)
 end
