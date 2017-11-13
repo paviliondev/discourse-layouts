@@ -174,8 +174,17 @@
     border-top: none;
     z-index: initial;
     float: none;
+
     .regular {
       margin-top: 10px;
+    }
+
+    .poll {
+      min-width: initial;
+
+      .poll-container {
+        min-width: initial;
+      }
     }
   }
 
