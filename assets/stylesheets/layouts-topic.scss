@@ -110,8 +110,13 @@
 
   #topic-footer-buttons {
     padding: 10px;
+
     .btn {
       margin-right: 6px;
+    }
+
+    .popup-menu {
+      bottom: 150px !important;
     }
   }
 
