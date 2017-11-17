@@ -3,6 +3,12 @@ const settings = ['sidebar_left_enabled','sidebar_right_enabled','sidebar_left_w
 
 export default {
   setupComponent(args, component) {
+    const category = args.category;
+
+    if (!category.custom_fields) {
+      category.custom_fields = {};
+    }
+
     const choices = this.site.get('widgets').map((w) => w.name);
 
     settings.forEach((s) => {
