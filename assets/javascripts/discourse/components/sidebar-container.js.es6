@@ -14,9 +14,8 @@ export default MountWidget.extend({
     const context = this.get('context');
     const side = this.get('side');
     const editing = this.get('editing');
-    const customCategory = this.get('customCategory');
-    const navCategory = this.get('navCategory');
-    let args = { context, side, editing, customCategory, navCategory };
+    const category = this.get('category');
+    let args = { context, side, editing, category };
 
     if (context === 'discovery') {
       args['filter'] = this.get('filter');
@@ -24,6 +23,11 @@ export default MountWidget.extend({
 
     if (context === 'topic') {
       args['topic'] = this.get('topic');
+    }
+
+    const customProps = this.get('customProps');
+    if (customProps && customProps.length > 1) {
+      args['customProps'] = customProps;
     }
 
     return args;

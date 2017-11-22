@@ -8,7 +8,7 @@ export default createWidget('sidebar', {
   tagName: 'div.sidebar-content',
 
   html(args) {
-    const navCategory = args.navCategory;
+    const category = args.category;
     const siteEnabled = Discourse.SiteSettings[`layouts_sidebar_${args.side}_enabled`].split('|');
     const siteEnabledGlobal = Discourse.SiteSettings[`layouts_sidebar_${args.side}_enabled_global`];
     const userSelectionEnabled = Discourse.SiteSettings.layouts_sidebar_user_selected_widgets;
@@ -43,16 +43,16 @@ export default createWidget('sidebar', {
       let categoryWidgets;
       let categoryEnabled;
 
-      if (navCategory) {
-        const cw = navCategory.get(`layouts_sidebar_${args.side}_widgets`);
-        const ce = navCategory.get(`layouts_sidebar_${args.side}_enabled`);
+      if (category) {
+        const cw = category.get(`layouts_sidebar_${args.side}_widgets`);
+        const ce = category.get(`layouts_sidebar_${args.side}_enabled`);
         categoryWidgets = cw ? cw.split('|') : [];
         categoryEnabled = ce ? ce.split('|') : false;
       }
 
       if (args.context === 'discovery' || args.context === 'tags') {
 
-        if (!navCategory || siteEnabledGlobal || siteEnabled.indexOf('category') > -1) {
+        if (!category || siteEnabledGlobal || siteEnabled.indexOf('category') > -1) {
           generalWidgets.forEach((w) => widgets.push(w.name));
         }
 
@@ -113,15 +113,20 @@ export default createWidget('sidebar', {
             }
           }
 
-          contents.push(this.attach(widget, {
+          let props = {
             topic: args.topic,
-            customCategory: args.customCategory,
-            navCategory,
+            category,
             isUser,
             editing: args.editing,
             side: args.side,
             index
-          }));
+          };
+
+          if (args.customProps) {
+            Object.assign(props, args.customProps);
+          };
+
+          contents.push(this.attach(widget, props));
         }
       }
     });
