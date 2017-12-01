@@ -1,6 +1,7 @@
 en:
   site_settings:
     layouts_enabled: "Enable Layouts plugin"
+    layouts_mobile_enabled: "Enable mobile layouts"
     layouts_sidebar_left_enabled: "Enable left sidebar for selected routes"
     layouts_sidebar_left_enabled_global: "Enable left sidebar globally"
     layouts_sidebar_right_enabled: "Enable right sidebar for selected routes"

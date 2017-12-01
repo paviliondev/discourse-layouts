@@ -8,7 +8,7 @@ export default {
     const site = container.lookup('site:main');
     const siteSettings = container.lookup('site-settings:main');
 
-    if (site.mobileView || !siteSettings.layouts_enabled) { return; }
+    if (site.mobileView && !siteSettings.layouts_mobile_enabled || !siteSettings.layouts_enabled) { return; }
 
     let discoveryTopicRoutes = [];
     let discoveryCategoryRoutes = [

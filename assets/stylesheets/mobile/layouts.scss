@@ -1,0 +1,63 @@
+.main-content {
+  width: initial;
+  margin: 0 !important;
+}
+
+aside.sidebar{
+  width: 90vw;
+  position: fixed;
+  height: calc(100% - 55px);
+  top: 55px;
+  background-color: $secondary;
+
+  &.left {
+    left: -90vw;
+    border-right: 1px solid $primary-low-mid;
+  }
+
+  &.right {
+    right: -90vw;
+    border-left: 1px solid $primary-low-mid;
+  }
+
+  .sidebar-container {
+    position: relative !important;
+  }
+
+  .mobile-toggle {
+    position: absolute;
+    background-color: $secondary;
+    border: 1px solid $primary-low-mid;
+    padding: 6px;
+    line-height: 14px;
+    top: 0;
+
+    &:hover {
+      color: $primary;
+    }
+
+    i {
+      margin-top: 5px;
+      font-size: 22px;
+    }
+
+    &.left {
+      right: -30px;
+    }
+
+    &.right {
+      left: -30px;
+    }
+  }
+}
+
+#list-area > .contents {
+  border: none !important;
+}
+
+.widget-container {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}

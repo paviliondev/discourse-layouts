@@ -14,7 +14,7 @@ export default {
     const site = container.lookup('site:main');
     const siteSettings = container.lookup('site-settings:main');
 
-    if (site.mobileView || !siteSettings.layouts_enabled) { return; }
+    if (site.mobileView && !siteSettings.layouts_mobile_enabled || !siteSettings.layouts_enabled) { return; }
 
     DiscoveryRoute.reopen({
       renderTemplate() {
@@ -82,6 +82,9 @@ export default {
 
       @computed('path')
       mainStyle() {
+        const isMobile = this.get('site.mobileView');
+        if (isMobile) return;
+
         const left = this.get('leftSidebarEnabled');
         const right = this.get('rightSidebarEnabled');
         return Ember.String.htmlSafe(`width: ${getContentWidth(left, right)};`);
