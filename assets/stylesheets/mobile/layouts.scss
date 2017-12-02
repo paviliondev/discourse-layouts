@@ -1,9 +1,32 @@
-.main-content {
-  width: initial;
+.main-content.has-sidebars {
+  width: 100%;
   margin: 0 !important;
+
+  &.topic {
+    #topic-title {
+      border: none;
+      padding-bottom: 0;
+
+      .container {
+        padding: 5px;
+      }
+    }
+
+    .posts {
+      border: none;
+    }
+
+    .topic-post>.boxed>.row {
+      padding: 5px;
+    }
+
+    .post-stream {
+      padding-bottom: 0;
+    }
+  }
 }
 
-aside.sidebar{
+aside.sidebar {
   width: 90vw;
   position: fixed;
   height: calc(100% - 55px);
