@@ -7,7 +7,7 @@
 
 register_asset 'stylesheets/common/layouts.scss'
 register_asset 'stylesheets/common/layouts-topic.scss'
-register_asset 'stylesheets/mobile/layouts.scss'
+register_asset 'stylesheets/mobile/layouts.scss', :mobile
 
 enabled_site_setting :layouts_enabled
 
