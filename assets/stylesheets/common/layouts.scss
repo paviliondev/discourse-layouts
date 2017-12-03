@@ -270,17 +270,31 @@ aside.sidebar {
     }
 
     li {
+      width: 100%;
+      cursor: pointer;
+      padding: 5px 0;
+      border-top: 1px solid $primary-low;
+
       &:first-of-type {
         margin-top: 0;
+      }
+
+      &:last-of-type {
+        padding-bottom: 0;
+      }
+    }
+
+    .widget-list-controls, .no-items {
+      padding-top: 5px;
+      border-top: 1px solid $primary-low;
+
+      a {
+        font-size: 1em;
       }
     }
 
     .widget-list-controls {
       margin-top: 5px;
-
-      a {
-        font-size: 1em;
-      }
     }
   }
 }
