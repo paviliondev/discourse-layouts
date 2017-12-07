@@ -284,6 +284,16 @@ aside.sidebar {
       }
     }
 
+    .list-item {
+      .right {
+        float: right;
+
+        span {
+          margin-right: 3px;
+        }
+      }
+    }
+
     .widget-list-controls, .no-items {
       padding-top: 5px;
       border-top: 1px solid $primary-low;
