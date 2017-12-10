@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DiscourseLayouts::WidgetHelper
-  def self.add_widget(name, opts)
+  def self.add_widget(name, opts = {})
     widgets = get_widgets
 
     if widgets.empty? || widgets.none? { |w| w['name'] == name }
