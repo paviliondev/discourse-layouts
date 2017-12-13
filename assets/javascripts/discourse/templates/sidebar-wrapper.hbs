@@ -5,7 +5,10 @@
         {{#if showUserControls}}
           <div class="sidebar-user-controls left">
             <div class='user-control'>
-              <a class="edit-sidebars" {{action 'editSidebars' 'left'}}>{{i18n edit_left_text}}</a>
+              <a class="edit-sidebars" {{action 'editSidebars' 'left'}}>{{i18n editLeftText}}</a>
+            </div>
+            <div class="user-control">
+              <a class="add-to-sidebars" {{action 'addToSidebars' 'left'}}>{{i18n 'layout.add'}}</a>
             </div>
           </div>
         {{/if}}
@@ -19,13 +22,6 @@
       {{#sidebar-container side="right" topic=model customProps=customProps category=category filter=filter context=mainContent editing=editing_right}}
         {{#if site.mobileView}}
           {{d-button class='mobile-toggle right' action='toggleSidebar' actionParam='right' icon='bars'}}
-        {{/if}}
-        {{#if showUserControls}}
-          <div class="sidebar-user-controls right">
-            <div class='user-control'>
-              <a class="edit-sidebars" {{action 'editSidebars' 'right'}}>{{i18n edit_right_text}}</a>
-            </div>
-          </div>
         {{/if}}
       {{/sidebar-container}}
     </aside>
