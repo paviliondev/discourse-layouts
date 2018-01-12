@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DiscourseLayouts::WidgetHelper
   def self.add_widget(name, opts = {})
     widgets = get_widgets

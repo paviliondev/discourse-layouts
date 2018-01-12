@@ -1,9 +1,8 @@
-# frozen_string_literal: true
-
 # name: discourse-layouts
 # about: A plugin that provides the infrastructure to create custom Discourse layouts, particularly sidebar layouts.
 # version: 0.1
 # authors: Angus McLeod
+# url: https://github.com/angusmcleod/discourse-layouts
 
 register_asset 'stylesheets/common/layouts.scss'
 register_asset 'stylesheets/common/layouts-topic.scss'

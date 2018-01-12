@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DiscourseLayouts::WidgetController < ::ApplicationController
   before_action :ensure_admin
 
