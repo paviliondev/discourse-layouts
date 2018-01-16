@@ -15,6 +15,7 @@ export default {
       'Category',
       'ParentCategory',
       'CategoryNone',
+      'CategoryWithID'
     ];
     let filters = site.get('filters');
     filters.push('top');
