@@ -285,8 +285,14 @@ aside.sidebar {
     }
 
     .list-item {
+      display: flex;
+
+      .title {
+        flex: 1;
+      }
+
       .right {
-        float: right;
+        margin-left: 5px;
 
         span {
           margin-right: 3px;

@@ -20,6 +20,16 @@
     {{partial mainContent}}
   </div>{{#if rightSidebarEnabled}}<aside class="sidebar right" style={{rightStyle}}>
       {{#sidebar-container side="right" topic=model customProps=customProps category=category filter=filter context=mainContent editing=editing_right}}
+        {{#if showUserControls}}
+          <div class="sidebar-user-controls right">
+            <div class='user-control'>
+              <a class="edit-sidebars" {{action 'editSidebars' 'right'}}>{{i18n editRightText}}</a>
+            </div>
+            <div class="user-control">
+              <a class="add-to-sidebars" {{action 'addToSidebars' 'right'}}>{{i18n 'layout.add'}}</a>
+            </div>
+          </div>
+        {{/if}}
         {{#if site.mobileView}}
           {{d-button class='mobile-toggle right' action='toggleSidebar' actionParam='right' icon='bars'}}
         {{/if}}
