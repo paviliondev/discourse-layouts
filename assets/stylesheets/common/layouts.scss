@@ -219,6 +219,12 @@ aside.sidebar {
     width: 100%;
   }
 
+  .widget-label {
+    letter-spacing: 1.3px;
+    color: $tertiary;
+    margin-bottom: 3px;
+  }
+
   .widget-title {
     display: inline-block;
     text-decoration: underline;
@@ -229,10 +235,10 @@ aside.sidebar {
     display: inline-block;
 
     a.widget-link.list-title {
-      color: $primary;
       padding: 0 6px;
       margin-right: 0;
       text-decoration: none;
+      color: $primary;
 
       &:first-of-type {
         padding-left: 0;
@@ -242,8 +248,8 @@ aside.sidebar {
         border-right: none;
       }
 
-      &.active {
-        text-decoration: underline;
+      &.active span {
+        @extend .p-link;
       }
     }
   }
@@ -266,6 +272,11 @@ aside.sidebar {
 
     .spinner {
       margin-left: 110px;
+    }
+
+    &.no-borders > ul > li {
+      border-top: none;
+      padding: 0;
     }
 
     ul {
@@ -305,8 +316,8 @@ aside.sidebar {
     }
 
     .widget-list-controls, .no-items {
-      padding-top: 5px;
       border-top: 1px solid $primary-low;
+      padding-top: 5px;
 
       a {
         font-size: 1em;
@@ -314,6 +325,7 @@ aside.sidebar {
     }
 
     .widget-list-controls {
+      padding-top: 5px;
       margin-top: 5px;
     }
   }
