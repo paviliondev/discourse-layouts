@@ -231,29 +231,6 @@ aside.sidebar {
     margin-bottom: 3px;
   }
 
-  .widget-multi-title {
-    display: inline-block;
-
-    a.widget-link.list-title {
-      padding: 0 6px;
-      margin-right: 0;
-      text-decoration: none;
-      color: $primary;
-
-      &:first-of-type {
-        padding-left: 0;
-      }
-
-      &:last-of-type {
-        border-right: none;
-      }
-
-      &.active span {
-        @extend .p-link;
-      }
-    }
-  }
-
   .widget-description {
     padding-bottom: 5px;
   }
