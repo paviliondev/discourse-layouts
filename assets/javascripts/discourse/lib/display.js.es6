@@ -32,4 +32,24 @@ let renderTemplateCategory = function(self, category, path) {
   self.render('discovery/topics', { controller: 'discovery/topics', outlet: 'list-container' });
 };
 
-export { getContentWidth, renderTemplateTopic, renderTemplateCategory };
+let toggleSidebar = function(side) {
+  const $sidebar = $(`aside.sidebar.${side}`);
+  const opposite = side === 'right' ? 'left' : 'right';
+  const $oppositeToggle = $(`.mobile-toggle.${opposite}`);
+  let value = 0;
+  if ($sidebar.hasClass('open')) {
+    value = '-90vw';
+  } else {
+    $oppositeToggle.hide();
+  }
+  let params = {}; params[side] = value;
+
+  $sidebar.animate(params, 200, () => {
+    $sidebar.toggleClass('open');
+    if (!$sidebar.hasClass('open')) {
+      $oppositeToggle.show();
+    }
+  });
+};
+
+export { getContentWidth, renderTemplateTopic, renderTemplateCategory, toggleSidebar };

@@ -61,6 +61,11 @@ aside.sidebar {
     position: relative !important;
     min-height: 100%;
     padding-bottom: 0;
+
+    .sidebar-content > div {
+      position: relative;
+      margin-bottom: 0;
+    }
   }
 
   .mobile-toggle {
@@ -102,6 +107,7 @@ aside.sidebar {
 }
 
 .widget-container {
+  padding: 10px 15px;
   border-top: none;
   border-left: none;
   border-right: none;
