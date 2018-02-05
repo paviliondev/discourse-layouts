@@ -191,6 +191,11 @@
         min-width: initial;
       }
     }
+
+    img:not(.thumbnail) {
+      max-width: 100%;
+      height: auto;
+    }
   }
 
   .post-menu-area {
