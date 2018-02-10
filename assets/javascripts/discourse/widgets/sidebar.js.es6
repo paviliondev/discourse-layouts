@@ -1,5 +1,4 @@
 import { createWidget } from 'discourse/widgets/widget';
-import { toggleSidebar } from '../lib/display';
 
 var isNumeric = function(val) {
   return !isNaN(parseFloat(val)) && isFinite(val);
@@ -135,7 +134,7 @@ export default createWidget('sidebar', {
     return contents;
   },
 
-  clickOutside(e) {
+  clickOutside() {
     const side = this.attrs.side;
     const $sidebar = $(`.sidebar.${side}`);
     if ($sidebar.length > 0 && $sidebar.hasClass('is-responsive') && $sidebar.hasClass('open')) {
