@@ -27,7 +27,7 @@
 }
 
 aside.sidebar {
-  width: 90vw;
+  width: 85vw;
   position: fixed;
   height: calc(100% - 60px);
   top: 60px;
@@ -38,7 +38,7 @@ aside.sidebar {
   }
 
   &.left {
-    left: -90vw;
+    left: -85vw;
     border: none;
 
     &.open {
@@ -48,7 +48,7 @@ aside.sidebar {
   }
 
   &.right {
-    right: -90vw;
+    right: -85vw;
     border: none;
 
     &.open {

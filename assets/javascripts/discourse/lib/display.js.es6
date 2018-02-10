@@ -38,7 +38,7 @@ let toggleSidebar = function(side) {
   const $oppositeToggle = $(`.mobile-toggle.${opposite}`);
   let value = 0;
   if ($sidebar.hasClass('open')) {
-    value = '-90vw';
+    value = '-85vw';
   } else {
     $oppositeToggle.hide();
   }
