@@ -71,10 +71,11 @@ aside.sidebar {
   .mobile-toggle {
     position: absolute;
     background-color: $secondary;
-    top: calc(50% - 20px);
+    bottom: 10px;
     padding: 6px;
-    line-height: 14px;
     box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    height: 50px;
+    width: 50px;
 
     &:hover {
       color: $primary;
@@ -89,7 +90,7 @@ aside.sidebar {
       border-right: 1px solid $primary-low-mid;
       border-bottom: 1px solid $primary-low-mid;
       border-top: 1px solid $primary-low-mid;
-      right: -31px;
+      right: -50px;
     }
 
     &.right {
@@ -97,7 +98,7 @@ aside.sidebar {
       border-left: 1px solid $primary-low-mid;
       border-top: 1px solid $primary-low-mid;
       border-bottom: 1px solid $primary-low-mid;
-      left: -31px;
+      left: -50px;
     }
   }
 }

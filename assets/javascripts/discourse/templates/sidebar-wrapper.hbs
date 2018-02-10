@@ -12,8 +12,8 @@
             </div>
           </div>
         {{/if}}
-        {{#if site.mobileView}}
-          {{d-button class='mobile-toggle left' action='toggleSidebar' actionParam='left' icon='bars'}}
+        {{#if showLeftToggle}}
+          {{d-button class='mobile-toggle left' action='toggleSidebar' actionParam='left' icon='chevron-right'}}
         {{/if}}
       {{/sidebar-container}}
     </aside>{{/if}}<div class="main-content {{mainClasses}}" style={{mainStyle}}>
@@ -30,8 +30,8 @@
             </div>
           </div>
         {{/if}}
-        {{#if site.mobileView}}
-          {{d-button class='mobile-toggle right' action='toggleSidebar' actionParam='right' icon='bars'}}
+        {{#if showRightToggle}}
+          {{d-button class='mobile-toggle right' action='toggleSidebar' actionParam='right' icon='chevron-left'}}
         {{/if}}
       {{/sidebar-container}}
     </aside>
