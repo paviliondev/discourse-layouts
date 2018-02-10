@@ -22,7 +22,6 @@ export default Ember.Mixin.create({
   @computed('leftSidebarEnabled', 'mobileTogglesEnabled')
   showLeftToggle(sidebarEnabled, togglesEnabled) {
     const isMobile = this.get('site.mobileView');
-    console.log(isMobile, sidebarEnabled, togglesEnabled)
     return isMobile && sidebarEnabled && togglesEnabled;
   },
 
