@@ -49,20 +49,6 @@ export default {
           style += ` margin-right: ${Discourse.SiteSettings.layouts_sidebar_right_width}px;`;
         }
         return Ember.String.htmlSafe(style);
-      },
-
-      @computed('path', 'editingSidebars')
-      mainClasses(path, editing) {
-        const left = this.get('leftSidebarEnabled');
-        const right = this.get('rightSidebarEnabled');
-        let classes = 'topic';
-
-        if (left || right) classes += ' has-sidebars';
-        if (left) classes += ' left-sidebar';
-        if (right) classes += ' right-sidebar';
-        if (editing) classes += ' editing';
-
-        return classes;
       }
     });
 

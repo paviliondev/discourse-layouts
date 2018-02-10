@@ -95,3 +95,6 @@ plugins:
   layouts_list_nav_menu_global:
     client: true
     default: false
+  layouts_sidebar_main_content_threshold:
+    client: true
+    default: 400

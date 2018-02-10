@@ -501,3 +501,118 @@ aside.sidebar {
   position: absolute;
   right: 0;
 }
+
+////////
+
+.main-content.is-responsive {
+  width: 100% !important;
+  margin: 0 !important;
+
+  &.topic {
+    #topic-title {
+      border: none;
+      padding-bottom: 0;
+
+      .container {
+        padding: 5px;
+      }
+    }
+
+    .posts {
+      border: none;
+    }
+
+    .topic-post>.boxed>.row {
+      padding: 5px;
+    }
+
+    .post-stream {
+      padding-bottom: 0;
+    }
+  }
+}
+
+aside.sidebar.is-responsive {
+  position: fixed;
+  height: calc(100% - 60px);
+  top: 60px;
+  background-color: $secondary;
+  font-size: 14px;
+
+  &.open .mobile-toggle {
+    box-shadow: none;
+  }
+
+  &.left {
+    border: none;
+    transition: left 0.2s linear;
+
+    &.open {
+      border-right: 1px solid $primary-low-mid;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    }
+  }
+
+  &.right {
+    border: none;
+    transition: right 0.2s linear;
+
+    &.open {
+      border-left: 1px solid $primary-low-mid;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    }
+  }
+
+  .sidebar-container {
+    position: relative !important;
+    min-height: 100%;
+    padding-bottom: 0;
+
+    .sidebar-content > div {
+      position: relative;
+      margin-bottom: 0;
+    }
+  }
+
+  .widget-container {
+    padding-top: 10px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+
+  .mobile-toggle {
+    position: absolute;
+    background-color: $secondary;
+    bottom: 10px;
+    padding: 6px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    height: 50px;
+    width: 50px;
+
+    &:hover {
+      color: $primary;
+    }
+
+    i {
+      font-size: 22px;
+    }
+
+    &.left {
+      border-radius: 0 4px 4px 0;
+      border-right: 1px solid $primary-low-mid;
+      border-bottom: 1px solid $primary-low-mid;
+      border-top: 1px solid $primary-low-mid;
+      right: -50px;
+    }
+
+    &.right {
+      border-radius: 4px 0 0 4px;
+      border-left: 1px solid $primary-low-mid;
+      border-top: 1px solid $primary-low-mid;
+      border-bottom: 1px solid $primary-low-mid;
+      left: -50px;
+    }
+  }
+}

@@ -90,24 +90,6 @@ export default {
         return Ember.String.htmlSafe(`width: ${getContentWidth(left, right)};`);
       },
 
-      @computed('path', 'loading', 'editingSidebars')
-      mainClasses(path, loading, editing) {
-        const left = this.get('leftSidebarEnabled');
-        const right = this.get('rightSidebarEnabled');
-        let classes = 'discovery';
-
-        if (loading) return classes + ' loading';
-        if (left || right) classes += ' has-sidebars';
-        if (left) classes += ' left-sidebar';
-        if (right) classes += ' right-sidebar';
-        if (this.get('navigationDisabled')) classes += ' navigation-disabled';
-        if (this.get('headerDisabled')) classes += ' header-disabled';
-        if (this.get('navMenuEnabled')) classes += ' nav-menu-enabled';
-        if (editing) classes += ' editing';
-
-        return classes;
-      },
-
       actions: {
         createCategory() {
           const navigationCategories = this.get('navigationCategories');

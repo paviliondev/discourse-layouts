@@ -32,24 +32,10 @@ let renderTemplateCategory = function(self, category, path) {
   self.render('discovery/topics', { controller: 'discovery/topics', outlet: 'list-container' });
 };
 
-let toggleSidebar = function(side) {
-  const $sidebar = $(`aside.sidebar.${side}`);
-  const opposite = side === 'right' ? 'left' : 'right';
-  const $oppositeToggle = $(`.mobile-toggle.${opposite}`);
-  let value = 0;
-  if ($sidebar.hasClass('open')) {
-    value = '-85vw';
-  } else {
-    $oppositeToggle.hide();
-  }
-  let params = {}; params[side] = value;
-
-  $sidebar.animate(params, 200, () => {
-    $sidebar.toggleClass('open');
-    if (!$sidebar.hasClass('open')) {
-      $oppositeToggle.show();
-    }
-  });
+let responsiveSidebarWidth = function(side) {
+  const sidebarWidthSetting = Discourse.SiteSettings[`layouts_sidebar_${side}_width`];
+  const windowBasedWidth = $(window).width() * 0.85;
+  return windowBasedWidth < sidebarWidthSetting ? windowBasedWidth : sidebarWidthSetting;
 };
 
-export { getContentWidth, renderTemplateTopic, renderTemplateCategory, toggleSidebar };
+export { getContentWidth, renderTemplateTopic, renderTemplateCategory, responsiveSidebarWidth };

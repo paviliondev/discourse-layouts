@@ -135,14 +135,11 @@ export default createWidget('sidebar', {
     return contents;
   },
 
-  clickOutside() {
-    const mobileView = this.site.mobileView;
-    if (mobileView) {
-      const side = this.attrs.side;
-      const $sidebar = $(`.sidebar.${side}`);
-      if ($sidebar.length > 0 && $sidebar.hasClass('open')) {
-        toggleSidebar(side);
-      }
+  clickOutside(e) {
+    const side = this.attrs.side;
+    const $sidebar = $(`.sidebar.${side}`);
+    if ($sidebar.length > 0 && $sidebar.hasClass('is-responsive') && $sidebar.hasClass('open')) {
+      this.appEvents.trigger('sidebar:toggle', side);
     }
   }
 });

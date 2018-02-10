@@ -1,6 +1,6 @@
 <div class="content-wrapper">
   {{#if leftSidebarEnabled}}
-    <aside class="sidebar left" style={{leftStyle}}>
+    <aside class="sidebar left {{leftClasses}}" style={{leftStyle}}>
       {{#sidebar-container side="left" topic=model customProps=customProps category=category filter=filter context=mainContent editing=editing_left}}
         {{#if showUserControls}}
           <div class="sidebar-user-controls left">
@@ -13,12 +13,12 @@
           </div>
         {{/if}}
         {{#if showLeftToggle}}
-          {{d-button class='mobile-toggle left' action='toggleSidebar' actionParam='left' icon='chevron-right'}}
+          {{d-button class='mobile-toggle left' action='toggleSidebar' actionParam='left' icon=toggleSidebarLeftIcon}}
         {{/if}}
       {{/sidebar-container}}
     </aside>{{/if}}<div class="main-content {{mainClasses}}" style={{mainStyle}}>
     {{partial mainContent}}
-  </div>{{#if rightSidebarEnabled}}<aside class="sidebar right" style={{rightStyle}}>
+  </div>{{#if rightSidebarEnabled}}<aside class="sidebar right {{rightClasses}}" style={{rightStyle}}>
       {{#sidebar-container side="right" topic=model customProps=customProps category=category filter=filter context=mainContent editing=editing_right}}
         {{#if showUserControls}}
           <div class="sidebar-user-controls right">
@@ -31,7 +31,7 @@
           </div>
         {{/if}}
         {{#if showRightToggle}}
-          {{d-button class='mobile-toggle right' action='toggleSidebar' actionParam='right' icon='chevron-left'}}
+          {{d-button class='mobile-toggle right' action='toggleSidebar' actionParam='right' icon=toggleSidebarRightIcon}}
         {{/if}}
       {{/sidebar-container}}
     </aside>
