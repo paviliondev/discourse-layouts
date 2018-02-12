@@ -1,3 +1,4 @@
+const excludedFilters = ['map', 'calendar'];
 
 let getRoutes = function(path) {
   if (!path) { return false; }
@@ -16,6 +17,11 @@ let getFilter = function(path) {
 };
 
 let settingEnabled = function(setting, category, path) {
+  let excluded = false;
+  excludedFilters.forEach((f) => {
+    if (path.indexOf(f) > -1) excluded = true;
+  });
+  if (excluded) return;
 
   if (Discourse.SiteSettings[`${setting}_global`]) return true;
   if (category && category.get(`${setting}_global`)) return true;
@@ -53,4 +59,4 @@ let sidebarEnabled = function(side, category) {
                  .indexOf('topic') > -1;
 };
 
-export { settingEnabled, sidebarEnabled };
+export { settingEnabled, sidebarEnabled, excludedFilters };
