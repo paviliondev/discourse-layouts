@@ -50,10 +50,15 @@ export default Ember.Mixin.create({
   mainClasses(path, loading, editing, isResponsive) {
     const left = this.get('leftSidebarEnabled');
     const right = this.get('rightSidebarEnabled');
-    let classes = path.split('.')[0];
+    let p = path.split('.');
+    let classes = `${p[0]} ${p[1].split(/(?=[A-Z])/)[0]}`;
 
     if (loading) return classes + ' loading';
-    if (left || right) classes += ' has-sidebars';
+    if (left || right) {
+      classes += ' has-sidebars';
+    } else {
+      classes += ' no-sidebars';
+    }
     if (left) classes += ' left-sidebar';
     if (right) classes += ' right-sidebar';
     if (isResponsive) classes += ' is-responsive';

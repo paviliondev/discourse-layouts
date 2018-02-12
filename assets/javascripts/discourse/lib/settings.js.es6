@@ -21,7 +21,7 @@ let settingEnabled = function(setting, category, path) {
   excludedFilters.forEach((f) => {
     if (path.indexOf(f) > -1) excluded = true;
   });
-  if (excluded) return;
+  if (excluded) return false;
 
   if (Discourse.SiteSettings[`${setting}_global`]) return true;
   if (category && category.get(`${setting}_global`)) return true;

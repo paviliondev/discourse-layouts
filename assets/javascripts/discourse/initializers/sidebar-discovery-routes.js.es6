@@ -41,22 +41,20 @@ export default {
     });
 
     discoveryTopicRoutes.forEach(function(route){
-      withPluginApi('0.8.12', api => {
-        api.modifyClass(`route:discovery.${route}`, {
-          renderTemplate() {
-            renderTemplateTopic(this, false, this.get('routeName'));
-          }
-        });
+      var route = container.lookup(`route:discovery.${route}`);
+      route.reopen({
+        renderTemplate() {
+          renderTemplateTopic(this, false, this.get('routeName'));
+        }
       });
     });
 
     discoveryCategoryRoutes.forEach(function(route){
-      withPluginApi('0.8.12', api => {
-        api.modifyClass(`route:discovery.${route}`, {
-          renderTemplate(controller, model) {
-            renderTemplateCategory(this, model.category, this.get('routeName'));
-          }
-        });
+      var route = container.lookup(`route:discovery.${route}`);
+      route.reopen({
+        renderTemplate(controller, model) {
+          renderTemplateCategory(this, model.category, this.get('routeName'));
+        }
       });
     });
 
