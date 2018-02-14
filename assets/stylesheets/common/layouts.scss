@@ -68,6 +68,10 @@ aside.sidebar {
     padding: 0;
   }
 
+  &.no-sidebars {
+    display: initial;
+  }
+
   &.has-sidebars {
     .list-controls {
       width: 100%;
