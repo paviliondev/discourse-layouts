@@ -70,6 +70,10 @@ aside.sidebar {
 
   &.no-sidebars {
     display: block;
+
+    &.loading {
+      margin: 0;
+    }
   }
 
   &.has-sidebars {
