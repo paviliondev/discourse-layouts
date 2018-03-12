@@ -1,12 +1,24 @@
 import { default as computed, on } from 'ember-addons/ember-computed-decorators';
-import { responsiveSidebarWidth } from '../lib/display';
+import { mainStyle, responsiveSidebarWidth } from '../lib/display';
+import { settingEnabled } from '../lib/settings';
 
 export default Ember.Mixin.create({
+  application: Ember.inject.controller('application'),
   path: Ember.computed.alias('application.currentPath'),
   mobileTogglesEnabled: true,
   responsiveView: false,
   leftSidebarVisible: false,
   rightSidebarVisible: false,
+
+  @computed('path')
+  leftSidebarEnabled() {
+    return settingEnabled('layouts_sidebar_left_enabled', this.get('category'), this.get('path'));
+  },
+
+  @computed('path')
+  rightSidebarEnabled() {
+    return settingEnabled('layouts_sidebar_right_enabled', this.get('category'), this.get('path'));
+  },
 
   @on('init')
   setupMixin() {
@@ -112,6 +124,16 @@ export default Ember.Mixin.create({
       string += ` right: ${right}px;`;
     }
     return Ember.String.htmlSafe(string);
+  },
+
+  @computed('path', 'isTopic')
+  mainStyle(path, isTopic) {
+    const isMobile = this.get('site.mobileView');
+    if (isMobile) return;
+
+    const left = this.get('leftSidebarEnabled');
+    const right = this.get('rightSidebarEnabled');
+    return Ember.String.htmlSafe(mainStyle(left, right, isTopic));
   },
 
   @computed('leftSidebarEnabled', 'mobileTogglesEnabled', 'isResponsive', 'rightSidebarVisible')

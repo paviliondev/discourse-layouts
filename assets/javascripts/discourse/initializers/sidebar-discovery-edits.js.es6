@@ -2,10 +2,9 @@ import DiscoveryController from 'discourse/controllers/discovery';
 import DiscoveryRoute from 'discourse/routes/discovery';
 import NavigationBar from 'discourse/components/navigation-bar';
 import NavigationItem from 'discourse/components/navigation-item';
-import LayoutsFunctionality from '../mixins/layouts';
+import Sidebars from '../mixins/sidebars';
 import { on, observes, default as computed } from 'ember-addons/ember-computed-decorators';
 import { settingEnabled } from '../lib/settings';
-import { getContentWidth } from '../lib/display';
 import { getOwner } from 'discourse-common/lib/get-owner';
 
 export default {
@@ -22,7 +21,7 @@ export default {
       }
     });
 
-    DiscoveryController.reopen(LayoutsFunctionality, {
+    DiscoveryController.reopen(Sidebars, {
       mainContent: 'discovery',
       navigationDefault: Ember.inject.controller('navigation/default'),
       navigationCategories: Ember.inject.controller('navigation/categories'),
@@ -51,16 +50,6 @@ export default {
       },
 
       @computed('path')
-      leftSidebarEnabled() {
-        return settingEnabled('layouts_sidebar_left_enabled', this.get('category'), this.get('path'));
-      },
-
-      @computed('path')
-      rightSidebarEnabled() {
-        return settingEnabled('layouts_sidebar_right_enabled', this.get('category'), this.get('path'));
-      },
-
-      @computed('path')
       navigationDisabled() {
         return settingEnabled('layouts_list_navigation_disabled', this.get('category'), this.get('path'));
       },
@@ -78,16 +67,6 @@ export default {
       @computed('category')
       showCategoryEditBtn(category) {
         return category && category.get('can_edit');
-      },
-
-      @computed('path')
-      mainStyle() {
-        const isMobile = this.get('site.mobileView');
-        if (isMobile) return;
-
-        const left = this.get('leftSidebarEnabled');
-        const right = this.get('rightSidebarEnabled');
-        return Ember.String.htmlSafe(`width: ${getContentWidth(left, right)};`);
       },
 
       actions: {

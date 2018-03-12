@@ -32,7 +32,7 @@ let settingEnabled = function(setting, category, path) {
   const siteEnabled = Discourse.SiteSettings[setting].split('|');
   const filter = getFilter(path);
 
-  if (routes.indexOf('category') > -1 && category) {
+  if ((routes.indexOf('category') > -1) && category) {
     const categoryEnabled = category.get(setting);
     return siteEnabled.indexOf('category') > -1 ||
            categoryEnabled && categoryEnabled.split('|').indexOf(filter) > -1;
@@ -46,17 +46,16 @@ let settingEnabled = function(setting, category, path) {
     return siteEnabled.indexOf('tags') > -1;
   }
 
+  if (routes.indexOf('topic') > -1) {
+    if (siteEnabled.indexOf('topic') > -1) return true;
+
+    if (!category) return false;
+    const categoryEnabled = category.get(setting);
+
+    return categoryEnabled && categoryEnabled.split('|').indexOf('topic') > -1;
+  }
+
   return siteEnabled.indexOf(filter) > -1;
 };
 
-let sidebarEnabled = function(side, category) {
-  const global = Discourse.SiteSettings[`layouts_sidebar_${side}_enabled_global`];
-  const select = Discourse.SiteSettings[`layouts_sidebar_${side}_enabled`].split('|');
-  return global || select.indexOf('topic') > -1 ||
-         category && category.get(`layouts_sidebar_${side}_enabled`) &&
-         category.get(`layouts_sidebar_left_enabled`)
-                 .split('|')
-                 .indexOf('topic') > -1;
-};
-
-export { settingEnabled, sidebarEnabled, excludedFilters };
+export { settingEnabled, excludedFilters };
