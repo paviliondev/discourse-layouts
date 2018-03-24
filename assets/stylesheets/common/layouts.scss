@@ -386,17 +386,21 @@ aside.sidebar {
   border-top: none;
 }
 
-#list-area .main-content.tags {
-  .tag-notification-menu, .dropdown-toggle {
-    margin: 0;
+.main-content.tags {
+  display: inline-block;
+
+  .container.list-container {
+    border: none;
   }
 
-  .admin-tag {
-    margin: 0 8px;
-  }
+  #list-area {
+    .tag-show-heading {
+      margin: 7px 7px 0 7px;
+    }
 
-  .tag-show-heading {
-    margin: 7px 7px 0 7px;
+    h2, .tags-admin-menu {
+      margin-top: 0;
+    }
   }
 }
 
