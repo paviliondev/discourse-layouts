@@ -25,15 +25,15 @@ export default MountWidget.extend({
       args['topic'] = this.get('topic');
     }
 
-    const customProps = this.get('customProps');
-    if (customProps && customProps.length > 1) {
-      args['customProps'] = customProps;
+    const customWidgetProps = this.get('customWidgetProps');
+    if (customWidgetProps && customWidgetProps.length > 0) {
+      args['customWidgetProps'] = customWidgetProps;
     }
 
     return args;
   },
 
-  @observes('topic', 'category', 'topic.details.created_by', 'editing', 'currentUser.left_apps', 'currentUser.right_apps')
+  @observes('topic', 'category', 'topic.details.created_by', 'editing', 'customWidgetProps')
   updateOnModelChange() {
     this.queueRerender();
     this.appEvents.trigger('sidebars:rerender');

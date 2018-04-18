@@ -227,15 +227,6 @@ aside.sidebar {
     width: 100%;
   }
 
-  .app-title {
-    img {
-      margin-right: 5px;
-    }
-    color: $tertiary;
-    margin-bottom: 3px;
-    font-weight: 600;
-  }
-
   .widget-title {
     display: inline-block;
     text-decoration: underline;
@@ -256,7 +247,6 @@ aside.sidebar {
   }
 
   .widget-list {
-    margin-top: 5px;
 
     .spinner {
       margin-left: 110px;
@@ -315,6 +305,12 @@ aside.sidebar {
     .widget-list-controls {
       padding-top: 5px;
       margin-top: 5px;
+      display: flex;
+      line-height: 1.2;
+
+      .right {
+        margin-left: auto;
+      }
     }
   }
 }

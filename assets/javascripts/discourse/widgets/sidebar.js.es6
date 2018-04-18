@@ -4,68 +4,104 @@ var isNumeric = function(val) {
   return !isNaN(parseFloat(val)) && isFinite(val);
 };
 
+const customWidgets = [];
+const addCustomWidget = (widget) => customWidgets.push(widget);
+export { addCustomWidget };
+
 export default createWidget('sidebar', {
   tagName: 'div.sidebar-content',
 
   html(args) {
-    const category = args.category;
-    const siteEnabled = Discourse.SiteSettings[`layouts_sidebar_${args.side}_enabled`].split('|');
-    const siteEnabledGlobal = Discourse.SiteSettings[`layouts_sidebar_${args.side}_enabled_global`];
-    const userSelectionEnabled = Discourse.SiteSettings.layouts_sidebar_user_selected_widgets;
     const user = this.currentUser;
+    const { side, context, filter, category, topic, editing, customWidgetProps } = args;
 
+    let siteWidgets = this.site.get('widgets');
     let generalWidgets = [];
     let orderedWidgets = [];
+    let sideWidgets = siteWidgets.concat(customWidgets).filter((w) => w.position === side);
 
-    const siteWidgets = this.site.get('widgets');
-    if (siteWidgets) {
-      let sideWidgets = siteWidgets.filter((w) => w.position === args.side);
+    if (sideWidgets) {
+      generalWidgets.push(...sideWidgets.filter((w) => !w.order));
+      orderedWidgets.push(...sideWidgets.filter((w) => {
+        return isNumeric(w.order) || (w.order === 'start' || w.order === 'end');
+      }));
+    }
 
-      if (sideWidgets) {
-        generalWidgets = sideWidgets.filter((w) => !w.order);
-        orderedWidgets = sideWidgets.filter((w) => {
-          return isNumeric(w.order) || (w.order === 'start' || w.order === 'end');
-        });
-      }
-    };
+    let widgets = [];
+    widgets = this.addGeneralWidgets(widgets, generalWidgets, args);
+    widgets = this.addOrderedWidgets(widgets, orderedWidgets, args);
 
     let contents = [];
-    let widgets = [];
-    let isUser = false;
-    let userApps;
 
-    if (user && userSelectionEnabled) {
-      userApps = user.get(`${args.side}_apps`) || [];
-      if (userApps.length > 0) {
-        widgets.push(...userApps);
-      }
-    } else {
-      let categoryWidgets;
-      let categoryEnabled;
+    widgets.forEach((widget) => {
+      if (widget.length) {
+        const exists = this.register.lookupFactory(`widget:${widget}`);
 
-      if (category) {
-        const cw = category.get(`layouts_sidebar_${args.side}_widgets`);
-        const ce = category.get(`layouts_sidebar_${args.side}_enabled`);
-        categoryWidgets = cw ? cw.split('|') : [];
-        categoryEnabled = ce ? ce.split('|') : false;
-      }
+        if (exists) {
+          let props = { topic, category, editing, side };
 
-      if (args.context === 'discovery' || args.context === 'tags') {
+          if (customWidgetProps && customWidgetProps.length > 0) {
+            customWidgetProps.forEach((customProps) => {
+              Object.assign(props, customProps);
+            });
+          };
 
-        if (!category || siteEnabledGlobal || siteEnabled.indexOf('category') > -1) {
-          generalWidgets.forEach((w) => widgets.push(w.name));
-        }
+          if (props.widgetConditions && props.widgetConditions[widget]) {
+            const conditions = props.widgetConditions[widget];
 
-        if (categoryEnabled && categoryEnabled.indexOf(args.filter) > -1) {
-          categoryWidgets.forEach((widget) => {
-            if (widgets.indexOf(widget) === -1) {
-              widgets.push(widget);
+            if (conditions.requiredProp) {
+              const propArray = conditions.requiredProp.split('.');
+              const isCategory = propArray.indexOf('category') === 0;
+
+              if (isCategory && (!props['category'] || !props['category'].get(propArray[1]))) return;
             }
-          });
+          }
+
+          contents.push(this.attach(widget, props));
         }
       }
+    });
 
-      if (args.context === 'topic') {
+    return contents;
+  },
+
+  clickOutside() {
+    const side = this.attrs.side;
+    const $sidebar = $(`.sidebar.${side}`);
+    if ($sidebar.length > 0 && $sidebar.hasClass('is-responsive') && $sidebar.hasClass('open')) {
+      this.appEvents.trigger('sidebar:toggle', side);
+    }
+  },
+
+  addGeneralWidgets(widgets, generalWidgets, args) {
+    const { side, context, filter, category } = args;
+    const siteEnabledGlobal = Discourse.SiteSettings[`layouts_sidebar_${side}_enabled_global`];
+    const siteEnabled = Discourse.SiteSettings[`layouts_sidebar_${side}_enabled`].split('|');
+
+    let categoryWidgets;
+    let categoryEnabled;
+    if (category) {
+      const cw = category.get(`layouts_sidebar_${side}_widgets`);
+      const ce = category.get(`layouts_sidebar_${side}_enabled`);
+      categoryWidgets = cw ? cw.split('|') : [];
+      categoryEnabled = ce ? ce.split('|') : false;
+    }
+
+    if (context === 'discovery' || context === 'tags') {
+
+      if (!category || siteEnabledGlobal || siteEnabled.indexOf('category') > -1) {
+        generalWidgets.forEach((w) => widgets.push(w.name));
+      }
+
+      if (categoryEnabled && categoryEnabled.indexOf(filter) > -1) {
+        categoryWidgets.forEach((widget) => {
+          if (widgets.indexOf(widget) === -1) {
+            widgets.push(widget);
+          }
+        });
+      }
+
+      if (context === 'topic') {
         if (siteEnabledGlobal || siteEnabled.indexOf('topic') > -1) {
           generalWidgets.forEach((w) => widgets.push(w.name));
         }
@@ -80,6 +116,10 @@ export default createWidget('sidebar', {
       }
     }
 
+    return widgets;
+  },
+
+  addOrderedWidgets(widgets, orderedWidgets, args) {
     orderedWidgets.forEach((w) => {
       if (isNumeric(w.order)) {
         widgets.splice(w.order, 0, w.name);
@@ -97,48 +137,6 @@ export default createWidget('sidebar', {
       }
     });
 
-    widgets.forEach((widget) => {
-      if (widget.length) {
-        const exists = this.register.lookupFactory(`widget:${widget}`);
-
-        if (exists) {
-          let index = null;
-
-          if (user && userSelectionEnabled) {
-            let userIndex = userApps.indexOf(widget);
-
-            if (userIndex > -1) {
-              isUser = true;
-              index = userIndex;
-            }
-          }
-
-          let props = {
-            topic: args.topic,
-            category,
-            isUser,
-            editing: args.editing,
-            side: args.side,
-            index
-          };
-
-          if (args.customProps) {
-            Object.assign(props, args.customProps);
-          };
-
-          contents.push(this.attach(widget, props));
-        }
-      }
-    });
-
-    return contents;
-  },
-
-  clickOutside() {
-    const side = this.attrs.side;
-    const $sidebar = $(`.sidebar.${side}`);
-    if ($sidebar.length > 0 && $sidebar.hasClass('is-responsive') && $sidebar.hasClass('open')) {
-      this.appEvents.trigger('sidebar:toggle', side);
-    }
+    return widgets;
   }
 });
