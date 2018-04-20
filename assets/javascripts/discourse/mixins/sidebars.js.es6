@@ -1,4 +1,4 @@
-import { default as computed, on } from 'ember-addons/ember-computed-decorators';
+import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
 import { mainStyle, responsiveSidebarWidth } from '../lib/display';
 import { settingEnabled } from '../lib/settings';
 
@@ -9,15 +9,29 @@ export default Ember.Mixin.create({
   responsiveView: false,
   leftSidebarVisible: false,
   rightSidebarVisible: false,
+  leftHasWidgets: true,
+  rightHasWidgets: true,
 
-  @computed('path')
-  leftSidebarEnabled() {
-    return settingEnabled('layouts_sidebar_left_enabled', this.get('category'), this.get('path'));
+  @observes('path')
+  resetHasWidgets() {
+    this.setProperties({
+      leftHasWidgets: true,
+      rightHasWidgets: true
+    })
   },
 
-  @computed('path')
-  rightSidebarEnabled() {
-    return settingEnabled('layouts_sidebar_right_enabled', this.get('category'), this.get('path'));
+  @computed('path', 'leftHasWidgets')
+  leftSidebarEnabled(path, hasWidgets) {
+    const hideIfNoWidgets = Discourse.SiteSettings.layouts_hide_sidebars_if_empty;
+    if (hideIfNoWidgets && !hasWidgets) return false;
+    return settingEnabled('layouts_sidebar_left_enabled', this.get('category'), path);
+  },
+
+  @computed('path', 'rightHasWidgets')
+  rightSidebarEnabled(path, hasWidgets) {
+    const hideIfNoWidgets = Discourse.SiteSettings.layouts_hide_sidebars_if_empty;
+    if (hideIfNoWidgets && !hasWidgets) return false;
+    return settingEnabled('layouts_sidebar_right_enabled', this.get('category'), path);
   },
 
   @on('init')
@@ -58,10 +72,8 @@ export default Ember.Mixin.create({
     return mobileView || responsiveView;
   },
 
-  @computed('path', 'loading', 'editingSidebars', 'isResponsive')
-  mainClasses(path, loading, editing, isResponsive) {
-    const left = this.get('leftSidebarEnabled');
-    const right = this.get('rightSidebarEnabled');
+  @computed('path', 'loading', 'editingSidebars', 'isResponsive', 'leftSidebarEnabled', 'rightSidebarEnabled')
+  mainClasses(path, loading, editing, isResponsive, left, right) {
     let p = path.split('.');
     let classes = `${p[0]} ${p[1].split(/(?=[A-Z])/)[0]}`;
 
@@ -126,13 +138,10 @@ export default Ember.Mixin.create({
     return Ember.String.htmlSafe(string);
   },
 
-  @computed('path', 'isTopic')
-  mainStyle(path, isTopic) {
+  @computed('path', 'isTopic', 'leftSidebarEnabled', 'rightSidebarEnabled')
+  mainStyle(path, isTopic, left, right) {
     const isMobile = this.get('site.mobileView');
     if (isMobile) return;
-
-    const left = this.get('leftSidebarEnabled');
-    const right = this.get('rightSidebarEnabled');
     return Ember.String.htmlSafe(mainStyle(left, right, isTopic));
   },
 
@@ -159,6 +168,10 @@ export default Ember.Mixin.create({
   actions: {
     toggleSidebar(side) {
       this.toggleProperty(`${side}SidebarVisible`);
+    },
+
+    noWidgets(side) {
+      this.set(`${side}HasWidgets`, false);
     }
   }
 });

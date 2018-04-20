@@ -95,3 +95,6 @@ plugins:
   layouts_sidebar_main_content_threshold:
     client: true
     default: 400
+  layouts_hide_sidebars_if_empty:
+    client: true
+    default: false

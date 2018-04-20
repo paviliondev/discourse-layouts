@@ -44,6 +44,7 @@ export default createWidget('sidebar', {
     widgets = this.addOrderedWidgets(widgets, orderedWidgets, args);
 
     let contents = [];
+    let hasWidgets = false;
 
     widgets.forEach((widget) => {
       if (widget.length) {
@@ -69,10 +70,17 @@ export default createWidget('sidebar', {
             }
           }
 
+          hasWidgets = true;
+
           contents.push(this.attach(widget, props));
         }
       }
     });
+
+    if (!hasWidgets) {
+      const controller = this.register.lookup(`controller:${context}`);
+      controller.send('noWidgets', side);
+    }
 
     return contents;
   },
@@ -112,19 +120,19 @@ export default createWidget('sidebar', {
           }
         });
       }
+    }
 
-      if (context === 'topic') {
-        if (siteEnabledGlobal || siteEnabled.indexOf('topic') > -1) {
-          generalWidgets.forEach((w) => widgets.push(w.name));
-        }
+    if (context === 'topic') {
+      if (siteEnabledGlobal || siteEnabled.indexOf('topic') > -1) {
+        generalWidgets.forEach((w) => widgets.push(w.name));
+      }
 
-        if (categoryEnabled && categoryEnabled.indexOf('topic') > -1) {
-          categoryWidgets.forEach((widget) => {
-            if (widgets.indexOf(widget) === -1) {
-              widgets.push(widget);
-            }
-          });
-        }
+      if (categoryEnabled && categoryEnabled.indexOf('topic') > -1) {
+        categoryWidgets.forEach((widget) => {
+          if (widgets.indexOf(widget) === -1) {
+            widgets.push(widget);
+          }
+        });
       }
     }
 

@@ -17,3 +17,4 @@ en:
     layouts_list_nav_menu: "Use list navigation menu for selected routes"
     layouts_list_nav_menu_global: "Use list navigation menu globally"
     layouts_sidebar_main_content_threshold: "Threshold width (px) for main content to trigger responsive layout"
+    layouts_hide_sidebars_if_empty: "Automatically hide sidebars if they are empty"
