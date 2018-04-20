@@ -1,17 +1,10 @@
 <div class="content-wrapper">
   {{#if leftSidebarEnabled}}
     <aside class="sidebar left {{leftClasses}}" style={{leftStyle}}>
-      {{#sidebar-container side="left" topic=model customWidgetProps=customWidgetProps category=category filter=filter context=mainContent editing=editing_left}}
-        {{#if showUserControls}}
-          <div class="sidebar-user-controls left">
-            <div class='user-control'>
-              <a class="edit-sidebars" {{action 'editSidebars' 'left'}}>{{i18n editLeftText}}</a>
-            </div>
-            <div class="user-control">
-              <a class="add-to-sidebars" {{action 'addToSidebars' 'left'}}>{{i18n 'layout.add'}}</a>
-            </div>
-          </div>
-        {{/if}}
+      {{#sidebar-container side="left" topic=model customSidebarProps=customSidebarProps category=category filter=filter context=mainContent}}
+
+        {{plugin-outlet name="sidebar-left" args=(hash side='left' customSidebarProps=customSidebarProps)}}
+
         {{#if showLeftToggle}}
           {{d-button class='mobile-toggle left' action='toggleSidebar' actionParam='left' icon=toggleSidebarLeftIcon}}
         {{/if}}
@@ -19,17 +12,10 @@
     </aside>{{/if}}<div class="main-content {{mainClasses}}" style={{mainStyle}}>
     {{partial mainContent}}
   </div>{{#if rightSidebarEnabled}}<aside class="sidebar right {{rightClasses}}" style={{rightStyle}}>
-      {{#sidebar-container side="right" topic=model customWidgetProps=customWidgetProps category=category filter=filter context=mainContent editing=editing_right}}
-        {{#if showUserControls}}
-          <div class="sidebar-user-controls right">
-            <div class='user-control'>
-              <a class="edit-sidebars" {{action 'editSidebars' 'right'}}>{{i18n editRightText}}</a>
-            </div>
-            <div class="user-control">
-              <a class="add-to-sidebars" {{action 'addToSidebars' 'right'}}>{{i18n 'layout.add'}}</a>
-            </div>
-          </div>
-        {{/if}}
+      {{#sidebar-container side="right" topic=model customSidebarProps=customSidebarProps category=category filter=filter context=mainContent}}
+
+        {{plugin-outlet name="sidebar-right" args=(hash side='right' customSidebarProps=customSidebarProps)}}
+
         {{#if showRightToggle}}
           {{d-button class='mobile-toggle right' action='toggleSidebar' actionParam='right' icon=toggleSidebarRightIcon}}
         {{/if}}

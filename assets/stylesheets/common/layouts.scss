@@ -21,30 +21,6 @@ aside.sidebar {
     position: fixed;
   }
 
-  .sidebar-user-controls {
-    position: absolute;
-    bottom: 0;
-
-    &.right {
-      right: 0;
-    }
-
-    &.left {
-      left: 0;
-    }
-
-    .user-control {
-      width: 30px;
-      display: inline-block;
-      vertical-align: middle;
-      text-align: center;
-    }
-
-    a {
-      color: dark-light-diff($primary, $secondary, 60%, -65%);
-    }
-  }
-
   .sidebar-content {
     > div {
       position: relative;

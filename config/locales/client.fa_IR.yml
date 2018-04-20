@@ -16,10 +16,6 @@ fa_IR:
       current_geojson: "کنونی:"
     filters:
       nav_drop: "منوی ناوبر"
-    layout:
-      add: "اضافه کن"
-      edit: "ادیت"
-      save: "ذخیره"
     topic:
       no_previous: "موضوع قدیمی تری نیست"
       no_next: "موضوع جدید تری نیست"

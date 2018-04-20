@@ -16,10 +16,6 @@ en:
       current_geojson: "Current:"
     filters:
       nav_drop: "Navigation"
-    layout:
-      add: "add"
-      edit: "edit"
-      save: "save"
     topic:
       no_previous: "No older topics"
       no_next: "No newer topics"

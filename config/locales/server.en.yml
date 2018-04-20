@@ -6,7 +6,6 @@ en:
     layouts_sidebar_left_enabled_global: "Enable left sidebar globally"
     layouts_sidebar_right_enabled: "Enable right sidebar for selected routes"
     layouts_sidebar_right_enabled_global: "Enable right sidebar globally"
-    layouts_sidebar_user_selected_widgets: "Allow user to determine what widgets appear in sidebars. Requires an additional plugin."
     layouts_sidebar_left_width: "Left sidebar width (pixels)"
     layouts_sidebar_right_width: "Right sidebar width (pixels)"
     layouts_sidebar_left_fixed: "Left sidebar uses fixed positioning"

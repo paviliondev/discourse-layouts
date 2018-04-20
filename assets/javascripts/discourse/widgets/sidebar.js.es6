@@ -5,7 +5,19 @@ var isNumeric = function(val) {
 };
 
 const customWidgets = [];
-const addCustomWidget = (widget) => customWidgets.push(widget);
+const addCustomWidget = function(widget) {
+  let added = false;
+
+  // replace existing widget record
+  customWidgets.forEach((w, i) => {
+    if (w.name === widget.name) {
+      added = true;
+      customWidgets[i] = widget;
+    }
+  });
+
+  if (!added) customWidgets.push(widget);
+};
 export { addCustomWidget };
 
 export default createWidget('sidebar', {
@@ -13,7 +25,7 @@ export default createWidget('sidebar', {
 
   html(args) {
     const user = this.currentUser;
-    const { side, context, filter, category, topic, editing, customWidgetProps } = args;
+    const { side, context, filter, category, topic, customSidebarProps } = args;
 
     let siteWidgets = this.site.get('widgets');
     let generalWidgets = [];
@@ -38,11 +50,11 @@ export default createWidget('sidebar', {
         const exists = this.register.lookupFactory(`widget:${widget}`);
 
         if (exists) {
-          let props = { topic, category, editing, side };
+          let props = { topic, category, side };
 
-          if (customWidgetProps && customWidgetProps.length > 0) {
-            customWidgetProps.forEach((customProps) => {
-              Object.assign(props, customProps);
+          if (customSidebarProps) {
+            Object.keys(customSidebarProps).forEach((p) => {
+              props[p] = customSidebarProps[p];
             });
           };
 
@@ -120,13 +132,12 @@ export default createWidget('sidebar', {
   },
 
   addOrderedWidgets(widgets, orderedWidgets, args) {
+    orderedWidgets = _.sortBy(orderedWidgets, 'order');
+
     orderedWidgets.forEach((w) => {
-      if (isNumeric(w.order)) {
-        widgets.splice(w.order, 0, w.name);
-      }
+      widgets.push(w.name);
     });
 
-    // 'start' & 'end' overide numbered ordering
     orderedWidgets.forEach((w) => {
       if (w.order === 'start') {
         widgets.unshift(w.name);

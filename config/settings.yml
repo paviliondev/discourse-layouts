@@ -37,9 +37,6 @@ plugins:
   layouts_sidebar_right_enabled_global:
     client: true
     default: false
-  layouts_sidebar_user_selected_widgets:
-    client: true
-    default: false
   layouts_sidebar_left_width:
     client: true
     default: 250

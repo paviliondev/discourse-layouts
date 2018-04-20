@@ -1,9 +1,17 @@
 import MountWidget from 'discourse/components/mount-widget';
-import { observes, default as computed } from 'ember-addons/ember-computed-decorators';
+import { observes, default as computed, on } from 'ember-addons/ember-computed-decorators';
 
 export default MountWidget.extend({
   classNameBindings: [':sidebar-container', 'fixed', 'editing'],
   widget: 'sidebar',
+
+  @on('init')
+  setupRerenderTrigger() {
+    const side = this.get('side');
+    this.appEvents.on('sidebars:rerender', () => {
+      this.rerenderSidebars();
+    });
+  },
 
   @computed()
   fixed() {
@@ -13,9 +21,8 @@ export default MountWidget.extend({
   buildArgs() {
     const context = this.get('context');
     const side = this.get('side');
-    const editing = this.get('editing');
     const category = this.get('category');
-    let args = { context, side, editing, category };
+    let args = { context, side, category };
 
     if (context === 'discovery') {
       args['filter'] = this.get('filter');
@@ -25,17 +32,17 @@ export default MountWidget.extend({
       args['topic'] = this.get('topic');
     }
 
-    const customWidgetProps = this.get('customWidgetProps');
-    if (customWidgetProps && customWidgetProps.length > 0) {
-      args['customWidgetProps'] = customWidgetProps;
+    const customSidebarProps = this.get('customSidebarProps');
+    if (customSidebarProps) {
+      args['customSidebarProps'] = customSidebarProps;
     }
 
     return args;
   },
 
-  @observes('topic', 'category', 'topic.details.created_by', 'editing', 'customWidgetProps')
-  updateOnModelChange() {
+  @observes('topic', 'category', 'topic.details.created_by')
+  rerenderSidebars() {
     this.queueRerender();
-    this.appEvents.trigger('sidebars:rerender');
+    this.appEvents.trigger('sidebars:after-render');
   }
 });
