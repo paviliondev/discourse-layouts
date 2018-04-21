@@ -1,14 +1,19 @@
 import { createWidget } from 'discourse/widgets/widget';
 
-var isNumeric = function(val) {
+const isNumeric = function(val) {
   return !isNaN(parseFloat(val)) && isFinite(val);
+};
+
+const hasOrder = function(w) {
+  return w.order !== undefined && w.order !== null &&
+  (isNumeric(w.order) || (w.order === 'start' || w.order === 'end'));
 };
 
 const customWidgets = [];
 const addCustomWidget = function(widget) {
   let added = false;
 
-  // replace existing widget record
+  // replace existing widget record if it exists
   customWidgets.forEach((w, i) => {
     if (w.name === widget.name) {
       added = true;
@@ -32,11 +37,14 @@ export default createWidget('sidebar', {
     let orderedWidgets = [];
     let sideWidgets = siteWidgets.concat(customWidgets).filter((w) => w.position === side);
 
-    if (sideWidgets) {
-      generalWidgets.push(...sideWidgets.filter((w) => !w.order));
-      orderedWidgets.push(...sideWidgets.filter((w) => {
-        return isNumeric(w.order) || (w.order === 'start' || w.order === 'end');
-      }));
+    if (sideWidgets && sideWidgets.length) {
+      sideWidgets.forEach((w) => {
+        if (hasOrder(w)) {
+          orderedWidgets.push(w);
+        } else {
+          generalWidgets.push(w);
+        }
+      });
     }
 
     let widgets = [];
