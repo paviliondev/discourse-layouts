@@ -11,6 +11,7 @@ export default Ember.Mixin.create({
   rightSidebarVisible: false,
   leftHasWidgets: true,
   rightHasWidgets: true,
+  customSidebarProps: {},
 
   @observes('path')
   resetHasWidgets() {
@@ -77,7 +78,6 @@ export default Ember.Mixin.create({
     let p = path.split('.');
     let classes = `${p[0]} ${p[1].split(/(?=[A-Z])/)[0]}`;
 
-    if (loading) return classes + ' loading';
     if (left || right) {
       classes += ' has-sidebars';
     } else {
@@ -86,6 +86,9 @@ export default Ember.Mixin.create({
     if (left) classes += ' left-sidebar';
     if (right) classes += ' right-sidebar';
     if (isResponsive) classes += ' is-responsive';
+
+    if (loading) return classes + ' loading';
+
     if (this.get('navigationDisabled')) classes += ' navigation-disabled';
     if (this.get('headerDisabled')) classes += ' header-disabled';
     if (this.get('navMenuEnabled')) classes += ' nav-menu-enabled';
@@ -145,25 +148,12 @@ export default Ember.Mixin.create({
     return Ember.String.htmlSafe(mainStyle(left, right, isTopic));
   },
 
-  @computed('leftSidebarEnabled', 'mobileTogglesEnabled', 'isResponsive', 'rightSidebarVisible')
-  showLeftToggle(sidebarEnabled, togglesEnabled, isResponsive, rightSidebarVisible) {
-    return isResponsive && sidebarEnabled && togglesEnabled && !rightSidebarVisible;
+  @computed('leftSidebarEnabled', 'mobileTogglesEnabled', 'isResponsive', 'eitherSidebarVisible')
+  showSidebarToggles(sidebarEnabled, togglesEnabled, isResponsive, eitherSidebarVisible) {
+    return isResponsive && sidebarEnabled && togglesEnabled && !eitherSidebarVisible;
   },
 
-  @computed('rightSidebarEnabled', 'mobileTogglesEnabled', 'isResponsive', 'leftSidebarVisible')
-  showRightToggle(sidebarEnabled, togglesEnabled, isResponsive, leftSidebarVisible) {
-    return isResponsive && sidebarEnabled && togglesEnabled && !leftSidebarVisible;
-  },
-
-  @computed('leftSidebarVisible')
-  toggleSidebarLeftIcon(visible) {
-    return visible ? 'chevron-left' : 'chevron-right';
-  },
-
-  @computed('rightSidebarVisible')
-  toggleSidebarRightIcon(visible) {
-    return visible ? 'chevron-right' : 'chevron-left';
-  },
+  eitherSidebarVisible: Ember.computed.or('leftSidebarVisible', 'rightSidebarVisible'),
 
   actions: {
     toggleSidebar(side) {

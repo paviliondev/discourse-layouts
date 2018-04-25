@@ -117,16 +117,15 @@ aside.sidebar {
     }
   }
 
-  &.left-sidebar {
+  &.left-sidebar, &.left-sidebar.loading {
     margin-left: 10px;
   }
 
-  &.right-sidebar {
+  &.right-sidebar, &.right-sidebar.loading {
     margin-right: 10px;
   }
 
   &.loading {
-    margin: 0 10px;
     box-shadow: none;
   }
 
@@ -484,7 +483,7 @@ aside.sidebar {
 
 .main-content.is-responsive {
   width: 100% !important;
-  margin: 0 !important;
+  margin: 0 0 60px 0 !important;
 
   &.topic {
     #topic-title {
@@ -517,6 +516,11 @@ aside.sidebar.is-responsive {
   background-color: $secondary;
   font-size: 14px;
 
+  &.open {
+    z-index: 100;
+    overflow: scroll;
+  }
+
   &.open .mobile-toggle {
     box-shadow: none;
   }
@@ -528,6 +532,17 @@ aside.sidebar.is-responsive {
     &.open {
       border-right: 1px solid $primary-low-mid;
       box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+
+      // intercepts clicks outside the sidebar to close it
+      &:after {
+        width: calc(100% - 250px);
+        background-color: transparent;
+        content: '';
+        position: fixed;
+        top: 60px;
+        right: 0;
+        height: 100%;
+      }
     }
   }
 
@@ -538,6 +553,17 @@ aside.sidebar.is-responsive {
     &.open {
       border-left: 1px solid $primary-low-mid;
       box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+
+      // intercepts clicks outside the sidebar to close it
+      &:after {
+        width: calc(100% - 250px);
+        background-color: transparent;
+        content: '';
+        position: fixed;
+        top: 60px;
+        left: 0;
+        height: 100%;
+      }
     }
   }
 
@@ -561,9 +587,9 @@ aside.sidebar.is-responsive {
   }
 
   .mobile-toggle {
-    position: absolute;
+    position: fixed;
     background-color: $secondary;
-    bottom: 10px;
+    bottom: 0;
     padding: 6px;
     box-shadow: 0 1px 5px rgba(0,0,0,0.4);
     height: 50px;
@@ -578,19 +604,17 @@ aside.sidebar.is-responsive {
     }
 
     &.left {
-      border-radius: 0 4px 4px 0;
+      border-radius: 0 4px 0 0;
       border-right: 1px solid $primary-low-mid;
-      border-bottom: 1px solid $primary-low-mid;
       border-top: 1px solid $primary-low-mid;
-      right: -50px;
+      left: 0;
     }
 
     &.right {
-      border-radius: 4px 0 0 4px;
+      border-radius: 4px 0 0 0;
       border-left: 1px solid $primary-low-mid;
       border-top: 1px solid $primary-low-mid;
-      border-bottom: 1px solid $primary-low-mid;
-      left: -50px;
+      right: 0;
     }
   }
 }
