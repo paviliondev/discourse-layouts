@@ -64,9 +64,11 @@ export default {
         return settingEnabled('layouts_list_nav_menu', this.get('category'), this.get('path'));
       },
 
-      @computed('category')
-      showCategoryEditBtn(category) {
-        return category && category.get('can_edit');
+      @computed('currentUser')
+      showCategoryEditBtn(currentUser) {
+        return currentUser.admin ||
+        (Discourse.SiteSettings.allow_moderators_to_create_categories &&
+        currentUser.moderator);
       },
 
       actions: {
