@@ -66,6 +66,7 @@ export default {
 
       @computed('currentUser')
       showCategoryEditBtn(currentUser) {
+        if (!currentUser) return false;
         return currentUser.admin ||
         (Discourse.SiteSettings.allow_moderators_to_create_categories &&
         currentUser.moderator);
