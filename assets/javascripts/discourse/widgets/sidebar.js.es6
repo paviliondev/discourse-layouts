@@ -118,7 +118,11 @@ export default createWidget('sidebar', {
     if (context === 'discovery' || context === 'tags') {
 
       if (!category || siteEnabledGlobal || siteEnabled.indexOf('category') > -1) {
-        generalWidgets.forEach((w) => widgets.push(w.name));
+        generalWidgets.forEach((w) => {
+          if (widgets.indexOf(w.name) === -1) {
+            widgets.push(w.name);
+          }
+        });
       }
 
       if (categoryEnabled && categoryEnabled.indexOf(filter) > -1) {
@@ -151,15 +155,11 @@ export default createWidget('sidebar', {
     orderedWidgets = _.sortBy(orderedWidgets, 'order');
 
     orderedWidgets.forEach((w) => {
-      widgets.push(w.name);
-    });
-
-    orderedWidgets.forEach((w) => {
       if (w.order === 'start') {
         widgets.unshift(w.name);
-      }
-
-      if (w.order === 'end') {
+      } else if (w.order === 'end') {
+        widgets.push(w.name);
+      } else {
         widgets.push(w.name);
       }
     });
