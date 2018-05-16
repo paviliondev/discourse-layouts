@@ -73,12 +73,12 @@ export default Ember.Mixin.create({
     return mobileView || responsiveView;
   },
 
-  @computed('path', 'loading', 'editingSidebars', 'isResponsive', 'leftSidebarEnabled', 'rightSidebarEnabled')
-  mainClasses(path, loading, editing, isResponsive, left, right) {
+  @computed('path', 'loading', 'editingSidebars', 'isResponsive', 'leftSidebarEnabled', 'rightSidebarEnabled', 'forceSidebars')
+  mainClasses(path, loading, editing, isResponsive, left, right, force) {
     let p = path.split('.');
     let classes = `${p[0]} ${p[1].split(/(?=[A-Z])/)[0]}`;
 
-    if (left || right) {
+    if ((left || right) || force) {
       classes += ' has-sidebars';
     } else {
       classes += ' no-sidebars';
