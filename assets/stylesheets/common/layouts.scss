@@ -15,7 +15,6 @@ aside.sidebar {
 .sidebar-container {
   width: inherit;
   z-index: 10;
-  padding-bottom: 25px;
 
   &.fixed {
     position: fixed;
@@ -424,11 +423,6 @@ aside.sidebar {
     display: inline-block;
     margin-right: 5px;
   }
-}
-
-.layouts-nav-button {
-  @extend .nav-pills;
-  float: left;
 }
 
 .layouts {
