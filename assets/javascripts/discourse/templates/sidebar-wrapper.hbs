@@ -8,11 +8,6 @@
                            filter=filter
                            context=mainContent}}
 
-        {{plugin-outlet name="sidebar-left"
-                        args=(hash side='left'
-                              customSidebarProps=customSidebarProps
-                              responsiveView=responsiveView)}}
-
         {{#if showSidebarToggles}}
           {{d-button class='mobile-toggle left'
                      action='toggleSidebar'
@@ -20,6 +15,12 @@
                      icon='chevron-right'}}
         {{/if}}
       {{/sidebar-container}}
+      {{plugin-outlet name="sidebar-left"
+                      args=(hash side='left'
+                                 customSidebarProps=customSidebarProps
+                                 category=category
+                                 responsiveView=responsiveView
+                                 path=path)}}
     </aside>{{/if}}<div class="main-content {{mainClasses}}" style={{mainStyle}}>
     {{partial mainContent}}
   </div>{{#if rightSidebarEnabled}}<aside class="sidebar right {{rightClasses}}" style={{rightStyle}}>
@@ -30,11 +31,6 @@
                            filter=filter
                            context=mainContent}}
 
-        {{plugin-outlet name="sidebar-right"
-                        args=(hash side='right'
-                              customSidebarProps=customSidebarProps
-                              responsiveView=responsiveView)}}
-
         {{#if showSidebarToggles}}
           {{d-button class='mobile-toggle
                      right' action='toggleSidebar'
@@ -42,6 +38,12 @@
                      icon='chevron-left'}}
         {{/if}}
       {{/sidebar-container}}
+      {{plugin-outlet name="sidebar-right"
+                      args=(hash side='right'
+                                 customSidebarProps=customSidebarProps
+                                 category=category
+                                 responsiveView=responsiveView
+                                 path=path)}}
     </aside>
   {{/if}}
 </div>
