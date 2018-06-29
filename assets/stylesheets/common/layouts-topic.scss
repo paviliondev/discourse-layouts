@@ -247,4 +247,22 @@
   .gap {
     width: 100%;
   }
+
+  .embedded-posts {
+    border-top: 1px solid $primary-low;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+
+    .topic-body {
+      width: initial;
+      overflow: hidden;
+    }
+
+    .collapse-up {
+      transform: none;
+    }
+  }
 }
