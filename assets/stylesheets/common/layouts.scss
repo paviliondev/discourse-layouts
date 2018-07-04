@@ -428,12 +428,8 @@ aside.sidebar {
   @extend .staff-actions;
   width: 100%;
 
-  .heading-container, .table-item {
-    display: flex;
-  }
-
-  .first {
-    margin-left: 10px;
+  th:nth-of-type(1) {
+    width: 20%;
   }
 
   .label {

@@ -1,13 +1,16 @@
-<div class='table layouts'>
-  <div class="heading-container">
-    <div class="col heading first medium-label">{{i18n 'admin.layouts.widgets.name'}}</div>
-    <div class="col heading medium-label">{{i18n 'admin.layouts.widgets.position'}}</div>
-    <div class="col heading medium-label">{{i18n 'admin.layouts.widgets.order'}}</div>
-  </div>
+<table class='table layouts grid'>
+  <thead>
+    <th>{{i18n 'admin.layouts.widgets.name'}}</th>
+    <th>{{i18n 'admin.layouts.widgets.position'}}</th>
+    <th>{{i18n 'admin.layouts.widgets.order'}}</th>
+  </thead>
 
-  {{#each widgets as |w|}}
-    <div class="admin-list-item">
-      {{widget-settings widget=w clear='clear' orderOptions=orderOptions positionOptions=positionOptions}}
-    </div>
-  {{/each}}
-</div>
+  <tbody>
+    {{#each widgets as |widget|}}
+      {{admin-widget-item widget=widget
+                          clear='clear'
+                          orderOptions=orderOptions
+                          positionOptions=positionOptions}}
+    {{/each}}
+  </tbody>
+</table>

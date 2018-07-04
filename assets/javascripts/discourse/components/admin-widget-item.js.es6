@@ -1,6 +1,9 @@
 import { ajax } from 'discourse/lib/ajax';
 
 export default Ember.Component.extend({
+  tagName: 'tr',
+  classNames: 'admin-list-item',
+
   didInsertElement() {
     this.set('existingWidget', this.get('widget'));
   },
