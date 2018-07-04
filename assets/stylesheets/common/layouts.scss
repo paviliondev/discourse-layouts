@@ -419,6 +419,11 @@ aside.sidebar {
   }
 }
 
+.layouts-nav-button {
+  @extend .nav-pills;
+  float: left;
+}
+
 .layouts {
   @extend .staff-actions;
   width: 100%;
