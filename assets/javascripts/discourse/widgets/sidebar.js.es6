@@ -32,12 +32,14 @@ export default createWidget('sidebar', {
     const user = this.currentUser;
     const { side, context, filter, category, topic, customSidebarProps } = args;
 
-    let siteWidgets = this.site.get('widgets');
+    let siteWidgets = this.site.get('widgets') || [];
+    if (customWidgets.length) siteWidgets = siteWidgets.concat(customWidgets);
+    let sideWidgets = siteWidgets.length ? siteWidgets.filter((w) => w.position === side) : null;
+
     let generalWidgets = [];
     let orderedWidgets = [];
-    let sideWidgets = siteWidgets.concat(customWidgets).filter((w) => w.position === side);
 
-    if (sideWidgets && sideWidgets.length) {
+    if (sideWidgets) {
       sideWidgets.forEach((w) => {
         if (hasOrder(w)) {
           orderedWidgets.push(w);
