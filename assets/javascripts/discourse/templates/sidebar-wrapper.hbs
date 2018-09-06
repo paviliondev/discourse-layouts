@@ -16,8 +16,7 @@
         {{/if}}
       {{/sidebar-container}}
       {{plugin-outlet name="sidebar-left"
-                      args=(hash side='left'
-                                 customSidebarProps=customSidebarProps
+                      args=(hash customSidebarProps=customSidebarProps
                                  category=category
                                  responsiveView=responsiveView
                                  path=path)}}
@@ -32,15 +31,14 @@
                            context=mainContent}}
 
         {{#if showSidebarToggles}}
-          {{d-button class='mobile-toggle
-                     right' action='toggleSidebar'
+          {{d-button class='mobile-toggle right'
+                     action='toggleSidebar'
                      actionParam='right'
                      icon='chevron-left'}}
         {{/if}}
       {{/sidebar-container}}
       {{plugin-outlet name="sidebar-right"
-                      args=(hash side='right'
-                                 customSidebarProps=customSidebarProps
+                      args=(hash customSidebarProps=customSidebarProps
                                  category=category
                                  responsiveView=responsiveView
                                  path=path)}}
