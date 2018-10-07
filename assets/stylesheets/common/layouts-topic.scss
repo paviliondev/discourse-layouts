@@ -169,11 +169,12 @@
   }
 
   .topic-body {
-    width: 100%;
     padding: 0;
     border-top: none;
     z-index: initial;
     float: none;
+    overflow: hidden;
+    width: auto;
 
     .regular {
       margin-top: 10px;
