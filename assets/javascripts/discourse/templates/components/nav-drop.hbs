@@ -2,7 +2,9 @@
   {{navigation-item content=selectedNavItem filterMode=filterMode linkDisabled=true}}
 </div>
 {{#if navItems}}
-  <a href {{action "expand"}} class='nav-dropdown-btn nav-item'><i class={{iconClass}}></i></a>
+  <a href {{action "expand"}} class='nav-dropdown-btn nav-item'>
+    {{d-icon iconClass}}
+  </a>
   <section class="{{unless expanded 'hidden'}} nav-dropdown-menu chooser">
     {{#if renderNavItems}}
       {{#each navItems as |navItem|}}
