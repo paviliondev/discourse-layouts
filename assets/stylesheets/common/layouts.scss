@@ -310,7 +310,8 @@ aside.sidebar {
     color: $secondary;
     background-color: $quaternary;
 
-    .fa-caret-right {
+    .fa-caret-right,
+    .d-icon-caret-right {
       margin-left: 2px;
     }
   }

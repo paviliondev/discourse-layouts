@@ -8,6 +8,9 @@ register_asset 'stylesheets/common/layouts.scss'
 register_asset 'stylesheets/common/layouts-topic.scss'
 register_asset 'stylesheets/mobile/layouts.scss', :mobile
 
+register_svg_icon "caret-right" if respond_to?(:register_svg_icon)
+register_svg_icon "caret-down" if respond_to?(:register_svg_icon)
+
 enabled_site_setting :layouts_enabled
 
 after_initialize do
