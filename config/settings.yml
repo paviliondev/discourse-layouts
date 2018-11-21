@@ -18,6 +18,7 @@ plugins:
      - categories
      - topic
      - tags
+     - news
   layouts_sidebar_left_enabled_global:
     client: true
     default: false
@@ -34,6 +35,7 @@ plugins:
      - categories
      - topic
      - tags
+     - news
   layouts_sidebar_right_enabled_global:
     client: true
     default: false

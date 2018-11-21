@@ -99,8 +99,6 @@ aside.sidebar {
     .container.list-container {
       width: 100%;
       background-color: $secondary;
-      border: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
-      border-radius: 4px;
     }
 
     .container.posts {
