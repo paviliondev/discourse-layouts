@@ -121,31 +121,27 @@ export default createWidget('sidebar', {
 
       if (!category || siteEnabledGlobal || siteEnabled.indexOf('category') > -1) {
         generalWidgets.forEach((w) => {
-          if (widgets.indexOf(w.name) === -1) {
-            widgets.push(w.name);
-          }
+          widgets = this.addWidget(widgets, w.name);
         });
       }
 
       if (categoryEnabled && categoryEnabled.indexOf(filter) > -1) {
-        categoryWidgets.forEach((widget) => {
-          if (widgets.indexOf(widget) === -1) {
-            widgets.push(widget);
-          }
+        categoryWidgets.forEach((w) => {
+          widgets = this.addWidget(widgets, w);
         });
       }
     }
 
     if (context === 'topic') {
       if (siteEnabledGlobal || siteEnabled.indexOf('topic') > -1) {
-        generalWidgets.forEach((w) => widgets.push(w.name));
+        generalWidgets.forEach((w) => {
+          widgets = this.addWidget(widgets, w);
+        });
       }
 
       if (categoryEnabled && categoryEnabled.indexOf('topic') > -1) {
-        categoryWidgets.forEach((widget) => {
-          if (widgets.indexOf(widget) === -1) {
-            widgets.push(widget);
-          }
+        categoryWidgets.forEach((w) => {
+          widgets = this.addWidget(widgets, w);
         });
       }
     }
@@ -157,15 +153,20 @@ export default createWidget('sidebar', {
     orderedWidgets = _.sortBy(orderedWidgets, 'order');
 
     orderedWidgets.forEach((w) => {
-      if (w.order === 'start') {
-        widgets.unshift(w.name);
-      } else if (w.order === 'end') {
-        widgets.push(w.name);
-      } else {
-        widgets.push(w.name);
-      }
+      widgets = this.addWidget(widgets, w, w.order === 'start');
     });
 
+    return widgets;
+  },
+
+  addWidget(widgets, widget, start = false) {
+    if (widgets.indexOf(widget) === -1) {
+      if (start) {
+        widgets.unshift(widget);
+      } else {
+        widgets.push(widget);
+      }
+    }
     return widgets;
   }
 });
