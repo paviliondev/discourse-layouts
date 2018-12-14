@@ -199,6 +199,16 @@ aside.sidebar {
     margin-bottom: 3px;
   }
 
+  .widget-multi-title {
+    a.list-title {
+      padding-right: 5px;
+
+      &:not(:first-of-type) {
+        padding-left: 5px;
+      }
+    }
+  }
+
   .widget-description {
     padding-bottom: 5px;
   }
