@@ -162,9 +162,9 @@ export default createWidget('sidebar', {
   addWidget(widgets, widget, start = false) {
     if (widgets.indexOf(widget) === -1) {
       if (start) {
-        widgets.unshift(widget);
+        widgets.unshift(widget.name);
       } else {
-        widgets.push(widget);
+        widgets.push(widget.name);
       }
     }
     return widgets;
