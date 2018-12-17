@@ -135,7 +135,7 @@ export default createWidget('sidebar', {
     if (context === 'topic') {
       if (siteEnabledGlobal || siteEnabled.indexOf('topic') > -1) {
         generalWidgets.forEach((w) => {
-          widgets = this.addWidget(widgets, w);
+          widgets = this.addWidget(widgets, w.name);
         });
       }
 
@@ -153,20 +153,21 @@ export default createWidget('sidebar', {
     orderedWidgets = _.sortBy(orderedWidgets, 'order');
 
     orderedWidgets.forEach((w) => {
-      widgets = this.addWidget(widgets, w, w.order === 'start');
+      widgets = this.addWidget(widgets, w.name, w.order === 'start');
     });
 
     return widgets;
   },
 
-  addWidget(widgets, widget, start = false) {
-    if (widgets.indexOf(widget) === -1) {
+  addWidget(widgets, widgetName, start = false) {
+    if (widgets.indexOf(widgetName) === -1) {
       if (start) {
-        widgets.unshift(widget);
+        widgets.unshift(widgetName);
       } else {
-        widgets.push(widget);
+        widgets.push(widgetName);
       }
     }
+
     return widgets;
   }
 });
