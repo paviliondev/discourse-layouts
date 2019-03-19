@@ -34,8 +34,6 @@ after_initialize do
     add_to_serializer(:basic_category, key.to_sym) { object.custom_fields[key] }
   end
 
-
-
   require_dependency 'application_controller'
   module ::DiscourseLayouts
     class Engine < ::Rails::Engine
