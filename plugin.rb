@@ -21,13 +21,20 @@ after_initialize do
   Category.register_custom_field_type('layouts_list_navigation_disabled', :string)
   Category.register_custom_field_type('layouts_list_header_disabled', :string)
   Category.register_custom_field_type('layouts_list_nav_menu', :string)
-  add_to_serializer(:basic_category, :layouts_sidebar_right_widgets) { object.custom_fields['layouts_sidebar_right_widgets'] }
-  add_to_serializer(:basic_category, :layouts_sidebar_left_widgets) { object.custom_fields['layouts_sidebar_left_widgets'] }
-  add_to_serializer(:basic_category, :layouts_sidebar_left_enabled) { object.custom_fields['layouts_sidebar_left_enabled'] }
-  add_to_serializer(:basic_category, :layouts_sidebar_right_enabled) { object.custom_fields['layouts_sidebar_right_enabled'] }
-  add_to_serializer(:basic_category, :layouts_list_navigation_disabled) { object.custom_fields['layouts_list_navigation_disabled'] }
-  add_to_serializer(:basic_category, :layouts_list_header_disabled) { object.custom_fields['layouts_list_header_disabled'] }
-  add_to_serializer(:basic_category, :layouts_list_nav_menu) { object.custom_fields['layouts_list_nav_menu'] }
+  [
+    "layouts_sidebar_right_widgets",
+    "layouts_sidebar_left_widgets",
+    "layouts_sidebar_left_enabled",
+    "layouts_sidebar_right_enabled",
+    "layouts_list_navigation_disabled",
+    "layouts_list_header_disabled",
+    "layouts_list_nav_menu"
+  ].each do |key|
+    Site.preloaded_category_custom_fields << key if Site.respond_to? :preloaded_category_custom_fields
+    add_to_serializer(:basic_category, key.to_sym) { object.custom_fields[key] }
+  end
+
+
 
   require_dependency 'application_controller'
   module ::DiscourseLayouts
