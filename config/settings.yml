@@ -100,3 +100,6 @@ plugins:
   layouts_hide_sidebars_if_empty:
     client: true
     default: false
+  layouts_profile_enabled:
+    client: true
+    default: false
