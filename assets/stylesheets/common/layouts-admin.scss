@@ -1,0 +1,19 @@
+.layouts {
+  td {
+    vertical-align: top;
+  }
+  
+  .select-kit {
+    width: 100px !important;
+    min-width: 100px !important;
+    
+    &.multi-select {
+      width: 350px !important;
+      min-width: 350px !important;
+    }
+  }
+
+  .controls {
+    text-align: center;
+  }
+}

@@ -13,9 +13,10 @@ en:
       layouts_list_header_disabled_global: "Disable discovery list header globally in this category"
       layouts_list_nav_menu: "Use list navigation menu for selected routes in this category"
       layouts_list_nav_menu_global: "Use list navigation menu globally in this category"
-      current_geojson: "Current:"
+
     filters:
       nav_drop: "Navigation"
+      
     topic:
       no_previous: "No older topics"
       no_next: "No newer topics"
@@ -27,10 +28,29 @@ en:
         widgets:
           label: "Widgets"
           name: "Name"
-          position: "Position"
-          position_none: "Select a position"
-          order: "Order"
-          order_none: "Fix order at"
           save: "Save"
+          source: "Source"
+          enabled: "Enabled"
+          none: "No widgets"
+          
+          order:
+            label: "Order"
+            select: "Select order"
+            start: "Start"
+            end: "End"
+
+          position:
+            label: "Position"
+            select: "Select position"
+            left: "Left"
+            right: "Right"
+
+          groups:
+            label: "Groups"
+            select: "Select groups"
+            users: "Users"
+            guests: "Guests"
+            hidden: "Hidden"
+
         settings:
           label: "Settings"

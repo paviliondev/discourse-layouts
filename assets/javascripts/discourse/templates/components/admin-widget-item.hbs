@@ -1,17 +1,59 @@
-<td class="col value first medium-label">
+<td>
   {{widget.name}}
 </td>
-<td class="col value medium-label position">
-  {{combo-box content=positionOptions value=widget.position none='admin.layouts.widgets.position_none'}}
+
+<td>
+  <a href="{{sourceUrl}}">
+    {{sourceName}}
+  </a>
 </td>
-<td class="col value medium-label">
-  {{combo-box content=orderOptions value=widget.order none='admin.layouts.widgets.order_none'}}
+
+<td>
+  {{combo-box
+    content=positionList
+    value=widget.position
+    onChange=(action "updatePosition")
+    options=(hash
+      none='admin.layouts.widgets.position.select'
+    )}}
 </td>
-<td class="col value medium-label controls">
+
+<td>
+  {{combo-box
+    content=orderList
+    value=widget.order
+    onChange=(action "updateOrder")
+    options=(hash
+      none='admin.layouts.widgets.order.select'
+    )}}
+</td>
+
+<td>
+  {{multi-select
+    content=groupList
+    value=widget.groups
+    onChange=(action "updateGroups")
+    options=(hash
+      none='admin.layouts.widgets.groups.select'
+      allowAny=false
+    )}}
+</td>
+
+<td>
+  {{input
+    type="checkbox"
+    checked=widget.enabled
+    click=(action "updateEnabled" value="target.checked")}}
+</td>
+
+<td class="controls">
   {{#if saving}}
     {{loading-spinner size="small"}}
   {{else}}
-    {{d-button action='save' class='btn btn-primary' label='admin.layouts.widgets.save'}}
+    {{d-button
+      action="save"
+      class='btn btn-primary'
+      label='admin.layouts.widgets.save'
+      disabled=saveDisabled}}
   {{/if}}
-  {{d-button action='clear' icon='times'}}
 </td>

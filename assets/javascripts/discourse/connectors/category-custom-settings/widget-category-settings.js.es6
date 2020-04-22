@@ -9,7 +9,7 @@ export default {
       category.custom_fields = {};
     }
 
-    const choices = this.site.get('widgets').map((w) => w.name);
+    const choices = (this.site.layout_widgets || []).map((w) => w.name);
 
     settings.forEach((s) => {
       if (typeof args.category.custom_fields[`layouts_${s}`] !== 'string') {

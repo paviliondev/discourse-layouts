@@ -5,8 +5,8 @@ describe ::DiscourseLayouts::WidgetController do
 
   before do
     log_in(:admin)
-    DiscourseLayouts::WidgetHelper.set_widgets([])
-    DiscourseLayouts::WidgetHelper.add_widget('test-widget', position: 'right', order: 'start')
+    DiscourseLayouts::Widget.set_widgets([])
+    DiscourseLayouts::Widget.add('test-widget', position: 'right', order: 'start')
   end
 
   describe 'all' do
@@ -33,7 +33,7 @@ describe ::DiscourseLayouts::WidgetController do
     it 'works' do
       put :clear, params: { name: 'test-widget' }, format: :json
       expect(response).to be_success
-      widgets = DiscourseLayouts::WidgetHelper.get_widgets
+      widgets = DiscourseLayouts::Widget.get_widgets
       expect(widgets.any? { |w| w.name == 'test-widget' }).to eq(false)
     end
   end

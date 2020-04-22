@@ -3,12 +3,12 @@ import DiscoveryRoute from 'discourse/routes/discovery';
 import NavigationBar from 'discourse/components/navigation-bar';
 import NavigationItem from 'discourse/components/navigation-item';
 import Sidebars from '../mixins/sidebars';
-import { on, observes, default as computed } from 'ember-addons/ember-computed-decorators';
+import { on, observes, default as discourseComputed } from 'discourse-common/utils/decorators';
 import { settingEnabled } from '../lib/settings';
 import { getOwner } from 'discourse-common/lib/get-owner';
 
 export default {
-  name: 'sidebar-discovery-edits',
+  name: 'sidebar-discovery',
   initialize(container){
     const site = container.lookup('site:main');
     const siteSettings = container.lookup('site-settings:main');
@@ -26,7 +26,6 @@ export default {
       navigationDefault: Ember.inject.controller('navigation/default'),
       navigationCategories: Ember.inject.controller('navigation/categories'),
       navigationCategory: Ember.inject.controller("navigation/category"),
-      showCategoryAdmin: Ember.computed.alias('navigationCategories.showCategoryAdmin'),
 
       @on('init')
       @observes('path')
@@ -42,34 +41,26 @@ export default {
         }
       },
 
-      @computed('navigationDefault.filterMode', 'navigationCategory.filterMode')
+      @discourseComputed('navigationDefault.filterMode', 'navigationCategory.filterMode')
       filter(defaultFilterMode, categoryFilterMode) {
         let filterMode = defaultFilterMode || categoryFilterMode,
             filterArr = filterMode ? filterMode.split('/') : [];
         return filterArr[filterArr.length - 1];
       },
 
-      @computed('path')
+      @discourseComputed('path')
       navigationDisabled() {
         return settingEnabled('layouts_list_navigation_disabled', this.get('category'), this.get('path'));
       },
 
-      @computed('path')
+      @discourseComputed('path')
       headerDisabled() {
         return settingEnabled('layouts_list_header_disabled', this.get('category'), this.get('path'));
       },
 
-      @computed('path')
+      @discourseComputed('path')
       navMenuEnabled() {
         return settingEnabled('layouts_list_nav_menu', this.get('category'), this.get('path'));
-      },
-
-      @computed('currentUser')
-      showCategoryEditBtn(currentUser) {
-        if (!currentUser) return false;
-        return currentUser.admin ||
-        (Discourse.SiteSettings.allow_moderators_to_create_categories &&
-        currentUser.moderator);
       },
 
       actions: {
@@ -86,7 +77,7 @@ export default {
     });
 
     NavigationBar.reopen({
-      @computed('navItems')
+      @discourseComputed('navItems')
       navMenuEnabled(){
         return getOwner(this).lookup('controller:discovery').get('navMenuEnabled');
       }

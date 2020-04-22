@@ -1,4 +1,6 @@
-export default Ember.Component.extend({
+import Component from '@ember/component';
+
+export default Component.extend({
   classNames: ['nav-drop'],
   expanded: false,
   clickEventName: "click.nav-drop",

@@ -32,7 +32,7 @@ export default createWidget('sidebar', {
     const user = this.currentUser;
     const { side, context, filter, category, topic, customSidebarProps } = args;
 
-    let siteWidgets = this.site.get('widgets') || [];
+    let siteWidgets = this.site.layout_widgets || [];
     if (customWidgets.length) siteWidgets = siteWidgets.concat(customWidgets);
     let sideWidgets = siteWidgets.length ? siteWidgets.filter((w) => w.position === side) : null;
 

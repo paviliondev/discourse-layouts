@@ -3,12 +3,12 @@ import TopicRoute from 'discourse/routes/topic';
 import TopicNavigation from 'discourse/components/topic-navigation';
 import TopicList from 'discourse/components/topic-list';
 import Sidebars from '../mixins/sidebars';
-import { default as computed } from 'ember-addons/ember-computed-decorators';
+import { default as discourseComputed } from 'discourse-common/utils/decorators';
 import { settingEnabled } from '../lib/settings';
 import { getOwner } from 'discourse-common/lib/get-owner';
 
 export default {
-  name: 'sidebar-topic-edits',
+  name: 'sidebar-topic',
   initialize(container){
     const site = container.lookup('site:main');
     const siteSettings = container.lookup('site-settings:main');
@@ -45,7 +45,7 @@ export default {
     });
 
     TopicList.reopen({
-      @computed()
+      @discourseComputed()
       skipHeader(){
         const headerDisabled = getOwner(this).lookup('controller:discovery').get('headerDisabled');
         return this.site.mobileView || headerDisabled;
