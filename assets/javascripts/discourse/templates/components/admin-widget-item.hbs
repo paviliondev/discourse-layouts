@@ -1,11 +1,9 @@
-<td>
-  {{widget.name}}
-</td>
-
-<td>
-  <a href="{{sourceUrl}}">
-    {{sourceName}}
-  </a>
+<td class="name">
+  {{#if widget.isNew}}
+    {{input value=widget.name placeholder=(i18n 'admin.layouts.widgets.name')}}
+  {{else}}
+    <span>{{widget.name}}</span>
+  {{/if}}
 </td>
 
 <td>
@@ -14,7 +12,7 @@
     value=widget.position
     onChange=(action "updatePosition")
     options=(hash
-      none='admin.layouts.widgets.position.select'
+      none='admin.layouts.widgets.select'
     )}}
 </td>
 
@@ -24,7 +22,7 @@
     value=widget.order
     onChange=(action "updateOrder")
     options=(hash
-      none='admin.layouts.widgets.order.select'
+      none='admin.layouts.widgets.select'
     )}}
 </td>
 
@@ -34,7 +32,7 @@
     value=widget.groups
     onChange=(action "updateGroups")
     options=(hash
-      none='admin.layouts.widgets.groups.select'
+      none='admin.layouts.widgets.select'
       allowAny=false
     )}}
 </td>
@@ -52,8 +50,15 @@
   {{else}}
     {{d-button
       action="save"
-      class='btn btn-primary'
-      label='admin.layouts.widgets.save'
+      class="btn btn-small btn-primary"
+      label="admin.layouts.widgets.save"
+      icon="save"
       disabled=saveDisabled}}
+      
+    {{d-button
+      action="remove"
+      class="btn btn-small"
+      label="admin.layouts.widgets.remove"
+      icon="times"}}
   {{/if}}
 </td>

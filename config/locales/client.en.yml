@@ -27,27 +27,26 @@ en:
         label: "Layouts"
         widgets:
           label: "Widgets"
+          add: "Add Widget"
           name: "Name"
           save: "Save"
-          source: "Source"
           enabled: "Enabled"
           none: "No widgets"
+          select: "Select"
+          remove: "Remove"
           
           order:
             label: "Order"
-            select: "Select order"
             start: "Start"
             end: "End"
 
           position:
             label: "Position"
-            select: "Select position"
             left: "Left"
             right: "Right"
 
           groups:
             label: "Groups"
-            select: "Select groups"
             users: "Users"
             guests: "Guests"
             hidden: "Hidden"

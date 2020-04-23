@@ -9,6 +9,7 @@ register_asset 'stylesheets/common/layouts.scss'
 if respond_to?(:register_svg_icon)
   register_svg_icon "caret-right" 
   register_svg_icon "caret-down"
+  register_svg_icon "save"
 end
 
 enabled_site_setting :layouts_enabled

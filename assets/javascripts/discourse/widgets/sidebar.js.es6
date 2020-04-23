@@ -55,7 +55,7 @@ export default createWidget('sidebar', {
 
     let contents = [];
     let hasWidgets = false;
-
+    
     widgets.forEach((widget) => {
       if (widget.length) {
         const exists = this.register.lookupFactory(`widget:${widget}`);

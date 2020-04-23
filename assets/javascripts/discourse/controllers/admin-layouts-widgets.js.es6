@@ -2,6 +2,7 @@ import { ajax } from 'discourse/lib/ajax';
 import { default as discourseComputed } from 'discourse-common/utils/decorators';
 import { alias } from "@ember/object/computed";
 import LayoutWidget from '../models/layout-widget';
+import EmberObject from '@ember/object';
 
 function buildSelectKit(items, type) {
   return items.map(item => {
@@ -26,5 +27,19 @@ export default Ember.Controller.extend({
     return buildSelectKit(items, 'order');
   },
 
-  groupList: alias('site.groups')
+  groupList: alias('site.groups'),
+    
+  actions: {
+    addWidget() {
+      this.get('widgets').pushObject(
+        EmberObject.create({
+          isNew: true
+        })
+      )
+    },
+    
+    removeWidget(widget) {
+      this.get('widgets').removeObject(widget)
+    }
+  }
 });

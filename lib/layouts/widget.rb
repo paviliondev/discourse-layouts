@@ -1,7 +1,7 @@
 class DiscourseLayouts::Widget
   include ActiveModel::SerializerSupport
   
-  attr_accessor :name, :position, :order, :groups, :enabled, :source
+  attr_accessor :name, :position, :order, :groups, :enabled
   
   def initialize(attrs={})
     attrs = attrs.with_indifferent_access
@@ -10,7 +10,6 @@ class DiscourseLayouts::Widget
     @name = attrs[:name]
     @position = attrs[:position].present? ? attrs[:position] : 'left'
     @order = attrs[:order].present? ? attrs[:order] : 'start'
-    @source = attrs[:source].present? ? attrs[:source] : "plugin:#{attrs[:name]}"
     
     if attrs[:groups].is_a?(Array)
       @groups = attrs[:groups].map(&:to_i)
@@ -36,10 +35,17 @@ class DiscourseLayouts::Widget
     widgets = self.list(all: true)
     
     if widgets.empty? || widgets.none? { |w| w.name == name }
-      widgets.push(self.new({ name: name }.merge(data)))
+      widget = self.new({ name: name }.merge(data))
+      widgets.push(widget)
+      
+      if self.set(widgets)
+        { widget: self.get(name) }
+      else
+        { error: 'failed to add widget' }
+      end
+    else
+      { error: 'widget already exists' }
     end
-    
-    self.set(widgets)
   end
 
   def self.update(data)
@@ -50,11 +56,11 @@ class DiscourseLayouts::Widget
     if self.set(widgets)
       { widget: self.get(data[:name]) }
     else
-      { error: true }
+      { error: 'failed to update widget' }
     end
   end
 
-  def self.clear(name)
+  def self.remove(name)
     widgets = self.list(all: true)
     widgets.delete_if { |w| w.name == name }
     self.set(widgets)

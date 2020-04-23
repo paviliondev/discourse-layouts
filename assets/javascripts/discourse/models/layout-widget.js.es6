@@ -11,12 +11,18 @@ LayoutWidget.reopenClass({
     }).catch(popupAjaxError)
   },
 
-  save(widget) {    
+  save(widget) {
     return ajax(`/admin/layouts/widgets/${widget.name}`, {
-      type: 'PUT',
+      type: widget.isNew ? 'POST' : 'PUT',
       data: {
-        widget
+        widget: JSON.parse(JSON.stringify(widget))
       }
+    }).catch(popupAjaxError)
+  },
+  
+  remove(widget) {
+    return ajax(`/admin/layouts/widgets/${widget.name}`, {
+      type: 'DELETE',
     }).catch(popupAjaxError)
   }
 });

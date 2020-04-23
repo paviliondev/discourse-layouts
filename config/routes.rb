@@ -1,7 +1,8 @@
 DiscourseLayouts::Engine.routes.draw do
   get 'widgets' => 'widgets#index'
   put 'widgets/:name' => 'widgets#save'
-  delete 'widgets/:name' => 'widgets#clear'
+  post 'widgets/:name' => 'widgets#create'
+  delete 'widgets/:name' => 'widgets#remove'
 end
 
 require_dependency 'admin_constraint'

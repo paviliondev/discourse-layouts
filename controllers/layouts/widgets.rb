@@ -6,8 +6,28 @@ class DiscourseLayouts::WidgetsController < ::ApplicationController
   end
 
   def save    
-    result = DiscourseLayouts::Widget.update(widget_params.to_h)
-    
+    handle_update_result(DiscourseLayouts::Widget.update(widget_params))
+  end
+  
+  def create
+    handle_update_result(DiscourseLayouts::Widget.add(widget_params[:name],
+      widget_params.slice!(:name)
+    ))
+  end
+
+  def remove
+    params.require(:name)
+
+    if DiscourseLayouts::Widget.remove(params[:name])
+      render json: success_json
+    else
+      render json: failed_json
+    end
+  end
+  
+  private
+  
+  def handle_update_result(result)
     if result[:widget]
       render json: success_json.merge(
         widget: DiscourseLayouts::WidgetSerializer.new(result[:widget], root: false)
@@ -16,21 +36,6 @@ class DiscourseLayouts::WidgetsController < ::ApplicationController
       render json: failed_json
     end
   end
-
-  def clear
-    params.require(:name)
-    result = DiscourseLayouts::Widget.clear(params[:name])
-
-    if result
-      render json: success_json.merge(
-        widgets: serialize_widgets
-      )
-    else
-      render json: failed_json
-    end
-  end
-  
-  private
 
   def serialize_widgets
     ActiveModel::ArraySerializer.new(
@@ -41,14 +46,15 @@ class DiscourseLayouts::WidgetsController < ::ApplicationController
   end
   
   def widget_params
-    params.require(:widget)
-      .permit(
-        :name,
-        :position,
-        :order,
-        :enabled,
-        :source,
-        groups: []
-      )
+    @widget_params ||= begin
+      params.require(:widget)
+        .permit(
+          :name,
+          :position,
+          :order,
+          :enabled,
+          groups: []
+        ).to_h
+    end
   end
 end

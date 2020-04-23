@@ -1,7 +1,7 @@
 import { ajax } from 'discourse/lib/ajax';
 import LayoutWidget from '../models/layout-widget';
 import { default as discourseComputed, observes } from 'discourse-common/utils/decorators';
-import { not } from "@ember/object/computed";
+import { not, empty } from "@ember/object/computed";
 import Component from '@ember/component';
 
 export default Component.extend({
@@ -12,34 +12,23 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-    this.set('existingWidget', JSON.parse(JSON.stringify(this.widget)));
-  },
-  
-  @discourseComputed('widget.source')
-  sourceName(source) {
-    if (!source) return '';
-    let parts = source.split(':');
-    return parts[parts.length > 1 ? 1 : 0];
-  },
-  
-  @discourseComputed('widget.source')
-  sourceUrl(source) {
-    if (!source) return '';
-    let parts = source.split(':');
-    
-    if (parts.length > 1 ) {
-      return parts[0] == 'plugin' ? '/admin/plugins' : '/admin/customize/themes';
-    } else {
-      return '';
+    if (!this.widget.isNew) {
+      this.set('existingWidget', JSON.parse(JSON.stringify(this.widget)));
     }
   },
   
   update(type, value) {
     this.set(`widget.${type}`, value);
-    this.set('dirty', value !== this.existingWidget[type]);
+    
+    const widget = this.widget;
+    if (widget.isNew) {
+      this.set('dirty', !!widget.name);
+    } else {
+      this.set('dirty', value !== this.existingWidget[type]);
+    }
   },
 
-  actions: { 
+  actions: {
     updateOrder(order) {
       this.update('order', order);
     },
@@ -58,20 +47,41 @@ export default Component.extend({
        
     save() {
       if (!this.dirty) return false;
+      
+      const widget = this.widget;
+            
+      if (widget.isNew && !widget.name) {
+        return false;
+      }
+      
       this.set('saving', true);
       
-      LayoutWidget.save(this.widget).then(result => {
+      LayoutWidget.save(widget).then(result => {
         if (result.widget) {
           this.setProperties({
             widget: result.widget,
             existingWidget: JSON.parse(JSON.stringify(result.widget))
           });
-        } else {
+        } else if (this.existingWidget) {
           this.set('widget', this.existingWidget);
         }
         
         this.set('dirty', false);
-      }).finally(() => this.set('saving'), false);
+      }).finally(() => this.set('saving', false));
+    },
+    
+    remove() {
+      const widget = this.widget;
+      if (!widget) return false;
+      
+      this.set('saving', true);
+      LayoutWidget.remove(widget).then(result => {
+        if (result.success) {
+          this.removeWidget(widget);
+        } else {
+          this.set('saving', false);
+        };
+      });
     }
   }
 });
