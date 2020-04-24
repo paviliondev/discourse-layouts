@@ -2,6 +2,10 @@ const enableChoices = ['latest', 'new', 'unread', 'top', 'topic'];
 const settings = ['sidebar_left_enabled','sidebar_right_enabled','sidebar_left_widgets','sidebar_right_widgets','list_navigation_disabled','list_header_disabled','list_nav_menu'];
 
 export default {
+  shouldRender(_, ctx) {
+    return ctx.siteSettings.layouts_enabled
+  },
+  
   setupComponent(args, component) {
     const category = args.category;
 
@@ -16,7 +20,7 @@ export default {
         args.category.custom_fields[`layouts_${s}`] = '';
       }
     });
-
+    
     component.setProperties({
       choices,
       enableChoices
