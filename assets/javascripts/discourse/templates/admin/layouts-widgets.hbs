@@ -1,16 +1,37 @@
-<table class='table layouts grid'>
-  <thead>
-    <th>{{i18n 'admin.layouts.widgets.name'}}</th>
-    <th>{{i18n 'admin.layouts.widgets.position'}}</th>
-    <th>{{i18n 'admin.layouts.widgets.order'}}</th>
-  </thead>
+<div class="admin-title">
+  <h2>{{i18n "admin.layouts.widgets.label"}}</h2>
+  
+  {{d-button
+    action="addWidget"
+    label="admin.layouts.widgets.add"
+    icon="plus"}}
+</div>
 
-  <tbody>
-    {{#each widgets as |widget|}}
-      {{admin-widget-item widget=widget
-                          clear='clear'
-                          orderOptions=orderOptions
-                          positionOptions=positionOptions}}
-    {{/each}}
-  </tbody>
-</table>
+<div class="admin-container">
+  {{#if widgets}}
+    <table class='table layouts grid'>
+      <thead>
+        <th class="name">{{i18n 'admin.layouts.widgets.name'}}</th>
+        <th>{{i18n 'admin.layouts.widgets.position.label'}}</th>
+        <th>{{i18n 'admin.layouts.widgets.order.label'}}</th>
+        <th>{{i18n 'admin.layouts.widgets.groups.label'}}</th>
+        <th>{{i18n 'admin.layouts.widgets.enabled'}}</th>
+      </thead>
+
+      <tbody>
+        {{#each widgets as |widget|}}
+          {{admin-widget-item
+            widget=widget
+            orderList=orderList
+            positionList=positionList
+            groupList=groupList
+            removeWidget=(action 'removeWidget')}}      
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    {{#unless loading}}
+      <div>{{i18n "admin.layouts.widgets.none"}}</div>
+    {{/unless}}
+  {{/if}}
+</div>

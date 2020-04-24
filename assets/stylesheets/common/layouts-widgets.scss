@@ -1,0 +1,239 @@
+aside.sidebar {
+  z-index: 1;
+  position: relative;
+}
+
+.sidebar-container {
+  width: inherit;
+  z-index: 10;
+
+  &.fixed {
+    position: fixed;
+  }
+
+  .sidebar-content {
+    > div {
+      position: relative;
+      margin-bottom: 10px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  &.is-responsive {
+    position: fixed;
+    height: calc(100% - 60px);
+    top: 60px;
+    background-color: $secondary;
+    font-size: 14px;
+
+    &.open {
+      z-index: 100;
+      overflow: scroll;
+    }
+
+    &.open .mobile-toggle {
+      box-shadow: none;
+    }
+
+    &.left {
+      border: none;
+      transition: left 0.2s linear;
+
+      &.open {
+        border-right: 1px solid $primary-low-mid;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+
+        // intercepts clicks outside the sidebar to close it
+        &:after {
+          width: calc(100% - 250px);
+          background-color: transparent;
+          content: '';
+          position: fixed;
+          top: 60px;
+          right: 0;
+          height: 100%;
+        }
+      }
+    }
+
+    &.right {
+      border: none;
+      transition: right 0.2s linear;
+
+      &.open {
+        border-left: 1px solid $primary-low-mid;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+
+        // intercepts clicks outside the sidebar to close it
+        &:after {
+          width: calc(100% - 250px);
+          background-color: transparent;
+          content: '';
+          position: fixed;
+          top: 60px;
+          left: 0;
+          height: 100%;
+        }
+      }
+    }
+
+    .sidebar-container {
+      position: relative !important;
+      min-height: 100%;
+      padding-bottom: 0;
+
+      .sidebar-content > div {
+        position: relative;
+        margin-bottom: 0;
+      }
+    }
+
+    .widget-container {
+      padding-top: 10px;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+
+    .mobile-toggle {
+      position: fixed;
+      background-color: $secondary;
+      bottom: 0;
+      padding: 6px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+      height: 50px;
+      width: 50px;
+
+      &:hover {
+        color: $primary;
+      }
+
+      i {
+        font-size: 22px;
+      }
+
+      &.left {
+        border-right: 1px solid $primary-low-mid;
+        border-top: 1px solid $primary-low-mid;
+        left: 0;
+      }
+
+      &.right {
+        border-left: 1px solid $primary-low-mid;
+        border-top: 1px solid $primary-low-mid;
+        right: 0;
+      }
+    }
+  }
+}
+
+.widget-container {
+  padding: 7px;
+  border: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+  background-color: $secondary;
+  position: relative;
+
+  .widget-inner {
+    width: 100%;
+  }
+
+  .widget-title {
+    display: inline-block;
+    text-decoration: underline;
+    margin-bottom: 3px;
+  }
+
+  .widget-multi-title {
+    a.list-title {
+      padding-right: 5px;
+
+      &:not(:first-of-type) {
+        padding-left: 5px;
+      }
+    }
+  }
+
+  .widget-description {
+    padding-bottom: 5px;
+  }
+
+  .widget-controls {
+    display: inline-block;
+    width: 100%;
+  }
+
+  &.hidden {
+    display: none;
+  }
+
+  .widget-list {
+
+    .spinner {
+      margin-left: 110px;
+    }
+
+    &.no-borders > ul > li {
+      border-top: none;
+      padding: 0;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+    }
+
+    &>ul>li {
+      width: 100%;
+      cursor: pointer;
+      padding: 5px 0;
+      border-top: 1px solid $primary-low;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
+
+      &:last-of-type {
+        padding-bottom: 0;
+      }
+    }
+
+    .list-item {
+      display: flex;
+
+      .title {
+        flex: 1;
+      }
+
+      .right {
+        margin-left: 5px;
+
+        span {
+          margin-right: 3px;
+        }
+      }
+    }
+
+    .widget-list-controls, .no-items {
+      border-top: 1px solid $primary-low;
+      padding-top: 5px;
+
+      a {
+        font-size: 1em;
+      }
+    }
+
+    .widget-list-controls {
+      padding-top: 5px;
+      margin-top: 5px;
+      display: flex;
+      line-height: 1.2;
+
+      .right {
+        margin-left: auto;
+      }
+    }
+  }
+}

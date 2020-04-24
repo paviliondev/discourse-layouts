@@ -1,6 +1,7 @@
 en:
   js:
     category:
+      layouts_heading: "Layouts"
       layouts_sidebar_left_enabled: "Enable left sidebar for selected routes in this category"
       layouts_sidebar_left_enabled_global: "Enable left sidebar globally in this category"
       layouts_sidebar_right_enabled: "Enable right sidebar for selected routes in this category"
@@ -13,9 +14,10 @@ en:
       layouts_list_header_disabled_global: "Disable discovery list header globally in this category"
       layouts_list_nav_menu: "Use list navigation menu for selected routes in this category"
       layouts_list_nav_menu_global: "Use list navigation menu globally in this category"
-      current_geojson: "Current:"
+
     filters:
       nav_drop: "Navigation"
+      
     topic:
       no_previous: "No older topics"
       no_next: "No newer topics"
@@ -26,11 +28,29 @@ en:
         label: "Layouts"
         widgets:
           label: "Widgets"
+          add: "Add Widget"
           name: "Name"
-          position: "Position"
-          position_none: "Select a position"
-          order: "Order"
-          order_none: "Fix order at"
           save: "Save"
+          enabled: "Enabled"
+          none: "No widgets"
+          select: "Select"
+          remove: "Remove"
+          
+          order:
+            label: "Order"
+            start: "Start"
+            end: "End"
+
+          position:
+            label: "Position"
+            left: "Left"
+            right: "Right"
+
+          groups:
+            label: "Groups"
+            users: "Users"
+            guests: "Guests"
+            hidden: "Hidden"
+
         settings:
           label: "Settings"

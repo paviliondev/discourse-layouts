@@ -1,28 +1,38 @@
 <div class="content-wrapper">
   {{#if leftSidebarEnabled}}
     <aside class="sidebar left {{leftClasses}}" style={{leftStyle}}>
-      {{#sidebar-container side="left"
-                           topic=model
-                           customSidebarProps=customSidebarProps
-                           category=category
-                           filter=filter
-                           context=mainContent}}
+      {{#sidebar-container
+        side="left"
+        topic=model
+        customSidebarProps=customSidebarProps
+        category=category
+        filter=filter
+        context=mainContent}}
 
         {{#if showSidebarToggles}}
-          {{d-button class='mobile-toggle left'
-                     action='toggleSidebar'
-                     actionParam='left'
-                     icon='chevron-right'}}
+          {{d-button 
+            class='responsive-toggle left'
+            action='toggleSidebar'
+            actionParam='left'
+            icon='chevron-right'}}
         {{/if}}
       {{/sidebar-container}}
-      {{plugin-outlet name="sidebar-left"
-                      args=(hash customSidebarProps=customSidebarProps
-                                 category=category
-                                 responsiveView=responsiveView
-                                 path=path)}}
-    </aside>{{/if}}<div class="main-content {{mainClasses}}" style={{mainStyle}}>
+      
+      {{plugin-outlet
+        name="sidebar-left"
+        args=(hash customSidebarProps=customSidebarProps
+                   category=category
+                   responsiveView=responsiveView
+                   path=path)}}
+    </aside>
+  {{/if}}
+  
+  <div class="main-content {{mainClasses}}" style={{mainStyle}}>
     {{partial mainContent}}
-  </div>{{#if rightSidebarEnabled}}<aside class="sidebar right {{rightClasses}}" style={{rightStyle}}>
+  </div>
+  
+  {{#if rightSidebarEnabled}}
+    <aside class="sidebar right {{rightClasses}}" style={{rightStyle}}>
       {{#sidebar-container side="right"
                            topic=model
                            customSidebarProps=customSidebarProps
@@ -31,30 +41,18 @@
                            context=mainContent}}
 
         {{#if showSidebarToggles}}
-          {{d-button class='mobile-toggle right'
+          {{d-button class='responsive-toggle right'
                      action='toggleSidebar'
                      actionParam='right'
                      icon='chevron-left'}}
         {{/if}}
       {{/sidebar-container}}
-      {{plugin-outlet name="sidebar-right"
-                      args=(hash customSidebarProps=customSidebarProps
-                                 category=category
-                                 responsiveView=responsiveView
-                                 path=path)}}
+      {{plugin-outlet
+        name="sidebar-right"
+        args=(hash customSidebarProps=customSidebarProps
+                   category=category
+                   responsiveView=responsiveView
+                   path=path)}}
     </aside>
   {{/if}}
 </div>
-
-{{#if showCategoryEditBtn}}
-  {{d-button class="btn-default
-             edit-category backup"
-             action="editCategory"
-             actionParam=category
-             icon="wrench"}}
-{{/if}}
-
-{{#if showCategoryAdmin}}
-  {{categories-admin-dropdown create=(action "createCategory")
-                              reorder=(action "reorderCategories")}}
-{{/if}}

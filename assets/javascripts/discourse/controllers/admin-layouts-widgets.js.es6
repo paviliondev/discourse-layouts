@@ -1,26 +1,45 @@
 import { ajax } from 'discourse/lib/ajax';
-import { default as computed } from 'ember-addons/ember-computed-decorators';
+import { default as discourseComputed } from 'discourse-common/utils/decorators';
+import { alias } from "@ember/object/computed";
+import LayoutWidget from '../models/layout-widget';
+import EmberObject from '@ember/object';
+
+function buildSelectKit(items, type) {
+  return items.map(item => {
+    return {
+      id: item,
+      name: isNaN(item) ? I18n.t(`admin.layouts.widgets.${type}.${item}`) : item
+    }
+  })
+}
 
 export default Ember.Controller.extend({
-  positionOptions: ['left', 'right'],
+  positionList: buildSelectKit(['left', 'right'], 'position'),
 
-  @computed('widgets')
-  orderOptions(widgets) {
-    let orderOptions = ['start', 'end'];
-    const numberOfWidgets = widgets.length;
-    if (numberOfWidgets > 0) {
-      for (let i=1; i<=numberOfWidgets; i++) {
-        orderOptions.push(i.toString());
+  @discourseComputed('widgets.length')
+  orderList(widgetCount) {
+    const items = ['start', 'end'];
+    if (widgetCount > 0) {
+      for (let i=1; i<=widgetCount; i++) {
+        items.push(i.toString());
       }
     }
-    return orderOptions;
+    return buildSelectKit(items, 'order');
   },
 
+  groupList: alias('site.groups'),
+    
   actions: {
-    clear(name) {
-      ajax('/admin/layouts/clear-widget', { type: 'PUT', data: { name } }).then(() => {
-        this.set('widgets', this.get('widgets').filter((w) => w.name !== name));
-      });
+    addWidget() {
+      this.get('widgets').pushObject(
+        EmberObject.create({
+          isNew: true
+        })
+      )
+    },
+    
+    removeWidget(widget) {
+      this.get('widgets').removeObject(widget)
     }
   }
 });

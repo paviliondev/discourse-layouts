@@ -5,7 +5,7 @@ import { settingEnabled } from '../lib/settings';
 import { getOwner } from 'discourse-common/lib/get-owner';
 
 export default {
-  name: 'sidebar-user-edits',
+  name: 'sidebar-user',
   initialize(container){
     const site = container.lookup('site:main');
     const siteSettings = container.lookup('site-settings:main');

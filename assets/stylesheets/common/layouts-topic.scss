@@ -1,6 +1,5 @@
 .main-content.topic.has-sidebars {
   box-shadow: none;
-  position: relative;
 
   .show-topic-admin {
     right: 15px;
@@ -8,7 +7,9 @@
   }
 
   #topic-title {
-    border-radius: 4px 4px 0 0;
+    position: relative;
+    border-left: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+    border-right: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
     border-top: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
     margin-bottom: 0;
     padding-top: 0;
@@ -50,7 +51,6 @@
           margin-top: 5px;
           display: inline-block;
           vertical-align: top;
-          border-radius: 3px;
           width: 400px;
         }
 
@@ -97,14 +97,17 @@
   }
 
   .timeline-container {
-    right: -80px;
-    position: absolute;
-    margin-left: 0;
-    transform: none;
+    margin-left: 700px;
+  }
+  
+  .topic-list-bottom h3,
+  #suggested-topics h3 {
+    font-size: 14px;
+    margin-bottom: 0;
+  }
 
-    .topic-timeline {
-      position: fixed;
-    }
+  .topic-list-bottom {
+    margin: 10px;
   }
 
   #topic-footer-buttons {
@@ -126,8 +129,7 @@
   #suggested-topics {
     background: white;
     padding: 10px;
-    border-radius: 4px;
-    box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.4);
+    margin-bottom: 0;
 
     p {
       padding: 10px 10px 0 10px;
@@ -148,7 +150,7 @@
   }
 
   .posts-wrapper {
-    border-radius: 0 0 4px 4px;
+  
     .small-action {
       width: 100%;
     }
@@ -179,10 +181,6 @@
     float: none;
     width: auto;
 
-    .regular {
-      margin-top: 10px;
-    }
-
     .poll {
       min-width: initial;
 
@@ -194,6 +192,11 @@
     img:not(.thumbnail) {
       max-width: 100%;
       height: auto;
+    }
+    
+    .cooked {
+      padding-top: 10px;
+      clear: both;
     }
   }
 

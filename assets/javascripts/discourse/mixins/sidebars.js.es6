@@ -1,10 +1,13 @@
-import { default as computed, on, observes } from 'ember-addons/ember-computed-decorators';
+import { default as discourseComputed, on, observes } from 'discourse-common/utils/decorators';
 import { mainStyle, responsiveSidebarWidth } from '../lib/display';
 import { settingEnabled } from '../lib/settings';
+import { inject as service } from "@ember/service";
+import { alias } from "@ember/object/computed";
+import Mixin from "@ember/object/mixin";
 
-export default Ember.Mixin.create({
-  application: Ember.inject.controller('application'),
-  path: Ember.computed.alias('application.currentPath'),
+export default Mixin.create({
+  router: service(),
+  path: alias("router._router.currentPath"),
   mobileTogglesEnabled: true,
   responsiveView: false,
   leftSidebarVisible: false,
@@ -21,14 +24,14 @@ export default Ember.Mixin.create({
     })
   },
 
-  @computed('path', 'leftHasWidgets')
+  @discourseComputed('path', 'leftHasWidgets')
   leftSidebarEnabled(path, hasWidgets) {
     const hideIfNoWidgets = Discourse.SiteSettings.layouts_hide_sidebars_if_empty;
     if (hideIfNoWidgets && !hasWidgets) return false;
     return settingEnabled('layouts_sidebar_left_enabled', this.get('category'), path);
   },
 
-  @computed('path', 'rightHasWidgets')
+  @discourseComputed('path', 'rightHasWidgets')
   rightSidebarEnabled(path, hasWidgets) {
     const hideIfNoWidgets = Discourse.SiteSettings.layouts_hide_sidebars_if_empty;
     if (hideIfNoWidgets && !hasWidgets) return false;
@@ -67,13 +70,13 @@ export default Ember.Mixin.create({
     this.set("responsiveView", windowWidth < Number(threshold));
   },
 
-  @computed('responsiveView')
+  @discourseComputed('responsiveView')
   isResponsive(responsiveView) {
     const mobileView = this.get('site.mobileView');
     return mobileView || responsiveView;
   },
 
-  @computed('path', 'loading', 'editingSidebars', 'isResponsive', 'leftSidebarEnabled', 'rightSidebarEnabled', 'forceSidebars')
+  @discourseComputed('path', 'loading', 'editingSidebars', 'isResponsive', 'leftSidebarEnabled', 'rightSidebarEnabled', 'forceSidebars')
   mainClasses(path, loading, editing, isResponsive, left, right, force) {
     let p = path.split('.');
     let classes = `${p[0]} ${p[1].split(/(?=[A-Z])/)[0]}`;
@@ -97,7 +100,7 @@ export default Ember.Mixin.create({
     return classes;
   },
 
-  @computed('isResponsive', 'leftSidebarVisible')
+  @discourseComputed('isResponsive', 'leftSidebarVisible')
   leftClasses(isResponsive, visible) {
     let classes = '';
     if (isResponsive) {
@@ -107,7 +110,7 @@ export default Ember.Mixin.create({
     return classes;
   },
 
-  @computed('isResponsive', 'rightSidebarVisible')
+  @discourseComputed('isResponsive', 'rightSidebarVisible')
   rightClasses(isResponsive, visible) {
     let classes = '';
     if (isResponsive) {
@@ -117,7 +120,7 @@ export default Ember.Mixin.create({
     return classes;
   },
 
-  @computed('path', 'isResponsive', 'leftSidebarVisible')
+  @discourseComputed('path', 'isResponsive', 'leftSidebarVisible')
   leftStyle(path, isResponsive, visible) {
     let width = this.siteSettings.layouts_sidebar_left_width;
     if (isResponsive) width = responsiveSidebarWidth('left');
@@ -129,7 +132,7 @@ export default Ember.Mixin.create({
     return Ember.String.htmlSafe(string);
   },
 
-  @computed('path', 'isResponsive', 'rightSidebarVisible')
+  @discourseComputed('path', 'isResponsive', 'rightSidebarVisible')
   rightStyle(path, isResponsive, visible) {
     let width = this.siteSettings.layouts_sidebar_right_width;
     if (isResponsive) width = responsiveSidebarWidth('right');
@@ -141,14 +144,14 @@ export default Ember.Mixin.create({
     return Ember.String.htmlSafe(string);
   },
 
-  @computed('path', 'isTopic', 'leftSidebarEnabled', 'rightSidebarEnabled')
+  @discourseComputed('path', 'isTopic', 'leftSidebarEnabled', 'rightSidebarEnabled')
   mainStyle(path, isTopic, left, right) {
     const isMobile = this.get('site.mobileView');
     if (isMobile) return;
     return Ember.String.htmlSafe(mainStyle(left, right, isTopic));
   },
 
-  @computed('leftSidebarEnabled', 'mobileTogglesEnabled', 'isResponsive', 'eitherSidebarVisible')
+  @discourseComputed('leftSidebarEnabled', 'mobileTogglesEnabled', 'isResponsive', 'eitherSidebarVisible')
   showSidebarToggles(sidebarEnabled, togglesEnabled, isResponsive, eitherSidebarVisible) {
     return isResponsive && sidebarEnabled && togglesEnabled && !eitherSidebarVisible;
   },

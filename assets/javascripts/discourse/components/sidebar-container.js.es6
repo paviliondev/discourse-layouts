@@ -1,5 +1,5 @@
 import MountWidget from 'discourse/components/mount-widget';
-import { observes, default as computed, on } from 'ember-addons/ember-computed-decorators';
+import { observes, default as discourseComputed, on } from 'discourse-common/utils/decorators';
 
 export default MountWidget.extend({
   classNameBindings: [':sidebar-container', 'fixed', 'editing'],
@@ -13,7 +13,7 @@ export default MountWidget.extend({
     });
   },
 
-  @computed()
+  @discourseComputed()
   fixed() {
     return Discourse.SiteSettings[`layouts_sidebar_${this.get('side')}_fixed`];
   },

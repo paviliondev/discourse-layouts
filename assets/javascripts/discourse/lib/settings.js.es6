@@ -17,6 +17,8 @@ let getFilter = function(path) {
 };
 
 let settingEnabled = function(setting, category, path) {
+  if (!path) return false;
+  
   let excluded = false;
   excludedFilters.forEach((f) => {
     if (path.indexOf(f) > -1) excluded = true;

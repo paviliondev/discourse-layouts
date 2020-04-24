@@ -1,44 +1,56 @@
-{{#if siteSettings.layouts_enabled}}
-  <section class='field'>
-    <label>{{i18n 'category.layouts_sidebar_left_enabled'}}</label>
-    {{list-setting settingValue=category.custom_fields.layouts_sidebar_left_enabled
-                   choices=enableChoices
-                   settingName='category.layouts_sidebar_left_enabled'}}
-  </section>
-  <section class='field'>
-    <label>{{i18n 'category.layouts_sidebar_right_enabled'}}</label>
-    {{list-setting settingValue=category.custom_fields.layouts_sidebar_right_enabled
-                   choices=enableChoices
-                   settingName='category.layouts_sidebar_right_enabled'}}
-  </section>
-  <section class='field'>
-    <label>{{i18n 'category.layouts_sidebar_left_widgets'}}</label>
-    {{list-setting settingValue=category.custom_fields.layouts_sidebar_left_widgets
-                   choices=choices
-                   settingName='category.layouts_sidebar_left_widgets'}}
-  </section>
-  <section class='field'>
-    <label>{{i18n 'category.layouts_sidebar_right_widgets'}}</label>
-    {{list-setting settingValue=category.custom_fields.layouts_sidebar_right_widgets
-                   choices=choices
-                   settingName='category.layouts_sidebar_right_widgets'}}
-  </section>
-  <section class='field'>
-    <label>{{i18n 'category.layouts_list_navigation_disabled'}}</label>
-    {{list-setting settingValue=category.custom_fields.layouts_list_navigation_disabled
-                   choices=enableChoices
-                   settingName='category.layouts_list_navigation_disabled'}}
-  </section>
-  <section class='field'>
-    <label>{{i18n 'category.layouts_list_header_disabled'}}</label>
-    {{list-setting settingValue=category.custom_fields.layouts_list_header_disabled
-                   choices=enableChoices
-                   settingName='category.layouts_list_header_disabled'}}
-  </section>
-  <section class='field'>
-    <label>{{i18n 'category.layouts_list_nav_menu'}}</label>
-    {{list-setting settingValue=category.custom_fields.layouts_list_nav_menu
-                   choices=enableChoices
-                   settingName='category.layouts_list_nav_menu'}}
-  </section>
-{{/if}}
+<h3>{{i18n 'category.layouts_heading'}}</h3>
+<section class='field'>
+  <label>{{i18n 'category.layouts_sidebar_left_enabled'}}</label>
+  {{layouts-list-setting
+    settingValue=category.custom_fields.layouts_sidebar_left_enabled
+    choices=enableChoices
+    settingName='category.layouts_sidebar_left_enabled'}}
+</section>
+
+<section class='field'>
+  <label>{{i18n 'category.layouts_sidebar_right_enabled'}}</label>
+  {{layouts-list-setting
+    settingValue=category.custom_fields.layouts_sidebar_right_enabled
+    choices=enableChoices
+    settingName='category.layouts_sidebar_right_enabled'}}
+</section>
+
+<section class='field'>
+  <label>{{i18n 'category.layouts_sidebar_left_widgets'}}</label>
+  {{layouts-list-setting
+    settingValue=category.custom_fields.layouts_sidebar_left_widgets
+    choices=choices
+    settingName='category.layouts_sidebar_left_widgets'}}
+</section>
+
+<section class='field'>
+  <label>{{i18n 'category.layouts_sidebar_right_widgets'}}</label>
+  {{layouts-list-setting
+    settingValue=category.custom_fields.layouts_sidebar_right_widgets
+    choices=choices
+    settingName='category.layouts_sidebar_right_widgets'}}
+</section>
+
+<section class='field'>
+  <label>{{i18n 'category.layouts_list_navigation_disabled'}}</label>
+  {{layouts-list-setting
+    settingValue=category.custom_fields.layouts_list_navigation_disabled
+    choices=enableChoices
+    settingName='category.layouts_list_navigation_disabled'}}
+</section>
+
+<section class='field'>
+  <label>{{i18n 'category.layouts_list_header_disabled'}}</label>
+  {{layouts-list-setting
+    settingValue=category.custom_fields.layouts_list_header_disabled
+    choices=enableChoices
+    settingName='category.layouts_list_header_disabled'}}
+</section>
+
+<section class='field'>
+  <label>{{i18n 'category.layouts_list_nav_menu'}}</label>
+  {{layouts-list-setting
+    settingValue=category.custom_fields.layouts_list_nav_menu
+    choices=enableChoices
+    settingName='category.layouts_list_nav_menu'}}
+</section>

@@ -1,21 +1,14 @@
-import { ajax } from 'discourse/lib/ajax';
+import LayoutWidget from '../models/layout-widget';
+import DiscourseRoute from "discourse/routes/discourse";
+import EmberObject from '@ember/object';
+import { A } from "@ember/array";
 
-export default Discourse.Route.extend({
+export default DiscourseRoute.extend({
   model() {
-    return ajax('/admin/layouts/widgets');
+    return LayoutWidget.list();
   },
 
   setupController(controller, model) {
-    let widgets = [];
-    model.widgets.forEach((w) => {
-      if (w !== null && typeof w === 'object') {
-        widgets.push(w);
-      } else if (typeof w === 'string') {
-        widgets.push({ name: w });
-      } else {
-        widgets.push({ name: null });
-      }
-    });
-    controller.set('widgets', widgets);
+    controller.set('widgets', A(model.map(w => EmberObject.create(w))));
   }
 });
