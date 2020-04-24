@@ -80,7 +80,6 @@ class DiscourseLayouts::Widget
   end
 
   def self.set(widgets)
-    return false if widgets.blank?
     PluginStore.set('discourse-layouts', 'widgets', widgets.map(&:as_json))
   end
   
