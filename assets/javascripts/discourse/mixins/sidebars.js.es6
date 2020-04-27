@@ -150,7 +150,6 @@ export default Mixin.create({
     if (rightSidebarEnabled) {
       offset += mainRightOffset;
     }
-    console.log(offset)
     style += `width: ${offset > 0 ? `calc(100% - ${offset}px)` : '100%'}`;
     return htmlSafe(style);
   },
