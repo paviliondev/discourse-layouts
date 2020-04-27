@@ -22,5 +22,10 @@ $timeline-buffer: 100px;
         - var(--mainLeftOffset)
       );
     }
+    
+    .cooked img:not(.thumbnail) {
+      // this is necessary because of the image-sizing-hack in Discourse
+      max-width: 100% !important;
+    }
   }
 }
