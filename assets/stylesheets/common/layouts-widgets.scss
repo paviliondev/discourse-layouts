@@ -9,6 +9,8 @@ aside.sidebar {
 
   &.fixed {
     position: fixed;
+    max-height: calc(100vh - 100px);
+    overflow: scroll;
   }
 
   .sidebar-content {
