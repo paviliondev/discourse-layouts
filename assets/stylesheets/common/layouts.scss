@@ -2,6 +2,11 @@
 @import 'layouts-topic';
 @import 'layouts-widgets';
 
+:root {
+  --mainLeftOffset: 0px;
+  --mainRightOffset: 0px;
+}
+
 .content-wrapper {
   display: flex;
 }
@@ -35,27 +40,15 @@ html.mobile-device {
     
     .container.list-container {
       width: 100%;
-      background-color: $secondary;
-    }
-
-    .container.posts {
-      border-left: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
-      border-right: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
-      border-bottom: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
-      background-color: $secondary;
-    }
-
-    .timeline-container {
-      z-index: 1;
     }
   }
 
   &.left-sidebar, &.left-sidebar.loading {
-    margin-left: 10px;
+    margin-left: 20px;
   }
 
   &.right-sidebar, &.right-sidebar.loading {
-    margin-right: 10px;
+    margin-right: 20px;
   }
 
   &.loading {

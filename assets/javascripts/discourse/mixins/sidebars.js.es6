@@ -2,8 +2,14 @@ import { default as discourseComputed, on, observes } from 'discourse-common/uti
 import { mainStyle, responsiveSidebarWidth } from '../lib/display';
 import { settingEnabled } from '../lib/settings';
 import { inject as service } from "@ember/service";
-import { alias } from "@ember/object/computed";
+import { alias, or, not, and } from "@ember/object/computed";
 import Mixin from "@ember/object/mixin";
+import { scheduleOnce, bind } from "@ember/runloop";
+import { htmlSafe } from "@ember/template";
+
+const sidebarPadding = 20;
+const mainLeftOffset = Discourse.SiteSettings.layouts_sidebar_left_width + sidebarPadding;
+const mainRightOffset = Discourse.SiteSettings.layouts_sidebar_right_width + sidebarPadding;
 
 export default Mixin.create({
   router: service(),
@@ -12,10 +18,52 @@ export default Mixin.create({
   responsiveView: false,
   leftSidebarVisible: false,
   rightSidebarVisible: false,
+  eitherSidebarVisible: or('leftSidebarVisible', 'rightSidebarVisible'),
+  neitherSidebarVisible: not('eitherSidebarVisible'),
+  showSidebarToggles: and('isResponsive', 'mobileTogglesEnabled', 'neitherSidebarVisible'),
+  showLeftSidebarToggle: and('showSidebarToggles', 'leftSidebarEnabled'),
+  showRightSidebarToggle: and('showSidebarToggles', 'rightSidebarEnabled'),
   leftHasWidgets: true,
   rightHasWidgets: true,
   customSidebarProps: {},
+  hideSidebarsIfEmpty: alias('siteSettings.layouts_hide_sidebars_if_empty'),
 
+  @discourseComputed('path', 'leftHasWidgets', 'hideSidebarsIfEmpty')
+  leftSidebarEnabled(path, leftHasWidgets, hideSidebarsIfEmpty) {
+    if (hideSidebarsIfEmpty && !leftHasWidgets) return false;
+    return settingEnabled('layouts_sidebar_left_enabled', this.category, path);
+  },
+
+  @discourseComputed('path', 'rightHasWidgets', 'hideSidebarsIfEmpty')
+  rightSidebarEnabled(path, rightHasWidgets, hideSidebarsIfEmpty) {
+    if (hideSidebarsIfEmpty && !rightHasWidgets) return false;
+    return settingEnabled('layouts_sidebar_right_enabled', this.category, path);
+  },
+
+  @on('init')
+  setupMixin() {
+    scheduleOnce('afterRender', () => {
+      this.handleResize();
+      $(window).on('resize', bind(this, this.handleResize));
+      const root = document.documentElement;
+      root.style.setProperty('--mainLeftOffset', `${mainLeftOffset}px`);
+      root.style.setProperty('--mainRightOffset', `${mainRightOffset}px`);
+    });
+    
+    this.appEvents.on('sidebar:toggle', (side) => {
+      this.toggleProperty(`${side}SidebarVisible`)
+    });
+  },
+
+  @on('willDestroy')
+  teardownMixin() {
+    $(window).off('resize', bind(this, this.handleResize));
+    
+    this.appEvents.off('sidebar:toggle', (side) => {
+      this.toggleProperty(`${side}SidebarVisible`)
+    });
+  },
+  
   @observes('path')
   resetHasWidgets() {
     this.setProperties({
@@ -24,49 +72,20 @@ export default Mixin.create({
     })
   },
 
-  @discourseComputed('path', 'leftHasWidgets')
-  leftSidebarEnabled(path, hasWidgets) {
-    const hideIfNoWidgets = Discourse.SiteSettings.layouts_hide_sidebars_if_empty;
-    if (hideIfNoWidgets && !hasWidgets) return false;
-    return settingEnabled('layouts_sidebar_left_enabled', this.get('category'), path);
-  },
-
-  @discourseComputed('path', 'rightHasWidgets')
-  rightSidebarEnabled(path, hasWidgets) {
-    const hideIfNoWidgets = Discourse.SiteSettings.layouts_hide_sidebars_if_empty;
-    if (hideIfNoWidgets && !hasWidgets) return false;
-    return settingEnabled('layouts_sidebar_right_enabled', this.get('category'), path);
-  },
-
-  @on('init')
-  setupMixin() {
-    Ember.run.scheduleOnce('afterRender', () => {
-      this.handleResize();
-      $(window).on('resize', Ember.run.bind(this, this.handleResize));
-    });
-    this.appEvents.on('sidebar:toggle', (side) => this.toggleProperty(`${side}SidebarVisible`));
-  },
-
-  @on('willDestroy')
-  teardownMixin() {
-    $(window).off('resize', Ember.run.bind(this, this.handleResize));
-    this.appEvents.off('sidebar:toggle', (side) => this.toggleProperty(`${side}SidebarVisible`));
-  },
-
   handleResize() {
     const windowWidth = $(window).width();
     const settings = this.siteSettings;
-    const leftSidebarEnabled = this.get('leftSidebarEnabled');
-    const rightSidebarEnabled = this.get('rightSidebarEnabled');
-    let threshold = settings.layouts_sidebar_main_content_threshold + 5;
-
+    const mainContentThreshold = settings.layouts_sidebar_main_content_threshold;
+    const leftSidebarEnabled = this.leftSidebarEnabled;
+    const rightSidebarEnabled = this.rightSidebarEnabled;
+    
+    let threshold = mainContentThreshold + 5;
     if (leftSidebarEnabled) {
-      threshold += settings.layouts_sidebar_left_width + 15;
+      threshold += mainLeftOffset;
     }
     if (rightSidebarEnabled) {
-      threshold += settings.layouts_sidebar_right_width + 15;
+      threshold += mainRightOffset;
     }
-
     this.set("responsiveView", windowWidth < Number(threshold));
   },
 
@@ -80,7 +99,7 @@ export default Mixin.create({
   mainClasses(path, loading, editing, isResponsive, left, right, force) {
     let p = path.split('.');
     let classes = `${p[0]} ${p[1].split(/(?=[A-Z])/)[0]}`;
-
+    
     if ((left || right) || force) {
       classes += ' has-sidebars';
     } else {
@@ -119,6 +138,22 @@ export default Mixin.create({
     }
     return classes;
   },
+  
+  @discourseComputed('path', 'leftSidebarEnabled', 'rightSidebarEnabled')
+  mainStyle(path, leftSidebarEnabled, rightSidebarEnabled) {
+    if (this.site.mobileView) return;
+    let offset = 0;
+    let style = '';
+    if (leftSidebarEnabled) {
+      offset += mainLeftOffset;
+    }
+    if (rightSidebarEnabled) {
+      offset += mainRightOffset;
+    }
+    console.log(offset)
+    style += `width: ${offset > 0 ? `calc(100% - ${offset}px)` : '100%'}`;
+    return htmlSafe(style);
+  },
 
   @discourseComputed('path', 'isResponsive', 'leftSidebarVisible')
   leftStyle(path, isResponsive, visible) {
@@ -129,7 +164,7 @@ export default Mixin.create({
       const left = visible ? '0' : `-${width}`;
       string += ` left: ${left}px;`;
     }
-    return Ember.String.htmlSafe(string);
+    return htmlSafe(string);
   },
 
   @discourseComputed('path', 'isResponsive', 'rightSidebarVisible')
@@ -141,23 +176,9 @@ export default Mixin.create({
       const right = visible ? '0' : `-${width}`;
       string += ` right: ${right}px;`;
     }
-    return Ember.String.htmlSafe(string);
+    return htmlSafe(string);
   },
-
-  @discourseComputed('path', 'isTopic', 'leftSidebarEnabled', 'rightSidebarEnabled')
-  mainStyle(path, isTopic, left, right) {
-    const isMobile = this.get('site.mobileView');
-    if (isMobile) return;
-    return Ember.String.htmlSafe(mainStyle(left, right, isTopic));
-  },
-
-  @discourseComputed('leftSidebarEnabled', 'mobileTogglesEnabled', 'isResponsive', 'eitherSidebarVisible')
-  showSidebarToggles(sidebarEnabled, togglesEnabled, isResponsive, eitherSidebarVisible) {
-    return isResponsive && sidebarEnabled && togglesEnabled && !eitherSidebarVisible;
-  },
-
-  eitherSidebarVisible: Ember.computed.or('leftSidebarVisible', 'rightSidebarVisible'),
-
+  
   actions: {
     toggleSidebar(side) {
       this.toggleProperty(`${side}SidebarVisible`);

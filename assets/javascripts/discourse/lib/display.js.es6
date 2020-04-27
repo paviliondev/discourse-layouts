@@ -1,27 +1,5 @@
 import { settingEnabled } from './settings';
 
-let mainStyle = (leftSidebarEnabled, rightSidebarEnabled, isTopic) => {
-  const settings = Discourse.SiteSettings;
-
-  let offset = 0;
-  let style = '';
-
-  if (leftSidebarEnabled) {
-    offset += settings.layouts_sidebar_left_width + 10;
-  }
-  if (rightSidebarEnabled) {
-    offset += settings.layouts_sidebar_right_width + 10;
-  }
-  if (leftSidebarEnabled && !rightSidebarEnabled && isTopic) {
-    offset += settings.layouts_sidebar_right_width + 10;
-    style += `margin-right: ${Discourse.SiteSettings.layouts_sidebar_right_width}px;`;
-  }
-
-  style += `width: ${offset > 0 ? `calc(100% - ${offset}px)` : '100%'}`;
-
-  return style;
-};
-
 let renderTemplateTopic = function(self, category, path) {
   if (!settingEnabled('layouts_list_navigation_disabled', category, path)) {
     self.render('navigation/default', { outlet: 'navigation-bar' });
@@ -45,4 +23,8 @@ let responsiveSidebarWidth = function(side) {
   return windowBasedWidth < sidebarWidthSetting ? windowBasedWidth : sidebarWidthSetting;
 };
 
-export { mainStyle, renderTemplateTopic, renderTemplateCategory, responsiveSidebarWidth };
+export {
+  renderTemplateTopic,
+  renderTemplateCategory,
+  responsiveSidebarWidth
+};
