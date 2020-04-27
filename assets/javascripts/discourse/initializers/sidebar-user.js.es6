@@ -12,7 +12,7 @@ export default {
 
     if (site.mobileView && !siteSettings.layouts_mobile_enabled ||
         !siteSettings.layouts_enabled ||
-        !siteSettings.layouts_profile_enabled) { return; }
+        !siteSettings.layouts_profile_enabled) return;
 
     UserRoute.reopen({
       renderTemplate() {
