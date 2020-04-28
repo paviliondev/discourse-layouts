@@ -1,6 +1,8 @@
 class DiscourseLayouts::Widget
   include ActiveModel::SerializerSupport
   
+  NAMESPACE = "layouts"
+  
   attr_accessor :name, :position, :order, :groups, :enabled
   
   def initialize(attrs={})
@@ -33,6 +35,8 @@ class DiscourseLayouts::Widget
   
   def self.add(name, data = {})
     widgets = self.list(all: true)
+    
+    name = "#{NAMESPACE}-#{name}" unless name.starts_with?("#{NAMESPACE}-")
     
     if widgets.empty? || widgets.none? { |w| w.name == name }
       widget = self.new({ name: name }.merge(data))

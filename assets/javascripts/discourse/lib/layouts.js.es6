@@ -21,9 +21,10 @@ function addSidebarProps(props) {
 }
 
 const _layouts_widget_registry = {};
+const namespace = 'layouts';
 
 function createLayoutsWidget(name, opts) {
-  const fullName = `layouts-${name}`;
+  const fullName = `${namespace}-${name}`;
   
   const widget = createWidget(fullName,
     Object.assign({},
