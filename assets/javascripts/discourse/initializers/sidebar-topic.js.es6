@@ -4,7 +4,7 @@ import TopicNavigation from 'discourse/components/topic-navigation';
 import TopicList from 'discourse/components/topic-list';
 import Sidebars from '../mixins/sidebars';
 import { default as discourseComputed, observes, on } from 'discourse-common/utils/decorators';
-import { settingEnabled } from '../lib/settings';
+import { settingEnabled } from '../lib/layouts-settings';
 import { alias } from "@ember/object/computed";
 import { withPluginApi } from 'discourse/lib/plugin-api';
 
@@ -30,6 +30,8 @@ export default {
         isTopic: true
       });
       
+      api.modifyClass('controller:topic', Sidebars);
+      
       api.modifyClass('component:topic-navigation', {
         _performCheckSize() {
           if (!this.element || this.isDestroying || this.isDestroyed) return;
@@ -44,7 +46,7 @@ export default {
             this._super(...arguments);
           }
         }
-      })
+      });
       
       const discoveryController = container.lookup('controller:discovery');
       
@@ -53,9 +55,7 @@ export default {
         skipHeader(){
           return site.mobileView || discoveryController.get('headerDisabled');
         }
-      })
+      });
     })
-
-    TopicController.reopen(Sidebars);
   }
 };

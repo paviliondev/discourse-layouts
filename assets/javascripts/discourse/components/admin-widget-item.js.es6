@@ -1,8 +1,16 @@
 import { ajax } from 'discourse/lib/ajax';
 import LayoutWidget from '../models/layout-widget';
+import { listLayoutsWidgets } from '../lib/layouts';
 import { default as discourseComputed, observes } from 'discourse-common/utils/decorators';
 import { not, empty } from "@ember/object/computed";
 import Component from '@ember/component';
+import { getOwner } from 'discourse-common/lib/get-owner';
+
+function generateDisplayName(name) {
+  return name.replace("layouts-", "")
+    .replace(/[_\-]+/g, ' ')
+    .replace(/(^\w|\b\w)/g, (m) => m.toUpperCase());
+}
 
 export default Component.extend({
   tagName: 'tr',
@@ -11,7 +19,7 @@ export default Component.extend({
   dirty: false,
 
   didInsertElement() {
-    this._super(...arguments);
+    this._super(...arguments);    
     if (!this.widget.isNew) {
       this.set('existingWidget', JSON.parse(JSON.stringify(this.widget)));
     }
@@ -26,6 +34,21 @@ export default Component.extend({
     } else {
       this.set('dirty', value !== this.existingWidget[type]);
     }
+  },
+  
+  @discourseComputed('widget.name')
+  widgetDisplayName(name) {
+    return generateDisplayName(name);
+  },
+  
+  @discourseComputed
+  widgetList() {
+    return listLayoutsWidgets().map(name => {
+      return {
+        id: name,
+        name: generateDisplayName(name)
+      }
+    })
   },
 
   actions: {

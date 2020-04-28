@@ -1,4 +1,4 @@
-class DiscourseLayouts::WidgetsController < ::ApplicationController
+class DiscourseLayouts::WidgetsController < ::Admin::AdminController
   before_action :ensure_admin
 
   def index

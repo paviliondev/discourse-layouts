@@ -1,5 +1,5 @@
-import { renderTemplateTopic, renderTemplateCategory } from '../lib/display';
-import { settingEnabled, excludedFilters } from '../lib/settings';
+import { renderTemplateTopic, renderTemplateCategory } from '../lib/layouts-display';
+import { settingEnabled, excludedFilters } from '../lib/layouts-settings';
 import { withPluginApi } from 'discourse/lib/plugin-api';
 
 export default {

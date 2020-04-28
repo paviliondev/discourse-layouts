@@ -1,4 +1,5 @@
 import { createWidget } from 'discourse/widgets/widget';
+import { lookupLayoutsWidget } from '../lib/layouts';
 
 const isNumeric = function(val) {
   return !isNaN(parseFloat(val)) && isFinite(val);
@@ -58,7 +59,7 @@ export default createWidget('sidebar', {
     
     widgets.forEach((widget) => {
       if (widget.length) {
-        const exists = this.register.lookupFactory(`widget:${widget}`);
+        const exists = lookupLayoutsWidget(widget) || this.register.lookupFactory(`widget:${widget}`);
 
         if (exists) {
           let props = { topic, category, side };

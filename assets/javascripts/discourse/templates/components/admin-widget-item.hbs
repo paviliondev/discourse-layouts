@@ -1,12 +1,18 @@
 <td class="name">
   {{#if widget.isNew}}
-    {{input value=widget.name placeholder=(i18n 'admin.layouts.widgets.name')}}
+    {{combo-box
+      value=widget.name
+      content=widgetList
+      options=(hash
+        none='admin.layouts.widgets.select_widget'
+        allowAny=true
+      )}}
   {{else}}
-    <span>{{widget.name}}</span>
+    <span>{{widgetDisplayName}}</span>
   {{/if}}
 </td>
 
-<td>
+<td class="position">
   {{combo-box
     content=positionList
     value=widget.position
@@ -16,7 +22,7 @@
     )}}
 </td>
 
-<td>
+<td class="order">
   {{combo-box
     content=orderList
     value=widget.order
@@ -26,7 +32,7 @@
     )}}
 </td>
 
-<td>
+<td class="groups">
   {{multi-select
     content=groupList
     value=widget.groups
@@ -37,7 +43,7 @@
     )}}
 </td>
 
-<td>
+<td class="enabled">
   {{input
     type="checkbox"
     checked=widget.enabled
@@ -50,14 +56,14 @@
   {{else}}
     {{d-button
       action="save"
-      class="btn btn-small btn-primary"
+      class="btn btn-primary"
       label="admin.layouts.widgets.save"
       icon="save"
       disabled=saveDisabled}}
       
     {{d-button
       action="remove"
-      class="btn btn-small"
+      class="btn"
       label="admin.layouts.widgets.remove"
       icon="times"}}
   {{/if}}

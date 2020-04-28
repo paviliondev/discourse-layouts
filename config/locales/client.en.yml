@@ -27,13 +27,15 @@ en:
       layouts:
         label: "Layouts"
         widgets:
-          label: "Widgets"
+          nav: "Widgets"
+          title: "Layouts Widgets"
           add: "Add Widget"
-          name: "Name"
+          widget: "Widget"
           save: "Save"
           enabled: "Enabled"
           none: "No widgets"
           select: "Select"
+          select_widget: "Select a widget..."
           remove: "Remove"
           
           order:

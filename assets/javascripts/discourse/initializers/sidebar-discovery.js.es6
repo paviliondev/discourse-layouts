@@ -4,7 +4,7 @@ import NavigationBar from 'discourse/components/navigation-bar';
 import NavigationItem from 'discourse/components/navigation-item';
 import Sidebars from '../mixins/sidebars';
 import { on, observes, default as discourseComputed } from 'discourse-common/utils/decorators';
-import { settingEnabled } from '../lib/settings';
+import { settingEnabled } from '../lib/layouts-settings';
 import { getOwner } from 'discourse-common/lib/get-owner';
 
 export default {

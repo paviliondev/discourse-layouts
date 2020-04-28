@@ -1,7 +1,7 @@
 import UserController from 'discourse/controllers/user';
 import UserRoute from 'discourse/routes/user';
 import Sidebars from '../mixins/sidebars';
-import { settingEnabled } from '../lib/settings';
+import { settingEnabled } from '../lib/layouts-settings';
 import { getOwner } from 'discourse-common/lib/get-owner';
 
 export default {

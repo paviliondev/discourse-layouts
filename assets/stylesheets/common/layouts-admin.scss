@@ -1,6 +1,11 @@
 .admin-layouts {
   .admin-title {
     justify-content: space-between;
+    align-items: center;
+    
+    h3 {
+      margin: 0;
+    }
   }
 }
 
@@ -15,33 +20,56 @@
   
   th.name,
   td.name {
-    width: 230px;
-    max-width: 230px;
+    width: 260px;
+    max-width: 260px;
     
     input {
       width: 100%;
       margin-bottom: 0;
     }
+    
+    .select-kit {
+      width: 250px;
+      min-width: 250px;
+      max-width: 250px;
+    }
   }
   
-  .select-kit {
-    width: 80px !important;
-    min-width: 80px !important;
-    max-width: 80px !important;
-    
-    &.multi-select {
-      width: 350px !important;
-      min-width: 350px !important;
-      max-width: 350px !important;
+  td.order, td.position {
+    .select-kit {
+      width: 80px;
+      min-width: 80px;
+      max-width: 80px;
+    }
+  }
+  
+  td.groups {
+    .select-kit.multi-select {
+      width: 300px;
+      min-width: 300px;
+      max-width: 300px;
       
       .choices .choice {
         height: 24px;
       }
     }
   }
-
-  .controls {
+  
+  td.enabled {
     text-align: center;
-    white-space: nowrap;
+  }
+
+  td.controls {
+    display: flex;
+    width: 200px;
+    justify-content: center;
+    
+    .btn {
+      margin-right: 10px;
+      
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
   }
 }

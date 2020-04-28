@@ -1,6 +1,6 @@
 import { default as discourseComputed, on, observes } from 'discourse-common/utils/decorators';
-import { mainStyle, responsiveSidebarWidth } from '../lib/display';
-import { settingEnabled } from '../lib/settings';
+import { mainStyle, responsiveSidebarWidth } from '../lib/layouts-display';
+import { settingEnabled } from '../lib/layouts-settings';
 import { inject as service } from "@ember/service";
 import { alias, or, not, and } from "@ember/object/computed";
 import Mixin from "@ember/object/mixin";

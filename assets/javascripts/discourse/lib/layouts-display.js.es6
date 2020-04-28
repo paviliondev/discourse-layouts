@@ -1,4 +1,4 @@
-import { settingEnabled } from './settings';
+import { settingEnabled } from './layouts-settings';
 
 let renderTemplateTopic = function(self, category, path) {
   if (!settingEnabled('layouts_list_navigation_disabled', category, path)) {

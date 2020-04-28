@@ -27,5 +27,15 @@ $timeline-buffer: 100px;
       // this is necessary because of the image-sizing-hack in Discourse
       max-width: 100% !important;
     }
+    
+    // TOC needs more breathing room when there's a left sidebar
+    :not(.rtl) .d-toc-post .d-toc-article {
+      >.row {
+        padding-right: 20px;
+      }
+      >.d-toc {
+        max-width: 250px;
+      }
+    }
   }
 }
