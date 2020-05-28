@@ -6,6 +6,8 @@ import Sidebars from '../mixins/sidebars';
 import { on, observes, default as discourseComputed } from 'discourse-common/utils/decorators';
 import { settingEnabled } from '../lib/layouts-settings';
 import { getOwner } from 'discourse-common/lib/get-owner';
+import { inject as controller } from "@ember/controller";
+import { scheduleOnce } from "@ember/runloop";
 
 export default {
   name: 'sidebar-discovery',
@@ -24,9 +26,9 @@ export default {
 
     DiscoveryController.reopen(Sidebars, {
       mainContent: 'discovery',
-      navigationDefault: Ember.inject.controller('navigation/default'),
-      navigationCategories: Ember.inject.controller('navigation/categories'),
-      navigationCategory: Ember.inject.controller("navigation/category"),
+      navigationDefault: controller('navigation/default'),
+      navigationCategories: controller('navigation/categories'),
+      navigationCategory: controller("navigation/category"),
 
       @on('init')
       @observes('path')
@@ -36,7 +38,7 @@ export default {
 
         // necessary because discovery categories component does not use skipHeader
         if (this.get('headerDisabled')) {
-          Ember.run.scheduleOnce('afterRender', function() {
+          scheduleOnce('afterRender', function() {
             $('.main-content thead').hide();
           });
         }

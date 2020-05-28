@@ -1,14 +1,16 @@
 import Component from '@ember/component';
+import { default as discourseComputed } from 'discourse-common/utils/decorators';
 
 export default Component.extend({
   classNames: ['nav-drop'],
   expanded: false,
   clickEventName: "click.nav-drop",
-
-  iconClass: function() {
-    if (this.get('expanded')) { return "caret-down"; }
+  
+  @discourseComputed('expanded')
+  iconClass(expanded) {
+    if (expanded) { return "caret-down"; }
     return "caret-right";
-  }.property('expanded'),
+  },
 
   actions: {
     expand: function() {

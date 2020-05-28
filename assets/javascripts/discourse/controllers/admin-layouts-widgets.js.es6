@@ -3,6 +3,8 @@ import { default as discourseComputed } from 'discourse-common/utils/decorators'
 import { alias } from "@ember/object/computed";
 import LayoutWidget from '../models/layout-widget';
 import EmberObject from '@ember/object';
+import Controller from "@ember/controller";
+import I18n from "I18n";
 
 function buildSelectKit(items, type) {
   return items.map(item => {
@@ -13,7 +15,7 @@ function buildSelectKit(items, type) {
   })
 }
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   positionList: buildSelectKit(['left', 'right'], 'position'),
 
   @discourseComputed('widgets.length')
