@@ -7,10 +7,6 @@ import Mixin from "@ember/object/mixin";
 import { scheduleOnce, bind } from "@ember/runloop";
 import { htmlSafe } from "@ember/template";
 
-const sidebarPadding = 20;
-const mainLeftOffset = Discourse.SiteSettings.layouts_sidebar_left_width + sidebarPadding;
-const mainRightOffset = Discourse.SiteSettings.layouts_sidebar_right_width + sidebarPadding;
-
 export default Mixin.create({
   router: service(),
   path: alias("router._router.currentPath"),
@@ -42,16 +38,26 @@ export default Mixin.create({
 
   @on('init')
   setupMixin() {
+    const siteSettings = this.siteSettings;
+    const sidebarPadding = 20;
+    const mainLeftOffset = siteSettings.layouts_sidebar_left_width + sidebarPadding;
+    const mainRightOffset = siteSettings.layouts_sidebar_right_width + sidebarPadding;
+    
     scheduleOnce('afterRender', () => {
       this.handleResize();
       $(window).on('resize', bind(this, this.handleResize));
       const root = document.documentElement;
-      root.style.setProperty('--mainLeftOffset', `${mainLeftOffset}px`);
-      root.style.setProperty('--mainRightOffset', `${mainRightOffset}px`);
+      root.style.setProperty('--mainLeftOffset', `${this.mainLeftOffset}px`);
+      root.style.setProperty('--mainRightOffset', `${this.mainRightOffset}px`);
     });
     
     this.appEvents.on('sidebar:toggle', (side) => {
-      this.toggleProperty(`${side}SidebarVisible`)
+      this.toggleProperty(`${side}SidebarVisible`);
+    });
+    
+    this.setProperties({
+      mainLeftOffset,
+      mainRightOffset
     });
   },
 
@@ -78,6 +84,8 @@ export default Mixin.create({
     const mainContentThreshold = settings.layouts_sidebar_main_content_threshold;
     const leftSidebarEnabled = this.leftSidebarEnabled;
     const rightSidebarEnabled = this.rightSidebarEnabled;
+    const mainLeftOffset = this.mainLeftOffset;
+    const mainRightOffset = this.mainRightOffset;
     
     let threshold = mainContentThreshold + 5;
     if (leftSidebarEnabled) {
@@ -142,6 +150,8 @@ export default Mixin.create({
   @discourseComputed('path', 'leftSidebarEnabled', 'rightSidebarEnabled')
   mainStyle(path, leftSidebarEnabled, rightSidebarEnabled) {
     if (this.site.mobileView) return;
+    const mainLeftOffset = this.mainLeftOffset;
+    const mainRightOffset = this.mainRightOffset;
     let offset = 0;
     let style = '';
     if (leftSidebarEnabled) {
