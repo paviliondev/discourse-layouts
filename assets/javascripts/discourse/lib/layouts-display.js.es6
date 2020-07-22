@@ -17,14 +17,7 @@ let renderTemplateCategory = function(self, category, path) {
   self.render('discovery/topics', { controller: 'discovery/topics', outlet: 'list-container' });
 };
 
-let responsiveSidebarWidth = function(side) {
-  const sidebarWidthSetting = Discourse.SiteSettings[`layouts_sidebar_${side}_width`];
-  const windowBasedWidth = $(window).width() * 0.85;
-  return windowBasedWidth < sidebarWidthSetting ? windowBasedWidth : sidebarWidthSetting;
-};
-
 export {
   renderTemplateTopic,
-  renderTemplateCategory,
-  responsiveSidebarWidth
+  renderTemplateCategory
 };

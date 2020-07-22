@@ -190,15 +190,73 @@ html.mobile-device {
   margin-bottom: 0;
 }
 
-.responsive-toggle {
-  position: absolute;
+.layouts-responsive-menu {
+  position: fixed;
+  width: 100vw;
+  left: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  background-color: $secondary;
+  padding: 15px 0;
+  z-index: 300;
+  box-shadow: 0 -2px 4px -1px rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.responsive-toggle,
+.responsive-link {
+  background: none;
+  padding: 0;
+  height: 100%;
+  box-sizing: border-box;
+  
+  img, svg {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+.sidebar.is-responsive {
+  height: 100vh;
+  max-height: 100vh;
+  position: fixed;
   top: 0;
-  
-  &.left {
-    right: -60px;
+  left: 0;
+  z-index: 9999;
+  overflow: scroll;
+  transition: all .2s ease;
+
+  .sidebar-container {
+    max-height: unset;
+    height: 100vh;
+    background-color: $secondary;
+    border-right: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+    position: unset;
+    width: 90%;
+    
+    .sidebar-content {
+      height: 100%;
+    }
+    
+    .widget-container {
+      border: none;
+      border-bottom: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+    }
   }
-  
-  &.right {
-    left: -60px;
-  }
+}
+
+.sidebar-cloak {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background-color: black;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  display: none;
+  touch-action: pan-y pinch-zoom;
+  transition: opacity 0.2s ease-out;
+  z-index: 1000;
 }

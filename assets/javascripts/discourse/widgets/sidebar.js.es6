@@ -1,5 +1,6 @@
 import { createWidget } from 'discourse/widgets/widget';
 import { lookupLayoutsWidget } from '../lib/layouts';
+import { later } from "@ember/runloop";
 
 const isNumeric = function(val) {
   return !isNaN(parseFloat(val)) && isFinite(val);

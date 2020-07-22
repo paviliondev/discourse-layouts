@@ -1,29 +1,21 @@
 <div class="content-wrapper">
   {{#if leftSidebarEnabled}}
     <aside class="sidebar left {{leftClasses}}" style={{leftStyle}}>
-      {{#sidebar-container
+      {{sidebar-container
         side="left"
         topic=model
         customSidebarProps=customSidebarProps
         category=category
         filter=filter
         context=mainContent}}
-
-        {{#if showSidebarToggles}}
-          {{d-button 
-            class='responsive-toggle left'
-            action='toggleSidebar'
-            actionParam='left'
-            icon='chevron-right'}}
-        {{/if}}
-      {{/sidebar-container}}
       
       {{plugin-outlet
         name="sidebar-left"
-        args=(hash customSidebarProps=customSidebarProps
-                   category=category
-                   responsiveView=responsiveView
-                   path=path)}}
+        args=(hash
+          customSidebarProps=customSidebarProps
+          category=category
+          responsiveView=responsiveView
+          path=path)}}
     </aside>
   {{/if}}
   
@@ -33,26 +25,36 @@
   
   {{#if rightSidebarEnabled}}
     <aside class="sidebar right {{rightClasses}}" style={{rightStyle}}>
-      {{#sidebar-container side="right"
-                           topic=model
-                           customSidebarProps=customSidebarProps
-                           category=category
-                           filter=filter
-                           context=mainContent}}
-
-        {{#if showSidebarToggles}}
-          {{d-button class='responsive-toggle right'
-                     action='toggleSidebar'
-                     actionParam='right'
-                     icon='chevron-left'}}
-        {{/if}}
-      {{/sidebar-container}}
+      {{sidebar-container
+        side="right"
+        topic=model
+        customSidebarProps=customSidebarProps
+        category=category
+        filter=filter
+        context=mainContent}}
+      
       {{plugin-outlet
         name="sidebar-right"
-        args=(hash customSidebarProps=customSidebarProps
-                   category=category
-                   responsiveView=responsiveView
-                   path=path)}}
+        args=(hash 
+          customSidebarProps=customSidebarProps
+          category=category
+          responsiveView=responsiveView
+          path=path)}}
     </aside>
+  {{/if}}
+  
+  {{#if showResponsiveMenu}}
+    <div class="layouts-responsive-menu">
+      {{#each responsiveMenuItems as |item|}}
+        {{#d-button
+          class=item.class
+          action=item.action
+          actionParam=item.actionParam
+        }}
+          {{item.icon}}
+        {{/d-button}}
+      {{/each}}
+    </div>
+    <div class="sidebar-cloak"></div>
   {{/if}}
 </div>

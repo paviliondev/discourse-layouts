@@ -2,9 +2,6 @@ plugins:
   layouts_enabled:
     client: true
     default: true
-  layouts_mobile_enabled:
-    client: true
-    default: false
   layouts_sidebar_left_enabled:
     client: true
     type: list
@@ -51,6 +48,13 @@ plugins:
   layouts_sidebar_right_fixed:
     client: true
     default: true
+  layouts_mobile_enabled:
+    client: true
+    default: false
+  layouts_mobile_menu:
+    client: true
+    type: list
+    default: ''
   layouts_list_navigation_disabled:
     client: true
     type: list

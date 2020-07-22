@@ -10,7 +10,7 @@ import { withPluginApi } from 'discourse/lib/plugin-api';
 
 export default {
   name: 'sidebar-topic',
-  initialize(container){
+  initialize(container) {
     const site = container.lookup('site:main');
     const siteSettings = container.lookup('site-settings:main');
 
