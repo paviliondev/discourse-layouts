@@ -98,11 +98,7 @@ export default createWidget('sidebar', {
   },
 
   clickOutside() {
-    const side = this.attrs.side;
-    const $sidebar = $(`.sidebar.${side}`);
-    if ($sidebar.length > 0 && $sidebar.hasClass('is-responsive') && $sidebar.hasClass('open')) {
-      this.appEvents.trigger('sidebar:toggle', side);
-    }
+    this.appEvents.trigger('sidebar:toggle', this.attrs.side);
   },
 
   addGeneralWidgets(widgets, generalWidgets, args) {

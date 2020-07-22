@@ -53,10 +53,15 @@ export default Mixin.create({
     });
     
     this.appEvents.on('sidebar:toggle', (side) => {
-      const $sidebarCloak = $(".sidebar-cloak");
-      $sidebarCloak.css("opacity", 0);
-      $sidebarCloak.hide();
-      this.toggleProperty(`${side}SidebarVisible`);
+      const $sidebar = $(`.sidebar.${side}`);
+      
+      if ($sidebar.length > 0 && $sidebar.hasClass('is-responsive') && $sidebar.hasClass('open')) {
+        const $sidebarCloak = $(".sidebar-cloak");
+        $sidebarCloak.css("opacity", 0);
+        $sidebarCloak.hide();
+        
+        this.toggleProperty(`${side}SidebarVisible`);
+      }
     });
     
     this.setProperties({
