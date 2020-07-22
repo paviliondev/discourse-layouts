@@ -237,18 +237,11 @@ export default Mixin.create({
   },
   
   menuItemIconHtml(input) {
-    const setupData = document.getElementById("data-discourse-setup").dataset;
-    const iconList = setupData.svgIconList;
-    
-    if (iconList[input]) {
-      return iconHTML(input).htmlSafe();
-    } else {
-      try {
-        let url = new URL(input);
-        return htmlSafe(`<img src=${url.href} class="image-icon">`);
-      } catch (_) {
-        return null;  
-      }
+    try {
+      let url = new URL(input);
+      return htmlSafe(`<img src=${url.href} class="image-icon">`);
+    } catch (_) {
+      return iconHTML(input).htmlSafe(); 
     }
   },
   
