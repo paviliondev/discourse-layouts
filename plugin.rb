@@ -1,6 +1,6 @@
 # name: discourse-layouts
 # about: A framework for custom Discourse layouts.
-# version: 0.1
+# version: 0.2
 # authors: Angus McLeod
 # url: https://github.com/paviliondev/discourse-layouts
 
