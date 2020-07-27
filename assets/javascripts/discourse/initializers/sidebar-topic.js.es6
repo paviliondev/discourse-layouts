@@ -1,12 +1,8 @@
-import TopicController from 'discourse/controllers/topic';
-import TopicRoute from 'discourse/routes/topic';
-import TopicNavigation from 'discourse/components/topic-navigation';
-import TopicList from 'discourse/components/topic-list';
 import Sidebars from '../mixins/sidebars';
-import { default as discourseComputed, observes, on } from 'discourse-common/utils/decorators';
-import { settingEnabled } from '../lib/layouts-settings';
+import { default as discourseComputed, observes } from 'discourse-common/utils/decorators';
 import { alias } from "@ember/object/computed";
 import { withPluginApi } from 'discourse/lib/plugin-api';
+import{ inject as controller } from "@ember/controller";
 
 export default {
   name: 'sidebar-topic',
@@ -24,19 +20,27 @@ export default {
         }
       });
       
+      api.modifyClass('controller:topic', Sidebars);
+      
       api.modifyClass('controller:topic', {
         mainContent: 'topic',
         category: alias('model.category'),
-        isTopic: true
+        userHideRightSidebar: false
       });
       
-      api.modifyClass('controller:topic', Sidebars);
-      
       api.modifyClass('component:topic-navigation', {
+        controller: controller('topic'),
+        
+        @observes('controller.hasRightSidebar')
+        sidebarsUpdated() {
+          this._performCheckSize();
+        },
+        
         _performCheckSize() {
           if (!this.element || this.isDestroying || this.isDestroyed) return;
-
-          if (settingEnabled('layouts_sidebar_right_enabled', this.get('topic.category'), 'topic')) {
+          
+          const hasRightSidebar = this.controller.get('hasRightSidebar');    
+          if (hasRightSidebar) {
             const info = this.get('info');
             info.setProperties({
               renderTimeline: false,
@@ -45,15 +49,6 @@ export default {
           } else {
             this._super(...arguments);
           }
-        }
-      });
-      
-      const discoveryController = container.lookup('controller:discovery');
-      
-      api.modifyClass('component:topic-list', {
-        @discourseComputed()
-        skipHeader(){
-          return site.mobileView || discoveryController.get('headerDisabled');
         }
       });
     })

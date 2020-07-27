@@ -3,7 +3,14 @@ class DiscourseLayouts::Widget
   
   NAMESPACE = "layouts"
   
-  attr_accessor :name, :position, :order, :groups, :enabled
+  attr_accessor :name,
+                :position,
+                :order,
+                :groups,
+                :category_ids,
+                :filters,
+                :contexts,
+                :enabled
   
   def initialize(attrs={})
     attrs = attrs.with_indifferent_access
@@ -13,24 +20,36 @@ class DiscourseLayouts::Widget
     @position = attrs[:position].present? ? attrs[:position] : 'left'
     @order = attrs[:order].present? ? attrs[:order] : 'start'
     
-    if attrs[:groups].is_a?(Array)
-      @groups = attrs[:groups].map(&:to_i)
-    else
-      @groups = []
+    [:groups, :category_ids, :filters, :contexts].each do |attr|
+      val = attrs[attr].is_a?(Array) ? attrs[attr] : []
+      val = val.map(&:to_i) if [:groups, :category_ids].include?(attr)
+      val = val.map(&:to_s) if [:filters, :contexts].include?(attr)
+      send("#{attr.to_s}=", val)
     end
     
-    if ["true", "false", true, false].include?(attrs[:enabled])
-      @enabled = ActiveModel::Type::Boolean.new.cast(attrs[:enabled])
-    else
-      @enabled = false
-    end
+    @enabled = ActiveModel::Type::Boolean.new.cast(attrs[:enabled])
   end
   
-  def permitted?(user)
-    return false if groups.empty?
-    return true if groups.include?(Group::AUTO_GROUPS[:everyone])
-    return false if !user
-    GroupUser.where(group_id: groups, user_id: user.id).exists?
+  def permitted?(guardian = nil)    
+    public = (groups.empty? ||
+      groups.include?(Group::AUTO_GROUPS[:everyone])) &&
+        (category_ids.empty? ||
+          (category_ids & guardian.allowed_category_ids).any?)
+    
+    return true if public
+    return false unless guardian.user
+        
+    can_see_a_cat = category_ids.empty? ||
+      category_ids.include?(0) ||
+      categories.any? { |category| guardian.can_see?(category) }
+    group_member = groups.empty? ||
+      GroupUser.where(group_id: groups, user_id: guardian.user.id).exists?
+    
+    group_member && can_see_a_cat
+  end
+  
+  def categories
+    @categories ||= Category.where(id: category_ids).to_a
   end
   
   def self.add(name, data = {})
@@ -76,7 +95,7 @@ class DiscourseLayouts::Widget
     
     if !all
       widgets = widgets.select do |widget|
-        widget.enabled && widget.permitted?(guardian.user)
+        widget.enabled && widget.permitted?(guardian)
       end
     end
     

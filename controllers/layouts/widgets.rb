@@ -40,8 +40,8 @@ class DiscourseLayouts::WidgetsController < ::Admin::AdminController
   def serialize_widgets
     ActiveModel::ArraySerializer.new(
       DiscourseLayouts::Widget.list(all: true),
-      each_serializer: DiscourseLayouts::WidgetSerializer,
-      root: false
+        each_serializer: DiscourseLayouts::WidgetSerializer,
+        root: false
     )
   end
   
@@ -53,7 +53,10 @@ class DiscourseLayouts::WidgetsController < ::Admin::AdminController
           :position,
           :order,
           :enabled,
-          groups: []
+          groups: [],
+          category_ids: [],
+          filters: [],
+          contexts: []
         ).to_h
     end
   end

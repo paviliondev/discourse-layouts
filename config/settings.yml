@@ -2,40 +2,6 @@ plugins:
   layouts_enabled:
     client: true
     default: true
-  layouts_sidebar_left_enabled:
-    client: true
-    type: list
-    default: ''
-    choices:
-     - latest
-     - new
-     - unread
-     - top
-     - category
-     - categories
-     - topic
-     - tags
-     - news
-  layouts_sidebar_left_enabled_global:
-    client: true
-    default: false
-  layouts_sidebar_right_enabled:
-    client: true
-    type: list
-    default: ''
-    choices:
-     - latest
-     - new
-     - unread
-     - top
-     - category
-     - categories
-     - topic
-     - tags
-     - news
-  layouts_sidebar_right_enabled_global:
-    client: true
-    default: false
   layouts_sidebar_left_width:
     client: true
     default: 250
@@ -48,6 +14,27 @@ plugins:
   layouts_sidebar_right_fixed:
     client: true
     default: true
+  layouts_sidebar_left_can_hide:
+    client: true
+    type: list
+    default: ''
+    choices:
+      - Topic List
+      - Topic
+      - Profile
+      - Tags
+  layouts_sidebar_right_can_hide:
+    client: true
+    type: list
+    default: ''
+    choices:
+      - Topic List
+      - Topic
+      - Profile
+      - Tags
+  layouts_sidebar_responsive_threshold:
+    client: true
+    default: 850
   layouts_mobile_enabled:
     client: true
     default: false
@@ -55,55 +42,3 @@ plugins:
     client: true
     type: list
     default: ''
-  layouts_list_navigation_disabled:
-    client: true
-    type: list
-    default: ''
-    choices:
-     - latest
-     - new
-     - unread
-     - top
-     - category
-     - categories
-     - tags
-  layouts_list_navigation_disabled_global:
-    client: true
-    default: false
-  layouts_list_header_disabled:
-    client: true
-    type: list
-    default: ''
-    choices:
-     - latest
-     - new
-     - unread
-     - top
-     - category
-     - categories
-  layouts_list_header_disabled_global:
-    client: true
-    default: false
-  layouts_list_nav_menu:
-    client: true
-    type: list
-    default: ''
-    choices:
-     - latest
-     - new
-     - unread
-     - top
-     - category
-     - categories
-  layouts_list_nav_menu_global:
-    client: true
-    default: false
-  layouts_sidebar_main_content_threshold:
-    client: true
-    default: 400
-  layouts_hide_sidebars_if_empty:
-    client: true
-    default: true
-  layouts_profile_enabled:
-    client: true
-    default: false

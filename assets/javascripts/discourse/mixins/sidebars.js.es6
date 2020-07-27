@@ -1,109 +1,152 @@
 import { default as discourseComputed, on, observes } from 'discourse-common/utils/decorators';
-import { mainStyle } from '../lib/layouts-display';
-import { settingEnabled } from '../lib/layouts-settings';
 import { inject as service } from "@ember/service";
-import { alias, or, not, and, notEmpty } from "@ember/object/computed";
+import { computed } from "@ember/object";
+import { alias, or, not, and } from "@ember/object/computed";
 import Mixin from "@ember/object/mixin";
-import { scheduleOnce, bind, later } from "@ember/runloop";
+import { scheduleOnce, bind, later, throttle, debounce } from "@ember/runloop";
 import { htmlSafe } from "@ember/template";
 import { iconHTML } from "discourse-common/lib/icon-library";
 import DiscourseURL from "discourse/lib/url";
+import { normalizeContext } from "../lib/layouts";
+
+function hasWidgets(widgets) {
+  return (widgets === undefined || widgets === null) || widgets.length > 0;
+}
 
 export default Mixin.create({
   router: service(),
   path: alias("router._router.currentPath"),
   responsiveView: false,
-  leftSidebarVisible: false,
-  rightSidebarVisible: false,
-  eitherSidebarVisible: or('leftSidebarVisible', 'rightSidebarVisible'),
-  neitherSidebarVisible: not('eitherSidebarVisible'),
   showResponsiveMenu: and('isResponsive', 'responsiveMenuItems.length'),
   showLeftToggle: and('showSidebarToggles', 'leftSidebarEnabled'),
   showRightToggle: and('showSidebarToggles', 'rightSidebarEnabled'),
-  leftHasWidgets: true,
-  rightHasWidgets: true,
   customSidebarProps: {},
-  hideSidebarsIfEmpty: alias('siteSettings.layouts_hide_sidebars_if_empty'),
-
-  @discourseComputed('path', 'leftHasWidgets', 'hideSidebarsIfEmpty')
-  leftSidebarEnabled(path, leftHasWidgets, hideSidebarsIfEmpty) {
-    if (hideSidebarsIfEmpty && !leftHasWidgets) return false;
-    return settingEnabled('layouts_sidebar_left_enabled', this.category, path);
+  eitherSidebarVisible: or('leftSidebarVisible', 'rightSidebarVisible'),
+  neitherSidebarVisible: not('eitherSidebarVisible'),
+  leftSidebarEnabled: computed('leftWidgets', function() { return hasWidgets(this.leftWidgets) }),
+  rightSidebarEnabled: computed('rightWidgets', function() { return hasWidgets(this.rightWidgets) }),
+  hasRightSidebar: and('rightSidebarEnabled', 'rightSidebarVisible'),
+  hasLeftSidebar: and('leftSidebarEnabled', 'leftSidebarVisible'),
+  
+  @discourseComputed('mainContent', 'isResponsive')
+  canHideRightSidebar(context, isResponsive) {
+    return this.canHide(context, 'right', isResponsive);
   },
-
-  @discourseComputed('path', 'rightHasWidgets', 'hideSidebarsIfEmpty')
-  rightSidebarEnabled(path, rightHasWidgets, hideSidebarsIfEmpty) {
-    if (hideSidebarsIfEmpty && !rightHasWidgets) return false;
-    return settingEnabled('layouts_sidebar_right_enabled', this.category, path);
+  
+  @discourseComputed('mainContent', 'isResponsive')
+  canHideLeftSidebar(context, isResponsive) {
+    return this.canHide(context, 'left', isResponsive);
+  },
+  
+  canHide(context, side, isResponsive) {
+    return !isResponsive &&
+      this.siteSettings[`layouts_sidebar_${side}_can_hide`].split('|')
+        .map(normalizeContext)
+        .indexOf(context) > -1;
+  },
+  
+  @discourseComputed('rightSidebarVisible')
+  toggleRightSidebarIcon(visible) {
+    return visible ? 'minus' : 'plus';
+  },
+  
+  @discourseComputed('leftSidebarVisible')
+  toggleLeftSidebarIcon(visible) {
+    return visible ? 'minus' : 'plus';
   },
 
   @on('init')
   setupMixin() {
-    const siteSettings = this.siteSettings;
+    const settings = this.siteSettings;
     const sidebarPadding = 20;
-    const mainLeftOffset = siteSettings.layouts_sidebar_left_width + sidebarPadding;
-    const mainRightOffset = siteSettings.layouts_sidebar_right_width + sidebarPadding;
-    
+    const mainLeftOffset = settings.layouts_sidebar_left_width + sidebarPadding;
+    const mainRightOffset = settings.layouts_sidebar_right_width + sidebarPadding;
     scheduleOnce('afterRender', () => {
-      this.handleResize();
-      $(window).on('resize', bind(this, this.handleResize));
+      this.handleWindowResize();
+      $(window).on('resize', () => debounce(this, this.handleWindowResize, 100));
+      
       const root = document.documentElement;
       root.style.setProperty('--mainLeftOffset', `${this.mainLeftOffset}px`);
       root.style.setProperty('--mainRightOffset', `${this.mainRightOffset}px`);
     });
+    this.appEvents.on('sidebar:toggle', this, this.toggleSidebars);
     
-    this.appEvents.on('sidebar:toggle', (side) => {
-      const $sidebar = $(`.sidebar.${side}`);
-      
-      if ($sidebar.length > 0 && $sidebar.hasClass('is-responsive') && $sidebar.hasClass('open')) {
-        const $sidebarCloak = $(".sidebar-cloak");
-        $sidebarCloak.css("opacity", 0);
-        $sidebarCloak.hide();
-        
-        this.toggleProperty(`${side}SidebarVisible`);
-      }
-    });
+    const isResponsive = this.get('isResponsive');
+    let leftSidebarVisible = !isResponsive;
+    let rightSidebarVisible = !isResponsive;
     
     this.setProperties({
       mainLeftOffset,
-      mainRightOffset
+      mainRightOffset,
+      leftSidebarVisible,
+      rightSidebarVisible
     });
   },
 
   @on('willDestroy')
   teardownMixin() {
-    $(window).off('resize', bind(this, this.handleResize));
-    
-    this.appEvents.off('sidebar:toggle', (side) => {
-      this.toggleProperty(`${side}SidebarVisible`)
-    });
+    $(window).off('resize', bind(this, this.handleWindowResize));
+    this.appEvents.off('sidebar:toggle', this, this.toggleSidebars);
   },
   
   @observes('path')
   resetHasWidgets() {
     this.setProperties({
-      leftHasWidgets: true,
-      rightHasWidgets: true
+      leftWidgets: undefined,
+      rightWidgets: undefined
     })
   },
-
-  handleResize() {
-    const windowWidth = $(window).width();
-    const settings = this.siteSettings;
-    const mainContentThreshold = settings.layouts_sidebar_main_content_threshold;
-    const leftSidebarEnabled = this.leftSidebarEnabled;
-    const rightSidebarEnabled = this.rightSidebarEnabled;
-    const mainLeftOffset = this.mainLeftOffset;
-    const mainRightOffset = this.mainRightOffset;
+  
+  toggleSidebars(opts) {
+    const isResponsive = this.isResponsive;
+    const { side, value, onlyResponsive } = opts;
     
-    let threshold = mainContentThreshold + 5;
-    if (leftSidebarEnabled) {
-      threshold += mainLeftOffset;
+    if ((onlyResponsive && !isResponsive)) return;
+    
+    let sides = side ? [side] : ['left', 'right'];
+    
+    sides.forEach(side => {
+      const newVal = [true, false].includes(value) ? value : !Boolean(this[`${side}SidebarVisible`]);
+      
+      if (isResponsive) {
+        const $sidebar = $(`.sidebar.${side}`);      
+        const $sidebarCloak = $(".sidebar-cloak");
+              
+        if (newVal) {
+          $sidebar.addClass('open');
+          $sidebarCloak.css("opacity", 0.5);
+          $sidebarCloak.show();
+        } else {
+          $sidebar.removeClass('open');
+          $sidebarCloak.css("opacity", 0);
+          $sidebarCloak.hide();
+        }
+      }
+            
+      this.set(`${side}SidebarVisible`, newVal);
+    });
+  },
+  
+  handleWindowResize() {
+    const windowWidth = $(window).width();
+    const threshold = this.siteSettings.layouts_sidebar_responsive_threshold;
+    const responsiveView = this.get("responsiveView");
+    
+    if (windowWidth < Number(threshold)) {
+      if (!responsiveView) {
+        this.setProperties({
+          responsiveView: true,
+          leftSidebarVisible: false,
+          rightSidebarVisible: false
+        });
+      }
+    } else if (responsiveView) {
+      this.setProperties({
+        responsiveView: false,
+        leftSidebarVisible: true,
+        rightSidebarVisible: true
+      });
     }
-    if (rightSidebarEnabled) {
-      threshold += mainRightOffset;
-    }
-    this.set("responsiveView", windowWidth < Number(threshold));
   },
 
   @discourseComputed('responsiveView')
@@ -112,61 +155,64 @@ export default Mixin.create({
     return mobileView || responsiveView;
   },
 
-  @discourseComputed('path', 'loading', 'editingSidebars', 'isResponsive', 'leftSidebarEnabled', 'rightSidebarEnabled', 'forceSidebars')
-  mainClasses(path, loading, editing, isResponsive, left, right, force) {
+  @discourseComputed(
+    'path',
+    'loading',
+    'isResponsive',
+    'hasRightSidebar',
+    'hasLeftSidebar',
+  ) mainClasses(path, loading, isResponsive, hasRight, hasLeft) {
     let p = path.split('.');
     let classes = `${p[0]} ${p[1].split(/(?=[A-Z])/)[0]}`;
     
-    if ((left || right) || force) {
+    if (hasLeft || hasRight) {
       classes += ' has-sidebars';
     } else {
       classes += ' no-sidebars';
     }
-    if (left) classes += ' left-sidebar';
-    if (right) classes += ' right-sidebar';
+    if (hasLeft) classes += ' left-sidebar';
+    if (hasRight) classes += ' right-sidebar';
     if (isResponsive) classes += ' is-responsive';
-
-    if (loading) return classes + ' loading';
-
-    if (this.get('navigationDisabled')) classes += ' navigation-disabled';
-    if (this.get('headerDisabled')) classes += ' header-disabled';
-    if (this.get('navMenuEnabled')) classes += ' nav-menu-enabled';
-    if (editing) classes += ' editing';
-
+    if (loading) classes + ' loading';
+    
     return classes;
   },
 
   @discourseComputed('isResponsive', 'leftSidebarVisible')
   leftClasses(isResponsive, visible) {
-    let classes = '';
-    if (isResponsive) {
-      classes += 'is-responsive';
-      if (visible) classes += ' open';
-    }
-    return classes;
+    return this.buildSidebarClasses(isResponsive, visible, 'left');
   },
-
+  
   @discourseComputed('isResponsive', 'rightSidebarVisible')
   rightClasses(isResponsive, visible) {
+    return this.buildSidebarClasses(isResponsive, visible, 'right');
+  },
+  
+  buildSidebarClasses(isResponsive, visible, side) {
     let classes = '';
     if (isResponsive) {
       classes += 'is-responsive';
       if (visible) classes += ' open';
+    } else {
+      if (!visible) classes += ' not-visible';
+    }
+    if (this.siteSettings[`layouts_sidebar_${side}_fixed`]) {
+      classes += ' fixed';
     }
     return classes;
   },
   
-  @discourseComputed('path', 'leftSidebarEnabled', 'rightSidebarEnabled')
-  mainStyle(path, leftSidebarEnabled, rightSidebarEnabled) {
+  @discourseComputed('path', 'hasLeftSidebar', 'hasRightSidebar')
+  mainStyle(path, hasLeftSidebar, hasRightSidebar) {
     if (this.site.mobileView) return;
     const mainLeftOffset = this.mainLeftOffset;
     const mainRightOffset = this.mainRightOffset;
     let offset = 0;
     let style = '';
-    if (leftSidebarEnabled) {
+    if (hasLeftSidebar) {
       offset += mainLeftOffset;
     }
-    if (rightSidebarEnabled) {
+    if (hasRightSidebar) {
       offset += mainRightOffset;
     }
     style += `width: ${offset > 0 ? `calc(100% - ${offset}px)` : '100%'}`;
@@ -175,88 +221,86 @@ export default Mixin.create({
 
   @discourseComputed('path', 'isResponsive', 'leftSidebarVisible')
   leftStyle(path, isResponsive, visible) {
+    const width = this.siteSettings.layouts_sidebar_left_width;
     let string;
     if (isResponsive) {
-      string = `width: 100vw; transform: translateX(${visible?'0':'-100vw'});`
+      string = `width: 100vw; transform: translateX(${visible ? '0' : `-100vw`});`
     } else {
-      string = `width: ${this.siteSettings.layouts_sidebar_left_width}px;`;
+      string = `width: ${visible ? width : 0}px;`;
     }
     return htmlSafe(string);
   },
 
   @discourseComputed('path', 'isResponsive', 'rightSidebarVisible')
   rightStyle(path, isResponsive, visible) {
+    const width = this.siteSettings.layouts_sidebar_right_width;
     let string;
     if (isResponsive) {
-      string = `width: 100vw; transform: translateX(${visible?'0':'100vw'});`
+      string = `width: 100vw; transform: translateX(${visible ? `0` : `100vw`});`
     } else {
-      string = `width: ${this.siteSettings.layouts_sidebar_right_width}px;`;
+      string = `width: ${visible ? width : 0}px;`;
     }
     return htmlSafe(string);
   },
   
-  @discourseComputed
+  @discourseComputed('leftSidebarEnabled', 'rightSidebarEnabled')
   responsiveMenuItems() {
     const inputs = this.siteSettings.layouts_mobile_menu.split('|');
     return inputs.reduce((items, input) => {
       let firstSeperator = input.indexOf("~~");
       let lastSeperator = input.lastIndexOf("~~");
       let type = input.substring(0, firstSeperator), icon, url;
+      let isLink = type === 'link';
+      let isSidebarToggle = ['left', 'right'].indexOf(type) > -1;
       
-      if (type === 'link') {
+      if (isLink) {
         icon = input.substring(firstSeperator + 2, lastSeperator);
         url = input.substring(lastSeperator + 2, input.length);
-      } else {
+      } else if (isSidebarToggle) {
         icon = input.substring(firstSeperator + 2, input.length);
       }
       
-      let iconClass = this.menuItemClass(type);
-      let iconHtml = this.menuItemIconHtml(icon);
-            
-      if (iconHtml && iconClass) {
-        items.push({
-          icon: iconHtml,
-          class: iconClass,
-          action: type === 'link' ? 'goToLink' : 'toggleSidebar',
-          actionParam: type === 'link' ? url : type
-        });
+      if (icon) {
+        let iconClass, iconHtml, action, actionParam;
+                
+        if (isSidebarToggle && this[`${type}SidebarEnabled`]) {
+          iconClass = `responsive-toggle ${type}`;
+          action = 'toggleSidebar';
+          actionParam = type;
+        } else if (isLink) {
+          iconClass = 'responsive-link';
+          action = 'goToLink';
+          actionParam = url;
+        }
+        
+        try {
+          let iconUrl = new URL(icon);
+          iconHtml = htmlSafe(`<img src=${iconUrl.href} class="image-icon">`);
+        } catch (_) {
+          iconHtml = iconHTML(icon).htmlSafe(); 
+        }
+          
+        if (iconHtml && iconClass && action && actionParam) {
+          items.push({
+            icon: iconHtml,
+            class: iconClass,
+            action,
+            actionParam
+          });
+        }
       }
       
       return items;
     }, []);
   },
   
-  menuItemClass(type) {
-    if (['left', 'right'].indexOf(type) > -1) {
-      return `responsive-toggle ${type}`;
-    } else if (type === 'link') {
-      return 'responsive-link';
-    } else {
-      return null;
-    }
-  },
-  
-  menuItemIconHtml(input) {
-    try {
-      let url = new URL(input);
-      return htmlSafe(`<img src=${url.href} class="image-icon">`);
-    } catch (_) {
-      return iconHTML(input).htmlSafe(); 
-    }
-  },
-  
   actions: {
     toggleSidebar(side) {
-      this.toggleProperty(`${side}SidebarVisible`);
-      later(() => {
-        const $sidebarCloak = $(".sidebar-cloak");
-        $sidebarCloak.css("opacity", 0.5);
-        $sidebarCloak.show();
-      });
+      this.appEvents.trigger('sidebar:toggle', { side })
     },
 
-    noWidgets(side) {
-      this.set(`${side}HasWidgets`, false);
+    setWidgets(side, widgets) {
+      this.set(`${side}Widgets`, widgets);
     },
     
     goToLink(link) {

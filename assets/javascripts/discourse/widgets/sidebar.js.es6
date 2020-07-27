@@ -1,15 +1,6 @@
 import { createWidget } from 'discourse/widgets/widget';
-import { lookupLayoutsWidget } from '../lib/layouts';
+import { lookupLayoutsWidget, normalizeContext } from '../lib/layouts';
 import { later } from "@ember/runloop";
-
-const isNumeric = function(val) {
-  return !isNaN(parseFloat(val)) && isFinite(val);
-};
-
-const hasOrder = function(w) {
-  return w.order !== undefined && w.order !== null &&
-  (isNumeric(w.order) || (w.order === 'start' || w.order === 'end'));
-};
 
 const customWidgets = [];
 const addCustomWidget = function(widget) {
@@ -23,7 +14,9 @@ const addCustomWidget = function(widget) {
     }
   });
 
-  if (!added) customWidgets.push(widget);
+  if (!added) {
+    customWidgets.push(widget);
+  }
 };
 export { addCustomWidget };
 
@@ -32,140 +25,79 @@ export default createWidget('sidebar', {
 
   html(args) {
     const user = this.currentUser;
-    const { side, context, filter, category, topic, customSidebarProps } = args;
-
+    let {
+      side,
+      context,
+      controller,
+      filter,
+      category,
+      topic,
+      customSidebarProps
+    } = args;
+        
     let siteWidgets = this.site.layout_widgets || [];
-    if (customWidgets.length) siteWidgets = siteWidgets.concat(customWidgets);
-    let sideWidgets = siteWidgets.length ? siteWidgets.filter((w) => w.position === side) : null;
+    if (customWidgets.length) {
+      siteWidgets = siteWidgets.concat(customWidgets);
+    }
+    
+    context = normalizeContext(context);
+                    
+    let widgets = siteWidgets.filter((w) => {
+      return this.widgetExists(w.name) && (
+        w.position === side &&
+        w.contexts.indexOf(context) > -1 &&
+        (
+          context !== 'discovery' || (
+            (w.filters.length === 0 || w.filters.indexOf(filter) > -1) &&
+            (w.category_ids.length === 0 ||
+              (
+                (!category && w.category_ids.indexOf(0) > -1) ||
+                (category && 
+                  w.category_ids.map(id => Number(id))
+                    .indexOf(Number(category.id)) > -1)
+              )
+            )
+          )
+        )
+      );
+    }).sort(function(a, b) {
+      if (a.order === b.order) return 0;
+      if (a.order === 'start') return -1;
+      if (a.order === 'end') return 1;
+      return a - b;
+    }).map(w => w.name);
+        
+    let contents = [];
 
-    let generalWidgets = [];
-    let orderedWidgets = [];
+    if (widgets.length > 0) {
+      widgets.forEach((w) => {
+        let props = { topic, category, side };
 
-    if (sideWidgets) {
-      sideWidgets.forEach((w) => {
-        if (hasOrder(w)) {
-          orderedWidgets.push(w);
-        } else {
-          generalWidgets.push(w);
-        }
+        if (customSidebarProps) {
+          Object.keys(customSidebarProps).forEach((p) => {
+            props[p] = customSidebarProps[p];
+          });
+        };
+        
+        contents.push(this.attach(w, props));
       });
     }
-
-    let widgets = [];
-    widgets = this.addGeneralWidgets(widgets, generalWidgets, args);
-    widgets = this.addOrderedWidgets(widgets, orderedWidgets, args);
-
-    let contents = [];
-    let hasWidgets = false;
-    
-    widgets.forEach((widget) => {
-      if (widget.length) {
-        const exists = lookupLayoutsWidget(widget) || this.register.lookupFactory(`widget:${widget}`);
-
-        if (exists) {
-          let props = { topic, category, side };
-
-          if (customSidebarProps) {
-            Object.keys(customSidebarProps).forEach((p) => {
-              props[p] = customSidebarProps[p];
-            });
-          };
-
-          if (props.widgetConditions && props.widgetConditions[widget]) {
-            const conditions = props.widgetConditions[widget];
-
-            if (conditions.requiredProp) {
-              const propArray = conditions.requiredProp.split('.');
-              const isCategory = propArray.indexOf('category') === 0;
-
-              if (isCategory && (!props['category'] || !props['category'].get(propArray[1]))) return;
-            }
-          }
-
-          hasWidgets = true;
-
-          contents.push(this.attach(widget, props));
-        }
-      }
-    });
-
-    if (!hasWidgets) {
-      const controller = this.register.lookup(`controller:${context}`);
-      controller.send('noWidgets', side);
-    }
+                
+    controller.send('setWidgets', side, widgets);
 
     return contents;
   },
 
   clickOutside() {
-    this.appEvents.trigger('sidebar:toggle', this.attrs.side);
-  },
-
-  addGeneralWidgets(widgets, generalWidgets, args) {
-    const { side, context, filter, category } = args;
-    const siteEnabledGlobal = Discourse.SiteSettings[`layouts_sidebar_${side}_enabled_global`];
-    const siteEnabled = Discourse.SiteSettings[`layouts_sidebar_${side}_enabled`].split('|');
-
-    let categoryWidgets;
-    let categoryEnabled;
-    if (category) {
-      const cw = category.get(`layouts_sidebar_${side}_widgets`);
-      const ce = category.get(`layouts_sidebar_${side}_enabled`);
-      categoryWidgets = cw ? cw.split('|') : [];
-      categoryEnabled = ce ? ce.split('|') : false;
-    }
-
-    if (context === 'discovery' || context === 'tags') {
-
-      if (!category || siteEnabledGlobal || siteEnabled.indexOf('category') > -1) {
-        generalWidgets.forEach((w) => {
-          widgets = this.addWidget(widgets, w.name);
-        });
-      }
-
-      if (categoryEnabled && categoryEnabled.indexOf(filter) > -1) {
-        categoryWidgets.forEach((w) => {
-          widgets = this.addWidget(widgets, w);
-        });
-      }
-    }
-
-    if (context === 'topic') {
-      if (siteEnabledGlobal || siteEnabled.indexOf('topic') > -1) {
-        generalWidgets.forEach((w) => {
-          widgets = this.addWidget(widgets, w.name);
-        });
-      }
-
-      if (categoryEnabled && categoryEnabled.indexOf('topic') > -1) {
-        categoryWidgets.forEach((w) => {
-          widgets = this.addWidget(widgets, w);
-        });
-      }
-    }
-
-    return widgets;
-  },
-
-  addOrderedWidgets(widgets, orderedWidgets, args) {
-    orderedWidgets = _.sortBy(orderedWidgets, 'order');
-
-    orderedWidgets.forEach((w) => {
-      widgets = this.addWidget(widgets, w.name, w.order === 'start');
+    this.appEvents.trigger('sidebar:toggle', {
+      side: this.attrs.side,
+      value: false,
+      onlyResponsive: true
     });
-
-    return widgets;
   },
-
-  addWidget(widgets, widgetName, start = false) {
-    if (widgets.indexOf(widgetName) === -1) {
-      if (start) {
-        widgets.unshift(widgetName);
-      } else {
-        widgets.push(widgetName);
-      }
-    }
-
-    return widgets;
+  
+  widgetExists(widgetName) {
+    return lookupLayoutsWidget(widgetName) ||
+      this.register.lookupFactory(`widget:${widgetName}`);
   }
 });

@@ -1,75 +1,75 @@
-.admin-layouts {
-  .admin-title {
+.admin-layouts-widget-title {
+  margin-top: 20px;
+}
+
+.admin-layouts-widget-list {
+  margin-top: 20px;
+} 
+
+.admin-layouts-widget {
+  border-top: 1px solid $primary-low;
+  margin-top: 20px;
+  padding: 20px 0;
+  
+  .top {
+    display: flex;
     justify-content: space-between;
-    align-items: center;
+    margin-bottom: 5px;
+    min-height: 30px;
     
     h3 {
       margin: 0;
     }
-  }
-}
-
-.layouts {
-  td {
-    vertical-align: top;
     
-    > span, > a {
-      line-height: 30px;
-    }
-  }
-  
-  th.name,
-  td.name {
-    width: 260px;
-    max-width: 260px;
-    
-    input {
-      width: 100%;
-      margin-bottom: 0;
+    .details {
+      display: flex;
+      align-items: center;
     }
     
-    .select-kit {
-      width: 250px;
-      min-width: 250px;
-      max-width: 250px;
-    }
-  }
-  
-  td.order, td.position {
-    .select-kit {
-      width: 80px;
-      min-width: 80px;
-      max-width: 80px;
-    }
-  }
-  
-  td.groups {
-    .select-kit.multi-select {
-      width: 300px;
-      min-width: 300px;
-      max-width: 300px;
+    .enabled {
+      display: flex;
+      align-items: center;
       
-      .choices .choice {
-        height: 24px;
+      input {
+        margin: 0 7px 0 30px;
+      }
+    }
+    
+    .controls {
+      display: flex;
+      align-items: center;
+      
+      button {
+        margin-left: 15px;
       }
     }
   }
   
-  td.enabled {
-    text-align: center;
-  }
-
-  td.controls {
+  .bottom {
     display: flex;
-    width: 200px;
-    justify-content: center;
     
-    .btn {
-      margin-right: 10px;
+    .taxonomy-attributes,
+    .filter-attributes {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      margin-left: 30px;
+    }
+    
+    .control-group {
+      margin: 15px 0 0 0;
+    }
+    
+    .combo-box {
+      width: 130px;
       
-      &:last-of-type {
-        margin-right: 0;
+      .select-kit-header {
+        min-height: 36px;
       }
+    }
+    
+    .multi-select {
+      width: 100%;
     }
   }
 }

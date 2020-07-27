@@ -1,6 +1,7 @@
 @import 'layouts-admin';
 @import 'layouts-topic';
 @import 'layouts-widgets';
+@import 'layouts-responsive';
 
 :root {
   --mainLeftOffset: 0px;
@@ -33,7 +34,6 @@ html.mobile-device {
   }
 
   &.has-sidebars {
-
     .topic-list .posters {
       min-width: initial;
     }
@@ -54,82 +54,6 @@ html.mobile-device {
   &.loading {
     box-shadow: none;
   }
-
-  &.navigation-disabled {
-    .list-controls {
-      padding: 0;
-    }
-    
-    .topic-list > tbody > tr:first-of-type {
-      border-top: none;
-    }
-  }
-  
-  &.header-disabled {
-    .category-list tbody tr:first-of-type {
-      border-top: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
-    }
-
-    .topic-list>tbody>tr:first-of-type {
-      border-top: none;
-    }
-  }
-}
-
-.main-content .nav-drop {
-  a {
-    color: $primary;
-    font-size: 1.143em;
-  }
-
-  .selected-nav-item {
-    display: inline-block;
-    padding: 5px 8px;
-    line-height: 20px;
-    background-color: $quaternary !important;
-    cursor: pointer;
-
-    a {
-      color: $secondary;
-    }
-  }
-
-  a.nav-dropdown-btn {
-    display: inline-block;
-    margin-left: -4px;
-    padding: 0 5px;
-    line-height: 30px;
-    width: 13px;
-    color: $secondary;
-    background-color: $quaternary;
-
-    .fa-caret-right,
-    .d-icon-caret-right {
-      margin-left: 2px;
-    }
-  }
-
-  .nav-dropdown-menu {
-    overflow-x: hidden;
-    overflow-y: auto;
-    position: absolute;
-    border: 1px solid dark-light-diff($primary, $secondary, 90%, -60%);
-    background-color: $secondary;
-    z-index: 100;
-
-    a {
-      display: block;
-      border: none;
-      padding: 5px 12px;
-      line-height: 20px;
-      transition: background .15s;
-
-      &:hover {
-        color: $quaternary;
-        background-color: dark-light-diff($quaternary, $secondary, 70%, -70%);
-      }
-    }
-  }
 }
 
 .main-content.tags {
@@ -148,115 +72,4 @@ html.mobile-device {
       margin-top: 0;
     }
   }
-}
-
-.main-content.is-responsive {
-  width: 100% !important;
-  margin: 0 0 60px 0 !important;
-
-  &.topic {
-    #topic-title {
-      border: none;
-      padding-bottom: 0;
-
-      .container {
-        padding: 5px;
-      }
-    }
-
-    .posts {
-      border: none;
-    }
-
-    .topic-post>.boxed>.row {
-      padding: 5px;
-    }
-
-    .post-stream {
-      padding-bottom: 0;
-    }
-  }
-}
-
-.top-lists {
-  padding: 0 7px;
-}
-
-.topic-list-bottom {
-  margin: 20px 10px;
-}
-
-#list-area {
-  margin-bottom: 0;
-}
-
-.layouts-responsive-menu {
-  position: fixed;
-  width: 100vw;
-  left: 0;
-  bottom: 0;
-  box-sizing: border-box;
-  background-color: $secondary;
-  padding: 15px 0;
-  z-index: 300;
-  box-shadow: 0 -2px 4px -1px rgba(0,0,0,0.25);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.responsive-toggle,
-.responsive-link {
-  background: none;
-  padding: 0;
-  height: 100%;
-  box-sizing: border-box;
-  
-  img, svg {
-    height: 40px;
-    width: 40px;
-  }
-}
-
-.sidebar.is-responsive {
-  height: 100vh;
-  max-height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  overflow: scroll;
-  transition: all .2s ease;
-
-  .sidebar-container {
-    max-height: unset;
-    height: 100vh;
-    background-color: $secondary;
-    border-right: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
-    position: unset;
-    width: 80%;
-    
-    .sidebar-content {
-      height: 100%;
-    }
-    
-    .widget-container {
-      border: none;
-      border-bottom: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
-    }
-  }
-}
-
-.sidebar-cloak {
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  background-color: black;
-  opacity: 0.5;
-  top: 0;
-  left: 0;
-  display: none;
-  touch-action: pan-y pinch-zoom;
-  transition: opacity 0.2s ease-out;
-  z-index: 1000;
 }

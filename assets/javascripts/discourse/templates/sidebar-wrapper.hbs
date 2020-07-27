@@ -1,6 +1,14 @@
 <div class="content-wrapper">
   {{#if leftSidebarEnabled}}
     <aside class="sidebar left {{leftClasses}}" style={{leftStyle}}>
+      {{#if canHideLeftSidebar}}
+        {{d-button
+          class="toggle-sidebar left"
+          action="toggleSidebar"
+          actionParam="left"
+          icon=toggleLeftSidebarIcon}}
+      {{/if}}
+      
       {{sidebar-container
         side="left"
         topic=model
@@ -14,7 +22,7 @@
         args=(hash
           customSidebarProps=customSidebarProps
           category=category
-          responsiveView=responsiveView
+          isResponsive=isResponsive
           path=path)}}
     </aside>
   {{/if}}
@@ -25,6 +33,14 @@
   
   {{#if rightSidebarEnabled}}
     <aside class="sidebar right {{rightClasses}}" style={{rightStyle}}>
+      {{#if canHideRightSidebar}}
+        {{d-button
+          class="toggle-sidebar right"
+          action="toggleSidebar"
+          actionParam="right"
+          icon=toggleRightSidebarIcon}}
+      {{/if}}
+      
       {{sidebar-container
         side="right"
         topic=model
@@ -38,7 +54,7 @@
         args=(hash 
           customSidebarProps=customSidebarProps
           category=category
-          responsiveView=responsiveView
+          isResponsive=isResponsive
           path=path)}}
     </aside>
   {{/if}}

@@ -1,70 +1,145 @@
-<td class="name">
-  {{#if widget.isNew}}
-    {{combo-box
-      value=widget.name
-      content=widgetList
-      options=(hash
-        none='admin.layouts.widgets.select_widget'
-        allowAny=true
-      )}}
-  {{else}}
-    <span>{{widgetDisplayName}}</span>
-  {{/if}}
-</td>
+<div class="top">
+  <div class="details">
+    {{#if widget.isNew}}
+      {{combo-box
+        value=widget.name
+        content=widgetList
+        options=(hash
+          none='admin.layouts.widgets.select_widget'
+          allowAny=true
+        )}}
+    {{else}}
+      <h3>{{widgetDisplayName}}</h3>
+    {{/if}}
+    
+    <div class="enabled">
+      {{input
+        type="checkbox"
+        checked=widget.enabled
+        click=(action "updateEnabled" value="target.checked")}}
+      <span>{{i18n 'admin.layouts.widgets.enabled'}}</span>
+    </div>
+  </div>
+  
+  <div class="controls">
+    {{#if saving}}
+      {{loading-spinner size="small"}}
+    {{else}}
+      {{d-button
+        action="save"
+        class="btn btn-primary"
+        label="admin.layouts.widgets.save"
+        icon="save"
+        disabled=saveDisabled}}
+        
+      {{d-button
+        action="remove"
+        class="btn"
+        label="admin.layouts.widgets.remove"
+        icon="times"}}
+    {{/if}}
+  </div>
+</div>
 
-<td class="position">
-  {{combo-box
-    content=positionList
-    value=widget.position
-    onChange=(action "updatePosition")
-    options=(hash
-      none='admin.layouts.widgets.select'
-    )}}
-</td>
+<div class="bottom">
+  <div class="position-attributes">
+    <div class="control-group position">
+      <label class="control-label">
+        {{i18n 'admin.layouts.widgets.position.label'}}
+      </label>
+      <div class="controls">
+        {{combo-box
+          content=positionList
+          value=widget.position
+          onChange=(action "updatePosition")
+          options=(hash
+            none='admin.layouts.widgets.select'
+          )}}
+      </div>
+    </div>
 
-<td class="order">
-  {{combo-box
-    content=orderList
-    value=widget.order
-    onChange=(action "updateOrder")
-    options=(hash
-      none='admin.layouts.widgets.select'
-    )}}
-</td>
+    <div class="control-group order">
+      <label class="control-label">
+        {{i18n 'admin.layouts.widgets.order.label'}}
+      </label>
+      <div class="controls">
+        {{combo-box
+          content=orderList
+          value=widget.order
+          onChange=(action "updateOrder")
+          options=(hash
+            none='admin.layouts.widgets.select'
+          )}}
+      </div>
+    </div>
+  </div>
+  
+  <div class="filter-attributes">
+    <div class="control-group contexts">
+      <label class="control-label">
+        {{i18n 'admin.layouts.widgets.context.label'}}
+      </label>
+      <div class="controls">
+        {{multi-select
+          content=contextList
+          value=widget.contexts
+          onChange=(action "updateContexts")
+          options=(hash
+            none='admin.layouts.widgets.select'
+            allowAny=false
+          )}}
+      </div>
+    </div>
 
-<td class="groups">
-  {{multi-select
-    content=groupList
-    value=widget.groups
-    onChange=(action "updateGroups")
-    options=(hash
-      none='admin.layouts.widgets.select'
-      allowAny=false
-    )}}
-</td>
+    <div class="control-group filters">
+      <label class="control-label">
+        {{i18n 'admin.layouts.widgets.filter.label'}}
+      </label>
+      <div class="controls">
+        {{multi-select
+          content=filterList
+          value=widget.filters
+          onChange=(action "updateFilters")
+          options=(hash
+            none='admin.layouts.widgets.select'
+            allowAny=false
+          )}}
+      </div>
+    </div>
+  </div>
+  
+  <div class="taxonomy-attributes">
+    <div class="control-group groups">
+      <label class="control-label">
+        {{i18n 'admin.layouts.widgets.group.label'}}
+      </label>
+      <div class="controls">
+        {{multi-select
+          content=groupList
+          value=widget.groups
+          onChange=(action "updateGroups")
+          options=(hash
+            none='admin.layouts.widgets.select'
+            allowAny=false
+          )}}
+      </div>
+    </div>
 
-<td class="enabled">
-  {{input
-    type="checkbox"
-    checked=widget.enabled
-    click=(action "updateEnabled" value="target.checked")}}
-</td>
+    <div class="control-group categories">
+      <label class="control-label">
+        {{i18n 'admin.layouts.widgets.category.label'}}
+      </label>
+      <div class="controls">
+        {{multi-select
+          content=categoryList
+          value=widget.category_ids
+          onChange=(action "updateCategoryIds")
+          options=(hash
+            none='admin.layouts.widgets.select'
+            allowAny=false
+          )}}
+      </div>
+    </div>
+  </div>
+</div>
 
-<td class="controls">
-  {{#if saving}}
-    {{loading-spinner size="small"}}
-  {{else}}
-    {{d-button
-      action="save"
-      class="btn btn-primary"
-      label="admin.layouts.widgets.save"
-      icon="save"
-      disabled=saveDisabled}}
-      
-    {{d-button
-      action="remove"
-      class="btn"
-      label="admin.layouts.widgets.remove"
-      icon="times"}}
-  {{/if}}
-</td>

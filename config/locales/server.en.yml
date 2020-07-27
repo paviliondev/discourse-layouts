@@ -1,26 +1,16 @@
 en:
   site_settings:
     layouts_enabled: "Enable Layouts plugin"
-    layouts_sidebar_left_enabled: "Enable left sidebar for selected routes"
-    layouts_sidebar_left_enabled_global: "Enable left sidebar globally"
-    layouts_sidebar_right_enabled: "Enable right sidebar for selected routes"
-    layouts_sidebar_right_enabled_global: "Enable right sidebar globally"
     layouts_sidebar_left_width: "Left sidebar width (pixels)"
     layouts_sidebar_right_width: "Right sidebar width (pixels)"
     layouts_sidebar_left_fixed: "Left sidebar uses fixed positioning"
     layouts_sidebar_right_fixed: "Right sidebar uses fixed positioning"
+    layouts_sidebar_left_can_hide: "User can hide left sidebar in these contexts"
+    layouts_sidebar_right_can_hide: "User can hide right sidebar in these contexts"
+    layouts_sidebar_responsive_threshold: "Window width (px) when responsive layout is applied"
     layouts_mobile_enabled: "Enable mobile layouts"
     layouts_mobile_menu: |
       List of menu items for bottom responsive menu with format type~~icon~~url.
       icon can be either a fontawesome class or an absolute image url.
       type can be either 'left' or 'right' for responsive sidebar toggle, or 'link' for link.
       url is only necessary for 'link' type.
-    layouts_list_navigation_disabled: "Disable discovery list navigation for selected routes"
-    layouts_list_navigation_disabled_global: "Disable discovery list navigation globally"
-    layouts_list_header_disabled: "Disable discovery list header for selected routes"
-    layouts_list_header_disabled_global: "Disable discovery list header globally"
-    layouts_list_nav_menu: "Use list navigation menu for selected routes"
-    layouts_list_nav_menu_global: "Use list navigation menu globally"
-    layouts_sidebar_main_content_threshold: "Threshold width (px) for main content to trigger responsive layout"
-    layouts_hide_sidebars_if_empty: "Automatically hide sidebars if they are empty"
-    layouts_profile_enabled: "Add sidebars to profile"

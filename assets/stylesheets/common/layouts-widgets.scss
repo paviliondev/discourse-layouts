@@ -1,17 +1,47 @@
 aside.sidebar {
   z-index: 1;
   position: relative;
+  
+  &.not-visible {
+    .sidebar-container {
+      display: none;
+    }
+    
+    .toggle-sidebar.right {
+      margin-left: 0;
+    }
+  }
+  
+  &.fixed {
+    .sidebar-container {
+      position: fixed;
+      max-height: calc(100vh - 100px);
+      overflow: scroll;
+    }
+    
+    .toggle-sidebar {
+      position: fixed;
+    }
+  }
+}
+
+.toggle-sidebar {
+  z-index: 999;
+  position: absolute;
+  background: transparent;
+  transition: none;
+  
+  &.right {
+    margin-left: calc(var(--mainRightOffset) - 20px);
+  }
+  &.left {
+    margin-left: -39px;
+  }
 }
 
 .sidebar-container {
   width: inherit;
   z-index: 10;
-
-  &.fixed {
-    position: fixed;
-    max-height: calc(100vh - 100px);
-    overflow: scroll;
-  }
 
   .sidebar-content {
     > div {
@@ -133,7 +163,7 @@ aside.sidebar {
 }
 
 .widget-container {
-  padding: 7px;
+  padding: 15px;
   border: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
   background-color: $secondary;
   position: relative;

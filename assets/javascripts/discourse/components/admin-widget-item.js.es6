@@ -1,10 +1,40 @@
-import { ajax } from 'discourse/lib/ajax';
 import LayoutWidget from '../models/layout-widget';
-import { listLayoutsWidgets } from '../lib/layouts';
+import { listLayoutsWidgets, normalizeContext } from '../lib/layouts';
 import { default as discourseComputed, observes } from 'discourse-common/utils/decorators';
 import { not, empty } from "@ember/object/computed";
+import { computed } from "@ember/object";
 import Component from '@ember/component';
-import { getOwner } from 'discourse-common/lib/get-owner';
+
+function buildSelectKit(items, type=null) {
+  return items.map(item => {
+    let name;
+    
+    if (['position', 'order'].indexOf(type) > -1 && isNaN(item)) {
+      name = I18n.t(`admin.layouts.widgets.${type}.${item}`);
+    }
+    
+    if (type === 'filter') {
+      name = I18n.t(`filters.${item}.title`);
+    }
+    
+    if (type === 'context') {
+      name = normalizeContext(item, { name: true });
+    }
+    
+    if (['group', 'category'].indexOf(type) > -1) {
+      if (item === 0) {
+        name = I18n.t('categories.all');
+      } else {
+        name = item.name;
+      }
+    }
+    
+    return {
+      id: item,
+      name: name ? name : item
+    }
+  })
+}
 
 function generateDisplayName(name) {
   return name.replace("layouts-", "")
@@ -13,10 +43,45 @@ function generateDisplayName(name) {
 }
 
 export default Component.extend({
-  tagName: 'tr',
-  classNames: 'admin-list-item',
+  classNames: 'admin-layouts-widget',
   saveDisabled: not('dirty'),
   dirty: false,
+  
+  positionList: computed(function() { 
+    return buildSelectKit(['left', 'right'], 'position');
+  }),
+  
+  @discourseComputed('widgets.length')
+  orderList(widgetCount) {
+    const items = ['start', 'end'];
+    if (widgetCount > 0) {
+      for (let i=1; i<=widgetCount; i++) {
+        items.push(i.toString());
+      }
+    }
+    return buildSelectKit(items, 'order');
+  },
+  
+  contextList: computed(function() { 
+    return buildSelectKit(['discovery', 'topic', 'user', 'tags'], 'context');
+  }),
+  
+  filterList: computed(function() { 
+    return buildSelectKit([...this.site.filters, 'top', 'categories'], 'filter');
+  }),
+  
+  @discourseComputed('site.groups')
+  groupList(siteGroups) {
+    let list = buildSelectKit(siteGroups.filter((group) => {
+      return group.name !== 'everyone';
+    }), 'group');
+    return list;
+  },
+  
+  @discourseComputed('site.categories')
+  categoryList(siteCategories) {
+    return buildSelectKit([0, ...siteCategories], 'category');
+  },
 
   didInsertElement() {
     this._super(...arguments);    
@@ -66,6 +131,18 @@ export default Component.extend({
     
     updateEnabled(enabled) {
       this.update('enabled', enabled);
+    },
+    
+    updateCategoryIds(categoryIds) {
+      this.update('category_ids', categoryIds);
+    },
+    
+    updateFilters(filters) {
+      this.update('filters', filters);
+    },
+    
+    updateContexts(contexts) {
+      this.update('contexts', contexts);
     },
        
     save() {

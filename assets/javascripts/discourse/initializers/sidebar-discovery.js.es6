@@ -1,13 +1,10 @@
 import DiscoveryController from 'discourse/controllers/discovery';
 import DiscoveryRoute from 'discourse/routes/discovery';
-import NavigationBar from 'discourse/components/navigation-bar';
-import NavigationItem from 'discourse/components/navigation-item';
 import Sidebars from '../mixins/sidebars';
-import { on, observes, default as discourseComputed } from 'discourse-common/utils/decorators';
-import { settingEnabled } from '../lib/layouts-settings';
-import { getOwner } from 'discourse-common/lib/get-owner';
+import { default as discourseComputed } from 'discourse-common/utils/decorators';
 import { inject as controller } from "@ember/controller";
-import { scheduleOnce } from "@ember/runloop";
+import { inject as service } from "@ember/service";
+import { readOnly } from "@ember/object/computed";
 
 export default {
   name: 'sidebar-discovery',
@@ -25,80 +22,21 @@ export default {
     });
 
     DiscoveryController.reopen(Sidebars, {
-      mainContent: 'discovery',
-      navigationDefault: controller('navigation/default'),
-      navigationCategories: controller('navigation/categories'),
+      mainContent: "discovery",
+      router: service(),
+      currentPath: readOnly("router.currentRouteName"),
+      navigationDefault: controller("navigation/default"),
       navigationCategory: controller("navigation/category"),
 
-      @on('init')
-      @observes('path')
-      discoveryDomEdits() {
-        const path = this.get('path');
-        if (!path || path === 'discovery.loading') { return; }
-
-        // necessary because discovery categories component does not use skipHeader
-        if (this.get('headerDisabled')) {
-          scheduleOnce('afterRender', function() {
-            $('.main-content thead').hide();
-          });
-        }
-      },
-
-      @discourseComputed('navigationDefault.filterMode', 'navigationCategory.filterMode')
-      filter(defaultFilterMode, categoryFilterMode) {
-        let filterMode = defaultFilterMode || categoryFilterMode,
-            filterArr = filterMode ? filterMode.split('/') : [];
-        return filterArr[filterArr.length - 1];
-      },
-
-      @discourseComputed('path')
-      navigationDisabled() {
-        return settingEnabled('layouts_list_navigation_disabled', this.get('category'), this.get('path'));
-      },
-
-      @discourseComputed('path')
-      headerDisabled() {
-        return settingEnabled('layouts_list_header_disabled', this.get('category'), this.get('path'));
-      },
-
-      @discourseComputed('path')
-      navMenuEnabled() {
-        return settingEnabled('layouts_list_nav_menu', this.get('category'), this.get('path'));
-      },
-
-      actions: {
-        createCategory() {
-          const navigationCategories = this.get('navigationCategories');
-          navigationCategories.send('createCategory');
-        },
-
-        reorderCategories() {
-          const navigationCategories = this.get('navigationCategories');
-          navigationCategories.send('reorderCategories');
-        }
-      }
-    });
-
-    NavigationBar.reopen({
-      @discourseComputed('navItems')
-      navMenuEnabled(){
-        return getOwner(this).lookup('controller:discovery').get('navMenuEnabled');
-      }
-    });
-
-    NavigationItem.reopen({
-      buildBuffer(buffer){
-        const content = this.get('content');
-        const linkDisabled = this.get('linkDisabled');
-        let attrs = linkDisabled ? '' : "href='" + content.get('href') + "'";
-
-        buffer.push(`<a ${attrs}>`);
-        if (content.get('hasIcon')) {
-          buffer.push("<span class='" + content.get('name') + "'></span>");
-        }
-
-        buffer.push(this.get('content.displayName'));
-        buffer.push("</a>");
+      @discourseComputed(
+        'navigationDefault.filterType', 
+        'navigationCategory.filterType', 
+        'currentPath'
+      ) filter(defaultFilter, categoryFilter, currentPath) {
+        let path = currentPath.toLowerCase();
+        if (path.indexOf('categories') > -1) return 'categories';
+        if (path.indexOf('category') > -1) return categoryFilter;
+        return defaultFilter;
       }
     });
   }

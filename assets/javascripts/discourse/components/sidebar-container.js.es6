@@ -1,8 +1,9 @@
 import MountWidget from 'discourse/components/mount-widget';
 import { observes, default as discourseComputed, on } from 'discourse-common/utils/decorators';
+import { getOwner } from 'discourse-common/lib/get-owner';
 
 export default MountWidget.extend({
-  classNameBindings: [':sidebar-container', 'fixed', 'editing'],
+  classNameBindings: [':sidebar-container', 'editing'],
   widget: 'sidebar',
 
   @on('init')
@@ -12,35 +13,44 @@ export default MountWidget.extend({
       this.rerenderSidebars();
     });
   },
-
-  @discourseComputed()
-  fixed() {
-    return Discourse.SiteSettings[`layouts_sidebar_${this.get('side')}_fixed`];
+  
+  @discourseComputed('context')
+  controller(context) {
+    return getOwner(this).lookup(`controller:${context}`);
   },
 
   buildArgs() {
     const context = this.get('context');
     const side = this.get('side');
+    const controller = this.get('controller');
     const category = this.get('category');
-    let args = { context, side, category };
+    const topic = this.get('topic');
+    const filter = this.get('filter');
+    const customSidebarProps = this.get('customSidebarProps');
+    
+    let args = {
+      context,
+      side,
+      controller
+    };
 
     if (context === 'discovery') {
-      args['filter'] = this.get('filter');
+      args.filter = filter;
     }
-
+    if (['discovery', 'topic'].indexOf(context) > -1) {
+      args.category = category;
+    }
     if (context === 'topic') {
-      args['topic'] = this.get('topic');
+      args.topic = topic;
     }
-
-    const customSidebarProps = this.get('customSidebarProps');
     if (customSidebarProps) {
-      args['customSidebarProps'] = customSidebarProps;
+      args.customSidebarProps = customSidebarProps;
     }
-
+                
     return args;
   },
 
-  @observes('topic', 'category', 'topic.details.created_by')
+  @observes('topic.id', 'category.id', 'filter', 'context')
   rerenderSidebars() {
     this.queueRerender();
     this.appEvents.trigger('sidebars:after-render');

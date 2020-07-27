@@ -13,6 +13,16 @@ $timeline-buffer: 100px;
       );
     }
     
+    .post-notice {
+      max-width: calc(
+        (#{$topic-body-width} +
+        #{$topic-body-width-padding*2} +
+        #{$body-extension}) +
+        #{$topic-avatar-width}
+        - var(--mainLeftOffset)
+      );
+    }
+    
     .timeline-container {
       margin-left: calc( 
         (#{$topic-body-width} +
