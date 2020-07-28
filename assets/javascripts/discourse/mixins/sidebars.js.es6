@@ -99,9 +99,12 @@ export default Mixin.create({
   
   toggleSidebars(opts) {
     const isResponsive = this.isResponsive;
-    const { side, value, onlyResponsive } = opts;
+    const { side, value, target } = opts;
     
-    if ((onlyResponsive && !isResponsive)) return;
+    if (
+      (target === 'responsive' && !isResponsive) ||
+      (target === 'desktop' && isResponsive)
+    ) return;
     
     let sides = side ? [side] : ['left', 'right'];
     

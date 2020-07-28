@@ -1,6 +1,7 @@
 import MountWidget from 'discourse/components/mount-widget';
 import { observes, default as discourseComputed, on } from 'discourse-common/utils/decorators';
 import { getOwner } from 'discourse-common/lib/get-owner';
+import { scheduleOnce } from "@ember/runloop";
 
 export default MountWidget.extend({
   classNameBindings: [':sidebar-container', 'editing'],
@@ -53,6 +54,8 @@ export default MountWidget.extend({
   @observes('topic.id', 'category.id', 'filter', 'context')
   rerenderSidebars() {
     this.queueRerender();
-    this.appEvents.trigger('sidebars:after-render');
+    scheduleOnce('afterRender', () => {
+      this.appEvents.trigger('sidebars:after-render');
+    });
   }
 });

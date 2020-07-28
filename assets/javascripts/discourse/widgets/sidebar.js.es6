@@ -92,7 +92,7 @@ export default createWidget('sidebar', {
     this.appEvents.trigger('sidebar:toggle', {
       side: this.attrs.side,
       value: false,
-      onlyResponsive: true
+      target: 'responsive'
     });
   },
   
