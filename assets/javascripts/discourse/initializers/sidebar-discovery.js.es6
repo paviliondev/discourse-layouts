@@ -33,6 +33,7 @@ export default {
         'navigationCategory.filterType', 
         'currentPath'
       ) filter(defaultFilter, categoryFilter, currentPath) {
+        if (!currentPath) return undefined;
         let path = currentPath.toLowerCase();
         if (path.indexOf('categories') > -1) return 'categories';
         if (path.indexOf('category') > -1) return categoryFilter;
