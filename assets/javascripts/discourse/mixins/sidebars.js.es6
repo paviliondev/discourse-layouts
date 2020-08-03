@@ -164,7 +164,8 @@ export default Mixin.create({
     'isResponsive',
     'hasRightSidebar',
     'hasLeftSidebar',
-  ) mainClasses(path, loading, isResponsive, hasRight, hasLeft) {
+    'showResponsiveMenu'
+  ) mainClasses(path, loading, isResponsive, hasRight, hasLeft, showMenu) {
     let p = path.split('.');
     let classes = `${p[0]} ${p[1].split(/(?=[A-Z])/)[0]}`;
     
@@ -175,7 +176,13 @@ export default Mixin.create({
     }
     if (hasLeft) classes += ' left-sidebar';
     if (hasRight) classes += ' right-sidebar';
-    if (isResponsive) classes += ' is-responsive';
+    if (isResponsive) {
+      classes += ' is-responsive';
+      
+      if (showMenu) {
+        classes += ' has-menu';
+      }
+    }
     if (loading) classes + ' loading';
     
     return classes;

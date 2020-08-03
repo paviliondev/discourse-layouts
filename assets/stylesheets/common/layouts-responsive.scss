@@ -41,6 +41,15 @@
   justify-content: space-around;
 }
 
+.main-content.topic.is-responsive.has-menu {
+  .d-toc-toggle {
+    bottom: calc(3.66em + 5px);
+  }
+  #topic-progress-wrapper {
+    bottom: 3.66em;
+  }
+}
+
 .responsive-toggle,
 .responsive-link {
   background: none;
