@@ -7,7 +7,8 @@ import Component from '@ember/component';
 
 function buildSelectKit(items, type=null) {
   return items.map(item => {
-    let name;
+    let name = item;
+    let id = item;
     
     if (['position', 'order'].indexOf(type) > -1 && isNaN(item)) {
       name = I18n.t(`admin.layouts.widgets.${type}.${item}`);
@@ -26,12 +27,13 @@ function buildSelectKit(items, type=null) {
         name = I18n.t('categories.all');
       } else {
         name = item.name;
+        id = item.id;
       }
     }
     
     return {
-      id: item,
-      name: name ? name : item
+      id,
+      name
     }
   })
 }
