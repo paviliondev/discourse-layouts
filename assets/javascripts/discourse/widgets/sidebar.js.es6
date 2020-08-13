@@ -29,6 +29,7 @@ export default createWidget('sidebar', {
       side,
       context,
       controller,
+      path,
       filter,
       category,
       topic,
@@ -71,7 +72,7 @@ export default createWidget('sidebar', {
 
     if (widgets.length > 0) {
       widgets.forEach((w) => {
-        let props = { topic, category, side };
+        let props = { topic, category, side, path };
 
         if (customSidebarProps) {
           Object.keys(customSidebarProps).forEach((p) => {

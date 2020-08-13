@@ -21,29 +21,30 @@ export default MountWidget.extend({
   },
 
   buildArgs() {
-    const context = this.get('context');
-    const side = this.get('side');
-    const controller = this.get('controller');
-    const category = this.get('category');
-    const topic = this.get('topic');
-    const filter = this.get('filter');
-    const customSidebarProps = this.get('customSidebarProps');
+    const side = this.side;
+    const controller = this.controller;
+    const context = this.context;
+    const path = this.path;
     
     let args = {
       context,
+      path,
       side,
       controller
     };
-
+    
     if (context === 'discovery') {
-      args.filter = filter;
+      args.filter = this.filter;
     }
-    if (['discovery', 'topic'].indexOf(context) > -1) {
-      args.category = category;
+    if (['discovery', 'topic'].indexOf(context) > -1 &&
+          path !== "discovery.categories") {
+      args.category = this.category;
     }
     if (context === 'topic') {
-      args.topic = topic;
+      args.topic = this.topic;
     }
+    
+    const customSidebarProps = this.customSidebarProps;
     if (customSidebarProps) {
       args.customSidebarProps = customSidebarProps;
     }
@@ -51,7 +52,7 @@ export default MountWidget.extend({
     return args;
   },
 
-  @observes('topic.id', 'category.id', 'filter', 'context')
+  @observes('path')
   rerenderSidebars() {
     this.queueRerender();
     scheduleOnce('afterRender', () => {
