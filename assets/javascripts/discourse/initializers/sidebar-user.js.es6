@@ -14,13 +14,19 @@ export default {
       api.modifyClass('route:user', {
         renderTemplate() {
           this.render('sidebar-wrapper');
+          this.render('user', {
+            into: 'sidebar-wrapper',
+            outlet: 'main-content',
+            controller: 'user',
+            model: this.modelFor('user')
+          })
         }
       });
       
       api.modifyClass('controller:user', Sidebars);
       
       api.modifyClass('controller:user', {
-        mainContent: 'user'
+        mainContent: 'user',
       });
     });
   }
