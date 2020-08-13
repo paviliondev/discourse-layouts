@@ -15,7 +15,7 @@
         customSidebarProps=customSidebarProps
         category=category
         filter=filter
-        context=mainContent}}
+        context=context}}
       
       {{plugin-outlet
         name="sidebar-left-bottom"
@@ -28,7 +28,7 @@
   {{/if}}
   
   <div class="main-content {{mainClasses}}" style={{mainStyle}}>
-    {{partial mainContent}}
+    {{outlet 'main-content'}}
   </div>
   
   {{#if rightSidebarEnabled}}
@@ -47,7 +47,7 @@
         customSidebarProps=customSidebarProps
         category=category
         filter=filter
-        context=mainContent}}
+        context=context}}
       
       {{plugin-outlet
         name="sidebar-right-bottom"

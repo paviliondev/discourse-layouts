@@ -1,4 +1,8 @@
 import { createWidget } from 'discourse/widgets/widget';
+import Sidebars from '../mixins/sidebars';
+import DiscourseRoute from "discourse/routes/discourse";
+import Controller from "@ember/controller";
+import { withPluginApi } from 'discourse/lib/plugin-api';
 
 function addSidebarProps(props) {
   if ($.isEmptyObject(props)) return;
@@ -73,10 +77,39 @@ function normalizeContext(input, opts={}) {
   return context;
 };
 
+function setupContext(context, app) {
+  if (!app[`${context}Route`]) {
+    app[`${context}Route`] = DiscourseRoute.extend();
+  }
+  if (!app[`${context}Controller`]) {
+    app[`${context}Controller`] = Controller.extend();
+  }
+  
+  context = context.toLowerCase();
+  
+  withPluginApi('0.8.32', api => {
+    api.modifyClass(`route:${context}`, {
+      renderTemplate() {
+        this.render('sidebar-wrapper');
+        this.render(context, {
+          into: 'sidebar-wrapper',
+          outlet: 'main-content',
+          controller: context,
+          model: this.modelFor(context)
+        });
+      }
+    });
+    
+    api.modifyClass(`controller:${context}`, Sidebars);
+    api.modifyClass(`controller:${context}`, { context });
+  });
+}
+
 export {
   addSidebarProps,
   createLayoutsWidget,
   lookupLayoutsWidget,
   listLayoutsWidgets,
-  normalizeContext
+  normalizeContext,
+  setupContext
 }

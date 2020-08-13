@@ -28,12 +28,12 @@ export default Mixin.create({
   hasRightSidebar: and('rightSidebarEnabled', 'rightSidebarVisible'),
   hasLeftSidebar: and('leftSidebarEnabled', 'leftSidebarVisible'),
   
-  @discourseComputed('mainContent', 'isResponsive')
+  @discourseComputed('context', 'isResponsive')
   canHideRightSidebar(context, isResponsive) {
     return this.canHide(context, 'right', isResponsive);
   },
   
-  @discourseComputed('mainContent', 'isResponsive')
+  @discourseComputed('context', 'isResponsive')
   canHideLeftSidebar(context, isResponsive) {
     return this.canHide(context, 'left', isResponsive);
   },

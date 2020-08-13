@@ -1,29 +1,47 @@
-import Sidebars from '../mixins/sidebars';
 import { default as discourseComputed, observes } from 'discourse-common/utils/decorators';
 import { alias } from "@ember/object/computed";
-import { withPluginApi } from 'discourse/lib/plugin-api';
 import{ inject as controller } from "@ember/controller";
+import { inject as service } from "@ember/service";
+import { readOnly } from "@ember/object/computed";
+import { setupContext } from "../lib/layouts";
+import { withPluginApi } from 'discourse/lib/plugin-api';
 
 export default {
-  name: 'sidebar-topic',
-  initialize(container) {
+  name: 'sidebars',
+  initialize(container, app) {
     const site = container.lookup('site:main');
     const siteSettings = container.lookup('site-settings:main');
 
     if (!siteSettings.layouts_enabled ||
         (site.mobileView && !siteSettings.layouts_mobile_enabled)) return;
+      
+    setupContext('Discovery', app);
+    setupContext('User', app);
+    setupContext('Topic', app);
+    setupContext('Tags', app);
+    setupContext('Tag', app);
     
     withPluginApi('0.8.32', api => {
-      api.modifyClass('route:topic', {
-        renderTemplate() {
-          this.render('sidebar-wrapper');
+      api.modifyClass('controller:discovery', {
+        router: service(),
+        currentPath: readOnly("router.currentRouteName"),
+        navigationDefault: controller("navigation/default"),
+        navigationCategory: controller("navigation/category"),
+
+        @discourseComputed(
+          'navigationDefault.filterType', 
+          'navigationCategory.filterType', 
+          'currentPath'
+        ) filter(defaultFilter, categoryFilter, currentPath) {
+          if (!currentPath) return undefined;
+          let path = currentPath.toLowerCase();
+          if (path.indexOf('categories') > -1) return 'categories';
+          if (path.indexOf('category') > -1) return categoryFilter;
+          return defaultFilter;
         }
       });
       
-      api.modifyClass('controller:topic', Sidebars);
-      
       api.modifyClass('controller:topic', {
-        mainContent: 'topic',
         category: alias('model.category'),
         userHideRightSidebar: false
       });
@@ -51,6 +69,6 @@ export default {
           }
         }
       });
-    })
+    });
   }
 };
