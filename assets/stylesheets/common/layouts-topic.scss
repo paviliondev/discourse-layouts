@@ -36,6 +36,7 @@ $timeline-buffer: 100px;
     .cooked img:not(.thumbnail) {
       // this is necessary because of the image-sizing-hack in Discourse
       max-width: 100% !important;
+      object-fit: contain;
     }
     
     // TOC needs more breathing room when there's a left sidebar

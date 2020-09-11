@@ -16,7 +16,7 @@ aside.sidebar {
     .sidebar-container {
       position: fixed;
       max-height: calc(100vh - 100px);
-      overflow: scroll;
+      overflow-y: auto;
     }
     
     .toggle-sidebar {
