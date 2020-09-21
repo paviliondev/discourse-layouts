@@ -37,6 +37,10 @@ function createLayoutsWidget(name, opts) {
       {
         tagName: `div.widget-container.${fullName}`,
         buildKey: () => fullName,
+            
+        shouldRender(attrs) {
+          return true;
+        }
       },
       opts
     )

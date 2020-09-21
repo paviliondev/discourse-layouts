@@ -42,44 +42,55 @@ export default createWidget('sidebar', {
     }
     
     context = normalizeContext(context);
-                    
+    
+    let props = { topic, category, side, path };
+
+    if (customSidebarProps) {
+      Object.keys(customSidebarProps).forEach((p) => {
+        props[p] = customSidebarProps[p];
+      });
+    };
+                        
     let widgets = siteWidgets.filter((w) => {
-      return this.widgetExists(w.name) && (
-        w.position === side &&
-        w.contexts.indexOf(context) > -1 &&
-        (
-          context !== 'discovery' || (
-            (w.filters.length === 0 || w.filters.indexOf(filter) > -1) &&
-            (w.category_ids.length === 0 ||
-              (
-                (!category && w.category_ids.indexOf(0) > -1) ||
-                (category && 
-                  w.category_ids.map(id => Number(id))
-                    .indexOf(Number(category.id)) > -1)
-              )
-            )
-          )
-        )
-      );
+      if (
+          (!this.widgetExists(w.name)) ||
+          
+          (w.position !== side) ||
+          
+          (w.contexts.indexOf(context) === -1) ||
+          
+          (!category &&
+            w.category_ids.length) ||
+          
+          (category &&
+            w.category_ids.length &&
+            w.category_ids.map(id => Number(id))
+              .filter(id => {
+                return (Number(category.id) === id) ||
+                  (Number(category.parent_category_id) === id);
+              }).length === 0) ||
+          
+          (context === 'discovery' &&
+            w.filters.length &&
+            w.filters.indexOf(filter) === -1)
+        ) {
+        return false;
+      } else {
+        let LayoutsWidgetClass = this.lookupWidgetClass(w.name);
+        return LayoutsWidgetClass && 
+          LayoutsWidgetClass.prototype.shouldRender(props);
+      }
     }).sort(function(a, b) {
       if (a.order === b.order) return 0;
       if (a.order === 'start') return -1;
       if (a.order === 'end') return 1;
       return a - b;
     }).map(w => w.name);
-        
+            
     let contents = [];
 
     if (widgets.length > 0) {
       widgets.forEach((w) => {
-        let props = { topic, category, side, path };
-
-        if (customSidebarProps) {
-          Object.keys(customSidebarProps).forEach((p) => {
-            props[p] = customSidebarProps[p];
-          });
-        };
-        
         contents.push(this.attach(w, props));
       });
     }
