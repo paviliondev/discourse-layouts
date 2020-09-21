@@ -58,7 +58,7 @@ export default {
           if (!this.element || this.isDestroying || this.isDestroyed) return;
           
           const hasRightSidebar = this.controller.get('hasRightSidebar');    
-          if (hasRightSidebar) {
+          if (hasRightSidebar && !this.info.get("topicProgressExpanded")) {
             const info = this.get('info');
             info.setProperties({
               renderTimeline: false,
