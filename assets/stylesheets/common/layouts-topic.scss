@@ -49,4 +49,16 @@ $timeline-buffer: 100px;
       }
     }
   }
+  
+  &.right-sidebar {
+    #topic-progress-wrapper {
+      max-width: calc(
+        (#{$topic-body-width} +
+        #{$body-extension}) +
+        #{$topic-avatar-width}
+        - var(--mainLeftOffset)
+        - #{$topic-body-width-padding*2}
+      );
+    }
+  }
 }
