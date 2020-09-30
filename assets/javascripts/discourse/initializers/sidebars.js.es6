@@ -32,7 +32,7 @@ export default {
           'navigationDefault.filterType', 
           'navigationCategory.filterType', 
           'currentPath'
-        ) filter(defaultFilter, categoryFilter, currentPath) {
+        ) sidebarFilter(defaultFilter, categoryFilter, currentPath) {
           if (!currentPath) return undefined;
           let path = currentPath.toLowerCase();
           if (path.indexOf('categories') > -1) return 'categories';
