@@ -206,9 +206,7 @@ export default Mixin.create({
     } else {
       if (!visible) classes += ' not-visible';
     }
-    if (this.siteSettings[`layouts_sidebar_${side}_fixed`]) {
-      classes += ' fixed';
-    }
+    classes += ` ${this.siteSettings[`layouts_sidebar_${side}_position`]}`;
     return classes;
   },
   

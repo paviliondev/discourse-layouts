@@ -8,12 +8,22 @@ plugins:
   layouts_sidebar_right_width:
     client: true
     default: 250
-  layouts_sidebar_left_fixed:
+  layouts_sidebar_left_position:
     client: true
-    default: true
-  layouts_sidebar_right_fixed:
+    default: 'fixed'
+    type: enum
+    choices:
+      - fixed
+      - absolute
+      - sticky
+  layouts_sidebar_right_position:
     client: true
-    default: true
+    default: 'fixed'
+    type: enum
+    choices:
+      - fixed
+      - absolute
+      - sticky
   layouts_sidebar_left_can_hide:
     client: true
     type: list
