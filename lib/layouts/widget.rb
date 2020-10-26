@@ -77,6 +77,11 @@ class DiscourseLayouts::Widget
     widgets.push(self.new(data))
     
     if self.set(widgets)
+      
+      ## Client needs to be fully refreshed due to use of site model.
+      Site.clear_anon_cache!
+      Discourse.request_refresh!
+      
       { widget: self.get(data[:name]) }
     else
       { error: 'failed to update widget' }
