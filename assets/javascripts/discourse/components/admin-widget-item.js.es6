@@ -65,7 +65,7 @@ export default Component.extend({
   },
   
   contextList: computed(function() { 
-    return buildSelectKit(['discovery', 'topic', 'user', 'tags'], 'context');
+    return buildSelectKit(['discovery', 'topic', 'user', 'tag'], 'context');
   }),
   
   filterList: computed(function() { 
