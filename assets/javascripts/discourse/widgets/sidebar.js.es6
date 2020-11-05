@@ -82,10 +82,9 @@ export default createWidget('sidebar', {
       }
     }).sort(function(a, b) {
       if (a.order === b.order) return 0;
-      if (Number(a.order) < Number(b.order)) return -1;
       if (a.order === 'start') return -1;
       if (a.order === 'end') return 1;
-      return a - b;
+      return Number(a.order) - Number(b.order);
     }).map(w => w.name);
             
     let contents = [];
