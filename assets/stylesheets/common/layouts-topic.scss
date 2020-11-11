@@ -60,5 +60,32 @@ $timeline-buffer: 100px;
         - #{$topic-body-width-padding*2}
       );
     }
+    
+    .container.posts {
+      display: block;
+    }
+  }
+}
+
+// DiscoTOC Compatability
+
+.d-toc-timeline {
+  .container.posts {
+    grid-template-areas: "posts";
+    grid-template-columns: auto;
+    
+    .topic-navigation {
+      grid-area: unset;
+    }
+  }
+  &.d-toc-timeline-visible {
+    .container.posts {
+      grid-template-areas: "posts timeline";
+      grid-template-columns: auto auto;
+      
+      .topic-navigation {
+        grid-area: timeline;
+      }
+    }
   }
 }
