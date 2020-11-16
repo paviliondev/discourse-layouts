@@ -18,6 +18,8 @@ after_initialize do
   %w[
     ../lib/layouts/engine.rb
     ../lib/layouts/widget.rb
+    ../lib/layouts/category.rb
+    ../extensions/category_bumped_at.rb
     ../config/routes.rb
     ../serializers/layouts/widget.rb
     ../controllers/layouts/widgets.rb
@@ -35,4 +37,13 @@ after_initialize do
   ### Discourse modifications for widgets
   
   TopicQuery.public_valid_options.push(:no_definitions, :limit, :per_page)
+  
+  #### Add bumped_at to categories and serialize it with site categories
+  
+  ::Category.prepend LayoutsCategoryExtension
+  ::Category.singleton_class.prepend LayoutsCategoryClassExtension
+  ::PostCreator.prepend LayoutsPostCreatorExtension
+  
+  Site.preloaded_category_custom_fields << "bumped_at"
+  add_to_serializer(:site_category, :bumped_at) { object.custom_fields['bumped_at'] }
 end
