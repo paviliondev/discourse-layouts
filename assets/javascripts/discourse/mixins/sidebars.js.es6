@@ -4,6 +4,7 @@ import { computed } from "@ember/object";
 import { alias, or, not, and } from "@ember/object/computed";
 import Mixin from "@ember/object/mixin";
 import { scheduleOnce, bind, later, throttle, debounce } from "@ember/runloop";
+import discourseDebounce from "discourse-common/lib/debounce";
 import { htmlSafe } from "@ember/template";
 import { iconHTML } from "discourse-common/lib/icon-library";
 import DiscourseURL from "discourse/lib/url";
@@ -61,9 +62,16 @@ export default Mixin.create({
     const sidebarPadding = 20;
     const mainLeftOffset = settings.layouts_sidebar_left_width + sidebarPadding;
     const mainRightOffset = settings.layouts_sidebar_right_width + sidebarPadding;
+
+    // TODO: Use discouseDebounce when discourse 2.7 gets released.
+    let debounceFunc = discourseDebounce;
+    if (debounceFunc === undefined) {
+      debounceFunc = debounce;
+    }
+
     scheduleOnce('afterRender', () => {
       this.handleWindowResize();
-      $(window).on('resize', () => debounce(this, this.handleWindowResize, 100));
+      $(window).on('resize', () => debounceFunc(this, this.handleWindowResize, 100));
       
       const root = document.documentElement;
       root.style.setProperty('--mainLeftOffset', `${this.mainLeftOffset}px`);
