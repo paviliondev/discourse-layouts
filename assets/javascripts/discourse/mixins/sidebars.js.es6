@@ -9,6 +9,15 @@ import { iconHTML } from "discourse-common/lib/icon-library";
 import DiscourseURL from "discourse/lib/url";
 import { normalizeContext } from "../lib/layouts";
 
+// TODO: Update after discourse-common/lib/debounce hits stable.
+let debounceFunc;
+try {
+  debounceFunc = requirejs("discourse-common/lib/debounce");
+} catch(error) {
+  console.warn("Discourse Layouts: Discourse debounce not available, using Ember debounce");
+  debounceFunc = debounce;
+}
+
 function hasWidgets(widgets) {
   return (widgets === undefined || widgets === null) || widgets.length > 0;
 }
@@ -61,9 +70,10 @@ export default Mixin.create({
     const sidebarPadding = 20;
     const mainLeftOffset = settings.layouts_sidebar_left_width + sidebarPadding;
     const mainRightOffset = settings.layouts_sidebar_right_width + sidebarPadding;
+
     scheduleOnce('afterRender', () => {
       this.handleWindowResize();
-      $(window).on('resize', () => debounce(this, this.handleWindowResize, 100));
+      $(window).on('resize', () => debounceFunc(this, this.handleWindowResize, 100));
       
       const root = document.documentElement;
       root.style.setProperty('--mainLeftOffset', `${this.mainLeftOffset}px`);
