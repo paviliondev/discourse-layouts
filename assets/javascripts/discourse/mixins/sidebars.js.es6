@@ -4,11 +4,19 @@ import { computed } from "@ember/object";
 import { alias, or, not, and } from "@ember/object/computed";
 import Mixin from "@ember/object/mixin";
 import { scheduleOnce, bind, later, throttle, debounce } from "@ember/runloop";
-import discourseDebounce from "discourse-common/lib/debounce";
 import { htmlSafe } from "@ember/template";
 import { iconHTML } from "discourse-common/lib/icon-library";
 import DiscourseURL from "discourse/lib/url";
 import { normalizeContext } from "../lib/layouts";
+
+// TODO: Update after discourse-common/lib/debounce hits stable.
+let debounceFunc;
+try {
+  debounceFunc = requirejs("discourse-common/lib/debounce");
+} catch(error) {
+  console.warn("Discourse Layouts: Discourse debounce not available, using Ember debounce");
+  debounceFunc = debounce;
+}
 
 function hasWidgets(widgets) {
   return (widgets === undefined || widgets === null) || widgets.length > 0;
@@ -62,12 +70,6 @@ export default Mixin.create({
     const sidebarPadding = 20;
     const mainLeftOffset = settings.layouts_sidebar_left_width + sidebarPadding;
     const mainRightOffset = settings.layouts_sidebar_right_width + sidebarPadding;
-
-    // TODO: Use discouseDebounce when discourse 2.7 gets released.
-    let debounceFunc = discourseDebounce;
-    if (debounceFunc === undefined) {
-      debounceFunc = debounce;
-    }
 
     scheduleOnce('afterRender', () => {
       this.handleWindowResize();
