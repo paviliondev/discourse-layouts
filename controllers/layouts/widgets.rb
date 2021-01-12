@@ -55,6 +55,7 @@ class DiscourseLayouts::WidgetsController < ::Admin::AdminController
           :enabled,
           groups: [],
           category_ids: [],
+          excluded_category_ids: [],
           filters: [],
           contexts: []
         ).to_h

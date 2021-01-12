@@ -139,6 +139,10 @@ export default Component.extend({
       this.update('category_ids', categoryIds);
     },
     
+    updateExcludedCategoryIds(categoryIds) {
+      this.update('excluded_category_ids', categoryIds);
+    },
+    
     updateFilters(filters) {
       this.update('filters', filters);
     },

@@ -8,6 +8,7 @@ class DiscourseLayouts::Widget
                 :order,
                 :groups,
                 :category_ids,
+                :excluded_category_ids,
                 :filters,
                 :contexts,
                 :enabled
@@ -20,9 +21,9 @@ class DiscourseLayouts::Widget
     @position = attrs[:position].present? ? attrs[:position] : 'left'
     @order = attrs[:order].present? ? attrs[:order] : 'start'
     
-    [:groups, :category_ids, :filters, :contexts].each do |attr|
+    [:groups, :category_ids, :excluded_category_ids, :filters, :contexts].each do |attr|
       val = attrs[attr].is_a?(Array) ? attrs[attr] : []
-      val = val.map(&:to_i) if [:groups, :category_ids].include?(attr)
+      val = val.map(&:to_i) if [:groups, :category_ids, :excluded_category_ids].include?(attr)
       val = val.map(&:to_s) if [:filters, :contexts].include?(attr)
       send("#{attr.to_s}=", val)
     end

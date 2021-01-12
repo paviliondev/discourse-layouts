@@ -34,6 +34,8 @@ en:
             hidden: "Hidden"
           category:
             label: "Categories"
+          excluded_category:
+            label: "Excluded Categories"
 
         settings:
           label: "Settings"

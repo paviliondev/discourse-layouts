@@ -140,6 +140,22 @@
           )}}
       </div>
     </div>
+    
+    <div class="control-group excluded-categories">
+      <label class="control-label">
+        {{i18n 'admin.layouts.widgets.excluded_category.label'}}
+      </label>
+      <div class="controls">
+        {{multi-select
+          content=categoryList
+          value=widget.excluded_category_ids
+          onChange=(action "updateExcludedCategoryIds")
+          options=(hash
+            none='admin.layouts.widgets.select'
+            allowAny=false
+          )}}
+      </div>
+    </div>
   </div>
 </div>
 

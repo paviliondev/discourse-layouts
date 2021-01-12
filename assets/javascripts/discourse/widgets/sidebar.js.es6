@@ -70,6 +70,14 @@ export default createWidget('sidebar', {
                   (Number(category.parent_category_id) === id);
               }).length === 0) ||
           
+          (category &&
+            w.excluded_category_ids.length &&
+            w.excluded_category_ids.map(id => Number(id))
+              .some(id => {
+                return (Number(category.id) === id) ||
+                  (Number(category.parent_category_id) === id);
+              })) ||
+          
           (context === 'discovery' &&
             w.filters.length &&
             w.filters.indexOf(filter) === -1)
