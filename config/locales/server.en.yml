@@ -7,6 +7,8 @@ en:
     layouts_sidebar_right_position: "Right sidebar positioning"
     layouts_sidebar_left_can_hide: "User can hide left sidebar in these contexts"
     layouts_sidebar_right_can_hide: "User can hide right sidebar in these contexts"
+    layouts_sidebar_hide_icon: "Hide sidebar icon. See <a href='https://github.com/discourse/discourse/blob/master/lib/svg_sprite/svg_sprite.rb#L4'>list of available icons</a>."
+    layouts_sidebar_show_icon: "Show sidebar icon. See <a href='https://github.com/discourse/discourse/blob/master/lib/svg_sprite/svg_sprite.rb#L4'>list of available icons</a>."
     layouts_sidebar_responsive_threshold: "Window width (px) when responsive layout is applied"
     layouts_mobile_enabled: "Enable mobile layouts"
     layouts_mobile_menu: |

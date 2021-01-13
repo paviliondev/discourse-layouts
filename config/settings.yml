@@ -42,6 +42,12 @@ plugins:
       - Topic
       - Profile
       - Tags
+  layouts_sidebar_hide_icon:
+    default: 'minus'
+    client: true
+  layouts_sidebar_show_icon:
+    default: 'plus'
+    client: true
   layouts_sidebar_responsive_threshold:
     client: true
     default: 850
