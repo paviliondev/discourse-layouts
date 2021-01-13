@@ -48,6 +48,20 @@ plugins:
   layouts_sidebar_show_icon:
     default: 'plus'
     client: true
+  layouts_sidebar_left_default_visibility:
+    client: true
+    default: 'show'
+    type: enum
+    choices:
+      - show
+      - hide
+  layouts_sidebar_right_default_visibility:
+    client: true
+    default: 'show'
+    type: enum
+    choices:
+      - show
+      - hide
   layouts_sidebar_responsive_threshold:
     client: true
     default: 850

@@ -75,9 +75,8 @@ export default Mixin.create({
     });
     this.appEvents.on('sidebar:toggle', this, this.toggleSidebars);
     
-    const isResponsive = this.get('isResponsive');
-    let leftSidebarVisible = !isResponsive;
-    let rightSidebarVisible = !isResponsive;
+    let leftSidebarVisible = this.sidebarVisibleDefault('left');
+    let rightSidebarVisible = this.sidebarVisibleDefault('right');
     
     this.setProperties({
       mainLeftOffset,
@@ -99,6 +98,11 @@ export default Mixin.create({
       leftWidgets: undefined,
       rightWidgets: undefined
     })
+  },
+  
+  sidebarVisibleDefault(side) {
+    if (this.get('isResponsive')) return false;
+    return this.siteSettings[`layouts_sidebar_${side}_default_visibility`] == 'visible';
   },
   
   toggleSidebars(opts) {
