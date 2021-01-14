@@ -102,7 +102,7 @@ export default Mixin.create({
   
   sidebarVisibleDefault(side) {
     if (this.get('isResponsive')) return false;
-    return this.siteSettings[`layouts_sidebar_${side}_default_visibility`] == 'visible';
+    return this.siteSettings[`layouts_sidebar_${side}_default_visibility`] == 'show';
   },
   
   toggleSidebars(opts) {
