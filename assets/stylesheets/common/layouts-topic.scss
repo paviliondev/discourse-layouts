@@ -4,7 +4,12 @@ $timeline-buffer: 100px;
 .main-content.topic {  
   &.left-sidebar {
     .topic-body {
-      width: calc(100% - #{$topic-avatar-width});
+      width: calc(
+        (#{$topic-body-width} +
+        #{$topic-body-width-padding*2} +
+        #{$body-extension})
+        - var(--mainLeftOffset)
+      );
       max-width: calc(
         (#{$topic-body-width} +
         #{$topic-body-width-padding*2} +
@@ -76,6 +81,7 @@ $timeline-buffer: 100px;
     
     .topic-navigation {
       grid-area: unset;
+      display: none;
     }
   }
   &.d-toc-timeline-visible {
