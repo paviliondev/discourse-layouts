@@ -11,16 +11,19 @@ function addSidebarProps(props) {
   const appEvents = container.lookup("service:app-events");
   
   [
-    container.lookup('controller:discovery'),
-    container.lookup('controller:topic'),
-    container.lookup('controller:user'),
-    container.lookup('controller:tags'),
-    container.lookup('controller:tag')
-  ].forEach(controller => {
-    controller.set(
-      'customSidebarProps',
-      Object.assign({}, controller.customSidebarProps, props)
-    )
+    'controller:discovery',
+    'controller:topic',
+    'controller:user',
+    'controller:tags',
+    'controller:tag'
+  ].forEach(controllerName => {
+    const controller = container.lookup(controllerName);
+    if (controller) {
+      controller.set(
+        'customSidebarProps',
+        Object.assign({}, controller.customSidebarProps, props)
+      )
+    }
   });
   
   appEvents.trigger('sidebars:rerender');
