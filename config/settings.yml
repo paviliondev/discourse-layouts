@@ -65,6 +65,12 @@ plugins:
   layouts_sidebar_responsive_threshold:
     client: true
     default: 850
+  layouts_sidebar_full_width:
+    client: true
+    default: ''
+    type: enum
+    choices:
+      - left
   layouts_mobile_enabled:
     client: true
     default: false

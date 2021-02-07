@@ -17,7 +17,6 @@ export default Mixin.create({
   router: service(),
   path: alias("router._router.currentPath"),
   responsiveView: false,
-  showResponsiveMenu: and('isResponsive', 'responsiveMenuItems.length'),
   showLeftToggle: and('showSidebarToggles', 'leftSidebarEnabled'),
   showRightToggle: and('showSidebarToggles', 'rightSidebarEnabled'),
   customSidebarProps: {},
@@ -108,7 +107,6 @@ export default Mixin.create({
   toggleSidebars(opts) {
     const isResponsive = this.isResponsive;
     const { side, value, target } = opts;
-    
     if (
       (target === 'responsive' && !isResponsive) ||
       (target === 'desktop' && isResponsive)
@@ -117,7 +115,9 @@ export default Mixin.create({
     let sides = side ? [side] : ['left', 'right'];
     
     sides.forEach(side => {
-      const newVal = [true, false].includes(value) ? value : !Boolean(this[`${side}SidebarVisible`]);
+      const newVal = [true, false].includes(value) ?
+        value :
+        !Boolean(this[`${side}SidebarVisible`]);
       
       if (isResponsive) {
         const $sidebar = $(`.sidebar.${side}`);      
@@ -159,11 +159,25 @@ export default Mixin.create({
       });
     }
   },
+  
+  @discourseComputed
+  fullWidth() {
+    return this.siteSettings.layouts_sidebar_full_width.split('|');
+  },
 
-  @discourseComputed('responsiveView')
-  isResponsive(responsiveView) {
+  @discourseComputed('responsiveView', 'fullWidth')
+  isResponsive(responsiveView, fullWidth) {
     const mobileView = this.get('site.mobileView');
-    return mobileView || responsiveView;
+    return mobileView || responsiveView || fullWidth.includes('left');
+  },
+  
+  @discourseComputed('isResponsive', 'responsiveMenuItems.length', 'responsiveView', 'fullWidth')
+  showResponsiveMenu(isResponsive, responsiveMenuItemsLength, responsiveView, fullWidth) {
+    const mobileView = this.get('site.mobileView');
+    return (
+      (isResponsive && fullWidth == '') ||
+      (isResponsive && fullWidth == 'left' && (responsiveView || mobileView))
+    ) && responsiveMenuItemsLength;
   },
 
   @discourseComputed(
@@ -196,17 +210,17 @@ export default Mixin.create({
     return classes;
   },
 
-  @discourseComputed('isResponsive', 'leftSidebarVisible')
-  leftClasses(isResponsive, visible) {
-    return this.buildSidebarClasses(isResponsive, visible, 'left');
+  @discourseComputed('isResponsive', 'leftSidebarVisible', 'fullWidth')
+  leftClasses(isResponsive, visible, fullWidth) {
+    return this.buildSidebarClasses(isResponsive, visible, fullWidth, 'left');
   },
   
-  @discourseComputed('isResponsive', 'rightSidebarVisible')
-  rightClasses(isResponsive, visible) {
-    return this.buildSidebarClasses(isResponsive, visible, 'right');
+  @discourseComputed('isResponsive', 'rightSidebarVisible', 'fullWidth')
+  rightClasses(isResponsive, visible, fullWidth) {
+    return this.buildSidebarClasses(isResponsive, visible, fullWidth, 'right');
   },
   
-  buildSidebarClasses(isResponsive, visible, side) {
+  buildSidebarClasses(isResponsive, visible, fullWidth, side) {
     let classes = '';
     if (isResponsive) {
       classes += 'is-responsive';
@@ -214,6 +228,9 @@ export default Mixin.create({
     } else {
       if (!visible) classes += ' not-visible';
     }
+    if (fullWidth.includes(side)) {
+      classes += ' full-width';
+    } 
     classes += ` ${this.siteSettings[`layouts_sidebar_${side}_position`]}`;
     return classes;
   },
@@ -235,11 +252,11 @@ export default Mixin.create({
     return htmlSafe(style);
   },
 
-  @discourseComputed('path', 'isResponsive', 'leftSidebarVisible')
-  leftStyle(path, isResponsive, visible) {
+  @discourseComputed('path', 'showResponsiveMenu', 'leftSidebarVisible')
+  leftStyle(path, showResponsiveMenu, visible) {
     const width = this.siteSettings.layouts_sidebar_left_width;
     let string;
-    if (isResponsive) {
+    if (showResponsiveMenu) {
       string = `width: 100vw; transform: translateX(${visible ? '0' : `-100vw`});`
     } else {
       string = `width: ${visible ? width : 0}px;`;

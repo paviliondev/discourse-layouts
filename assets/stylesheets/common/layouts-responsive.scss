@@ -91,6 +91,10 @@ aside.sidebar.is-responsive {
     }
   }
   
+  &.full-width .sidebar-container {
+    max-width: inherit;
+  }
+  
   &.right .sidebar-container {
     right: 0;
   }
@@ -108,4 +112,14 @@ aside.sidebar.is-responsive {
   touch-action: pan-y pinch-zoom;
   transition: opacity 0.2s ease-out;
   z-index: 1000;
+}
+
+.d-header-wrap.full-width .full-width-sidebar-toggle {
+  position: fixed;
+  left: 20px;
+  top: 15px;
+}
+
+.d-header-wrap:not(.full-width) .full-width-sidebar-toggle {
+  margin: 0 15px 0 10px;
 }

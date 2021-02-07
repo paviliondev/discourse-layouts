@@ -108,7 +108,10 @@ export default createWidget('sidebar', {
     return contents;
   },
 
-  clickOutside() {
+  clickOutside(event) {
+    if ($(event.target).closest('.full-width-sidebar-toggle').length) {
+      return;
+    }
     this.appEvents.trigger('sidebar:toggle', {
       side: this.attrs.side,
       value: false,
