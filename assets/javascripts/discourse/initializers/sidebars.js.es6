@@ -3,7 +3,7 @@ import { alias } from "@ember/object/computed";
 import{ inject as controller } from "@ember/controller";
 import { inject as service } from "@ember/service";
 import { readOnly } from "@ember/object/computed";
-import { setupContext } from "../lib/layouts";
+import { setupContexts } from "../lib/layouts";
 import { withPluginApi } from 'discourse/lib/plugin-api';
 
 export default {
@@ -14,12 +14,8 @@ export default {
 
     if (!siteSettings.layouts_enabled ||
         (site.mobileView && !siteSettings.layouts_mobile_enabled)) return;
-      
-    setupContext('Discovery', app);
-    setupContext('User', app);
-    setupContext('Topic', app);
-    setupContext('Tags', app);
-    setupContext('Tag', app);
+    
+    setupContexts(app);
     
     withPluginApi('0.8.32', api => {
       api.modifyClass('controller:discovery', {

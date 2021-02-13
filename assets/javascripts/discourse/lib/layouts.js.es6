@@ -4,20 +4,23 @@ import DiscourseRoute from "discourse/routes/discourse";
 import Controller from "@ember/controller";
 import { withPluginApi } from 'discourse/lib/plugin-api';
 
+const contexts = [
+  'discovery',
+  'topic',
+  'user',
+  'tags-index',
+  'tag-show'
+]
+
 function addSidebarProps(props) {
   if ($.isEmptyObject(props)) return;
   
   const container = Discourse.__container__;
   const appEvents = container.lookup("service:app-events");
   
-  [
-    'controller:discovery',
-    'controller:topic',
-    'controller:user',
-    'controller:tags',
-    'controller:tag'
-  ].forEach(controllerName => {
-    const controller = container.lookup(controllerName);
+  contexts.forEach(context => {
+    const controller = container.lookup(`controller:${context}`);
+    
     if (controller) {
       controller.set(
         'customSidebarProps',
@@ -67,7 +70,7 @@ function normalizeContext(input, opts={}) {
     discovery: ['topics', 'discovery', 'topic list', 'Topics', "Discovery", "Topic List"],
     topic: ["topic", "Topic"],
     user: ["user", 'profile', "User", 'Profile'],
-    tag: ["tag", "tags", "Tag", "Tags"]
+    tag: ["tag", "tags", "Tag", "Tags", "tags-index", "tag-show"]
   };
   
   let context = Object.keys(map).find((c) => map[c].includes(input));
@@ -84,21 +87,18 @@ function normalizeContext(input, opts={}) {
   return context;
 };
 
-function setupContext(context, app) {
-  if (!app[`${context}Route`]) {
-    app[`${context}Route`] = DiscourseRoute.extend();
-  }
-  if (!app[`${context}Controller`]) {
-    app[`${context}Controller`] = Controller.extend();
-  }
-  
-  context = context.toLowerCase();
-  
+function setupContexts(app) {
+  contexts.forEach(context => {
+    setupContext(context, app);
+  })
+}
+
+function setupContext(context, app) {  
   withPluginApi('0.8.32', api => {
     api.modifyClass(`route:${context}`, {
       renderTemplate() {
         this.render('sidebar-wrapper');
-        this.render(context, {
+        this.render(context.replaceAll("-", "."), {
           into: 'sidebar-wrapper',
           outlet: 'main-content',
           controller: context,
@@ -118,5 +118,5 @@ export {
   lookupLayoutsWidget,
   listLayoutsWidgets,
   normalizeContext,
-  setupContext
+  setupContexts
 }
