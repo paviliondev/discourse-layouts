@@ -18,7 +18,8 @@ $timeline-buffer: 100px;
       );
     }
     
-    .post-notice {
+    .post-notice,
+    .small-action {
       max-width: calc(
         (#{$topic-body-width} +
         #{$topic-body-width-padding*2} +
@@ -51,6 +52,20 @@ $timeline-buffer: 100px;
       }
       >.d-toc {
         max-width: 250px;
+      }
+    }
+    
+    &.right-sidebar {
+      article.onscreen-post > .row {
+        display: flex;
+        
+        .topic-avatar {
+          float: none;
+        }
+      }
+      
+      .topic-area > .loading-container {
+        width: 100%;
       }
     }
   }
