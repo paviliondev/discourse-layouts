@@ -9,7 +9,10 @@ const contexts = [
   'topic',
   'user',
   'tags-index',
-  'tag-show'
+  {
+    name: 'tag-show',
+    template: 'tags-show'
+  }
 ]
 
 function addSidebarProps(props) {
@@ -93,22 +96,49 @@ function setupContexts(app) {
   })
 }
 
-function setupContext(context, app) {  
+function contextAttr(context, attr) {
+  let result;
+  
+  if (typeof context === 'object') {
+    if (context[attr]) {
+      result = context[attr];
+    } else {
+      result = context['name'];
+    }
+  } else {
+    result = context;
+  }
+  
+  if (attr === 'template') {
+    result = result.replace(/-/g, '.');
+  }
+  
+  return result;
+}
+
+function setupContext(context, app) {
+  const name = contextAttr(context, 'name');
+  const route = contextAttr(context, 'route');
+  const controller = contextAttr(context, 'controller');
+  const template = contextAttr(context, 'template');
+  const model = contextAttr(context, 'model');
+  
+  
   withPluginApi('0.8.32', api => {
-    api.modifyClass(`route:${context}`, {
+    api.modifyClass(`route:${route}`, {
       renderTemplate() {
         this.render('sidebar-wrapper');
-        this.render(context.replaceAll("-", "."), {
+        this.render(template, {
           into: 'sidebar-wrapper',
           outlet: 'main-content',
-          controller: context,
-          model: this.modelFor(context)
+          controller,
+          model: this.modelFor(model)
         });
       }
     });
     
-    api.modifyClass(`controller:${context}`, Sidebars);
-    api.modifyClass(`controller:${context}`, { context });
+    api.modifyClass(`controller:${controller}`, Sidebars);
+    api.modifyClass(`controller:${controller}`, { context: name });
   });
 }
 
