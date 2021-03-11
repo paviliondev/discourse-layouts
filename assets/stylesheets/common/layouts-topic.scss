@@ -55,7 +55,8 @@ $timeline-buffer: 100px;
       }
     }
     
-    &.right-sidebar {
+    &.right-sidebar,
+    :not(.rtl) .d-toc-post {
       article.onscreen-post > .row {
         display: flex;
         
