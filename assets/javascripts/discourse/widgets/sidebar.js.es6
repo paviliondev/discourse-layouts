@@ -91,7 +91,7 @@ export default createWidget('sidebar', {
     }).sort(function(a, b) {
       if (a.order === b.order) return 0;
       if (a.order === 'start') return -1;
-      if (a.order === 'end') return 1;
+      if (a.order === 'end' || b.order === 'start') return 1;
       return Number(a.order) - Number(b.order);
     }).map(w => w.name);
             
