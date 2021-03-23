@@ -22,7 +22,8 @@ function addSidebarProps(props) {
   const appEvents = container.lookup("service:app-events");
   
   contexts.forEach(context => {
-    const controller = container.lookup(`controller:${context}`);
+    const controllerName = contextAttr(context, 'controller');
+    const controller = container.lookup(`controller:${controllerName}`);
     
     if (controller) {
       controller.set(
@@ -122,7 +123,6 @@ function setupContext(context, app) {
   const controller = contextAttr(context, 'controller');
   const template = contextAttr(context, 'template');
   const model = contextAttr(context, 'model');
-  
   
   withPluginApi('0.8.32', api => {
     api.modifyClass(`route:${route}`, {
