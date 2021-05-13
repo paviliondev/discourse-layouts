@@ -8,14 +8,26 @@ This plugin is a framework for custom Discourse layouts. Currently, its primary 
 
 ## 🔗 Info &amp; Links
 
-| Title                 | Link                                                                                   |
-| --------------------- | -------------------------------------------------------------------------------------- |
-| ⚙️ **Widget**         | [Layouts Event List Widget](https://github.com/keegangeorge/layouts-event-list-widget) |
-| 🔌 **Base Plugin**    | [Custom Layouts Widget](https://meta.discourse.org/t/custom-layouts-plugin/55208)      |
-| 👨‍💻 **Author**         | [Keegan George](https://github.com/keegangeorge/)                                      |
-| #️⃣ **Version**        | `1.0.0`                                                                                |
-| ❓ **How to Install** | [Installation Guide](https://thepavilion.io/t/installation-and-setup/3200)             |
-| 🐛 **Found a bug?**   | [Submit a bug report](https://thepavilion.io/w/bug-report/steps/intro)                 |
-| ✋ **Have an idea?**  | [Submit a feature request](https://thepavilion.io/w/bug-report/steps/intro)            |
+| Title                  | Link                                                                        |
+| ---------------------- | --------------------------------------------------------------------------- |
+| #️⃣ **Version**         | `0.2`                                                                       |
+| 📄 **Documentation**   | [Read the Docs](https://thepavilion.io/t/layouts-plugin/2891)               |
+| ❓ **How to Install**  | [Installation Guide](https://thepavilion.io/t/installation-and-setup/3200)  |
+| 🐛 **Found a bug?**    | [Submit a bug report](https://thepavilion.io/w/bug-report/steps/intro)      |
+| ✋ **Have an idea?**   | [Submit a feature request](https://thepavilion.io/w/bug-report/steps/intro) |
+| 📰 **Discourse Topic** | [Read Topic](https://meta.discourse.org/t/custom-layouts-plugin/55208)      |
 
-See further here: https://meta.discourse.org/t/custom-layouts-plugin/55208
+## ⚙️ Official Widgets
+
+Since the plugin is a "Framework" for layouts, you will need to install widgets to show in the sidebars. Below is a list of official widgets released by the [Pavilion Team](https://thepavilion.io/members):
+
+| Widget                                                                         | Description                                                                                                                  |
+| ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| [⠇ Category List](https://github.com/paviliondev/layouts-category-list-widget) | Display a list of categories in the sidebar (usually used as a form of navigation)                                           |
+| [🧑‍💻 Custom HTML](https://github.com/paviliondev/layouts-custom-html)        | Display custom HTML in a sidebar by entering HTML in the theme settings.                                                     |
+| [📅 Event List](https://github.com/paviliondev/layouts-event-list-widget)      | Display an agenda list of events from the [Discourse Calendar Plugin](https://meta.discourse.org/t/discourse-calendar/97376) |
+| [👨 Profile Widget](https://github.com/paviliondev/layouts-profile-widget)     | Display the current user avatar, username, title, and links to the user's activity and messages                              |
+| [🗞 Topic List](https://github.com/paviliondev/layouts-topic-lists-widget)      | Display topic list(s) in a sidebar both vertically and/or horizontally                                                       |
+| [🗺 Map Widget](https://thepavilion.io/t/map-widget/4112)                       | Display a map widget from the [Locations Plugin](https://thepavilion.io/t/locations-plugin/3997)                             |
+
+Interested in creating your own widget? See the [widget development guide](https://thepavilion.io/t/widget-development/3214).
