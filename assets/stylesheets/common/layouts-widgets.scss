@@ -1,37 +1,37 @@
 aside.sidebar {
   z-index: 1;
   position: relative;
-  
+
   &.not-visible {
     .sidebar-container {
       display: none;
     }
-    
+
     .toggle-sidebar.right {
       margin-left: 0;
     }
   }
-  
+
   &.fixed {
     .sidebar-container {
       position: fixed;
       max-height: calc(100vh - 100px);
       overflow-y: auto;
     }
-    
+
     .toggle-sidebar {
       position: fixed;
     }
   }
-  
+
   &.sticky {
     .sidebar-container {
       position: sticky;
       max-height: calc(100vh - 100px);
-      overflow: initial;
+      overflow: auto;
       top: 70px;
     }
-    
+
     .toggle-sidebar {
       position: sticky;
       top: 70px;
@@ -44,7 +44,7 @@ aside.sidebar {
   position: absolute;
   background: transparent;
   transition: none;
-  
+
   &.right {
     margin-left: calc(var(--mainRightOffset) - 20px);
   }
@@ -67,7 +67,7 @@ aside.sidebar {
       }
     }
   }
-  
+
   &.is-responsive {
     position: fixed;
     height: calc(100% - 60px);
@@ -90,13 +90,13 @@ aside.sidebar {
 
       &.open {
         border-right: 1px solid $primary-low-mid;
-        box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 
         // intercepts clicks outside the sidebar to close it
         &:after {
           width: calc(100% - 250px);
           background-color: transparent;
-          content: '';
+          content: "";
           position: fixed;
           top: 60px;
           right: 0;
@@ -111,13 +111,13 @@ aside.sidebar {
 
       &.open {
         border-left: 1px solid $primary-low-mid;
-        box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 
         // intercepts clicks outside the sidebar to close it
         &:after {
           width: calc(100% - 250px);
           background-color: transparent;
-          content: '';
+          content: "";
           position: fixed;
           top: 60px;
           left: 0;
@@ -149,7 +149,7 @@ aside.sidebar {
       background-color: $secondary;
       bottom: 0;
       padding: 6px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
       height: 50px;
       width: 50px;
 
@@ -216,7 +216,6 @@ aside.sidebar {
   }
 
   .widget-list {
-
     .spinner {
       margin-left: 110px;
     }
@@ -231,7 +230,7 @@ aside.sidebar {
       margin: 0;
     }
 
-    &>ul>li {
+    & > ul > li {
       width: 100%;
       cursor: pointer;
       padding: 5px 0;
@@ -262,7 +261,8 @@ aside.sidebar {
       }
     }
 
-    .widget-list-controls, .no-items {
+    .widget-list-controls,
+    .no-items {
       border-top: 1px solid $primary-low;
       padding-top: 5px;
 
