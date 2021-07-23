@@ -163,13 +163,14 @@ export default Mixin.create({
   },
 
   handleFullSidebar() {
-    if ($('aside.sidebar.left').hasClass('full')) {
-      $('#main-outlet').addClass('push-right');
+    if ($('aside.sidebar.left.full')) {
+      $("#main-outlet").addClass("push-right");
       $('.desktop-view').css('overflow-x', "hidden");
-
-    }
-    if ($('aside.sidebar.right').hasClass('full')) {
-      $('#main-outlet').addClass('push-left');
+      $('aside.sidebar.left').addClass('full-left');
+    }    
+    if ($('aside.sidebar.right.full')) {
+      // $("#main-outlet").addClass('push-left');
+      $('aside.sidebar.right').addClass('full-right');
     }
   },
 
@@ -205,7 +206,7 @@ export default Mixin.create({
       }
     }
     if (loading) classes + ' loading';
-    
+   
     return classes;
   },
 

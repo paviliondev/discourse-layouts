@@ -20,7 +20,10 @@
 }
 
 .push-left {
+  padding-left: 5%;
   padding-right: var(--mainRightOffset);
+  margin: 0 auto;
+  width: calc(95% - var(--mainRightOffset));
 }
 
 html.mobile-device {

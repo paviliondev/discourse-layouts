@@ -25,6 +25,7 @@ plugins:
       - fixed
       - absolute
       - sticky
+      - full
   layouts_sidebar_left_can_hide:
     client: true
     type: list
