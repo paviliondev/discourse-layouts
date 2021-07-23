@@ -37,6 +37,20 @@ aside.sidebar {
       top: 70px;
     }
   }
+
+  &.full {
+    position: fixed;
+    left: 0;
+    top: 4em;
+    height: 100vh;
+
+    .widget-container {
+      height: 100vh;
+      background: var(--primary-very-low);
+      box-shadow: inset -16px 0px 14px rgba(0, 0, 0, 0.04);
+      border: none;
+    }
+  }
 }
 
 .toggle-sidebar {

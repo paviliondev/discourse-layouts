@@ -72,6 +72,8 @@ export default Mixin.create({
       const root = document.documentElement;
       root.style.setProperty('--mainLeftOffset', `${this.mainLeftOffset}px`);
       root.style.setProperty('--mainRightOffset', `${this.mainRightOffset}px`);
+
+      this.handleFullSidebar();
     });
     this.appEvents.on('sidebar:toggle', this, this.toggleSidebars);
     
@@ -160,6 +162,17 @@ export default Mixin.create({
     }
   },
 
+  handleFullSidebar() {
+    if ($('aside.sidebar.left').hasClass('full')) {
+      $('#main-outlet').addClass('push-right');
+      $('.desktop-view').css('overflow-x', "hidden");
+
+    }
+    if ($('aside.sidebar.right').hasClass('full')) {
+      $('#main-outlet').addClass('push-left');
+    }
+  },
+
   @discourseComputed('responsiveView')
   isResponsive(responsiveView) {
     const mobileView = this.get('site.mobileView');
@@ -231,7 +244,9 @@ export default Mixin.create({
     if (hasRightSidebar) {
       offset += mainRightOffset;
     }
-    style += `width: ${offset > 0 ? `calc(100% - ${offset}px)` : '100%'}`;
+    if (!$('aside.sidebar').hasClass('full')) {
+      style += `width: ${offset > 0 ? `calc(100% - ${offset}px)` : '100%'}`;
+    }
     return htmlSafe(style);
   },
 

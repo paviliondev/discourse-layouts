@@ -12,6 +12,17 @@
   display: flex;
 }
 
+.push-right {
+  padding-left: var(--mainLeftOffset);
+  padding-right: var(--mainRightOffset);
+  margin: 0 auto;
+  width: calc(95% - var(--mainRightOffset));
+}
+
+.push-left {
+  padding-right: var(--mainRightOffset);
+}
+
 html.mobile-device {
   .content-wrapper {
     display: initial;
@@ -37,7 +48,6 @@ html.mobile-device {
     .topic-list .posters {
       min-width: initial;
     }
-    
     .container.list-container {
       width: 100%;
     }
