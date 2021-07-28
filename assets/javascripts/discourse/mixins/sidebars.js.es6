@@ -27,6 +27,7 @@ export default Mixin.create({
   rightSidebarEnabled: computed('rightWidgets', function() { return hasWidgets(this.rightWidgets) }),
   hasRightSidebar: and('rightSidebarEnabled', 'rightSidebarVisible'),
   hasLeftSidebar: and('leftSidebarEnabled', 'leftSidebarVisible'),
+  widgetsSet: or('leftWidgetsSet', 'rightWidgetsSet'),
   
   @discourseComputed('context', 'isResponsive')
   canHideRightSidebar(context, isResponsive) {
@@ -72,8 +73,6 @@ export default Mixin.create({
       const root = document.documentElement;
       root.style.setProperty('--mainLeftOffset', `${this.mainLeftOffset}px`);
       root.style.setProperty('--mainRightOffset', `${this.mainRightOffset}px`);
-
-      this.handleFullSidebar();
     });
     this.appEvents.on('sidebar:toggle', this, this.toggleSidebars);
     
@@ -88,20 +87,32 @@ export default Mixin.create({
     });
   },
 
+  @observes('leftSidebarEnabled', 'widgetsSet')
+  addBodyClasses() {
+    const widgetsSet = this.widgetsSet;
+    if (!widgetsSet) {
+      return;
+    }
+
+    const leftSidebarEnabled = this.get('leftSidebarEnabled');
+    const leftPositionSetting = this.siteSettings.layouts_sidebar_left_position;
+    let classes = [];
+
+    if (leftSidebarEnabled && leftPositionSetting === 'full') {
+      classes.push('push-right');
+    }
+
+    if (classes.length) {
+      document.body.classList.add(classes);
+    }
+  },
+
   @on('willDestroy')
   teardownMixin() {
     $(window).off('resize', bind(this, this.handleWindowResize));
     this.appEvents.off('sidebar:toggle', this, this.toggleSidebars);
   },
-  
-  @observes('path')
-  resetHasWidgets() {
-    this.setProperties({
-      leftWidgets: undefined,
-      rightWidgets: undefined
-    })
-  },
-  
+
   sidebarVisibleDefault(side) {
     if (this.get('isResponsive')) return false;
     return this.siteSettings[`layouts_sidebar_${side}_default_visibility`] == 'show';
@@ -162,18 +173,6 @@ export default Mixin.create({
     }
   },
 
-  handleFullSidebar() {
-    // if ($('aside.sidebar.left.full')) {
-    //   $("#main-outlet").addClass("push-right");
-    //   $('.desktop-view').css('overflow-x', "hidden");
-    //   // $('aside.sidebar.left').addClass('full-left');
-    // }    
-    // if ($('aside.sidebar.right.full')) {
-    //   $("#main-outlet").addClass('push-left');
-    //   // $('aside.sidebar.right').addClass('full-right');
-    // }
-  },
-
   @discourseComputed('responsiveView')
   isResponsive(responsiveView) {
     const mobileView = this.get('site.mobileView');
@@ -228,10 +227,6 @@ export default Mixin.create({
       if (visible) classes += ' open';
     } else {
       if (!visible) classes += ' not-visible';
-    }
-    if (this.siteSettings[`layouts_sidebar_${side}_position`] === 'full') {
-      classes += ` full-${side}`;
-      $('#main-outlet').addClass('push-right'); // TODO change to not jquery
     }
 
     classes += ` ${this.siteSettings[`layouts_sidebar_${side}_position`]}`;
@@ -339,8 +334,9 @@ export default Mixin.create({
 
     setWidgets(side, widgets) {
       this.set(`${side}Widgets`, widgets);
+      this.set(`${side}WidgetsSet`, true);
     },
-    
+
     goToLink(link) {
       DiscourseURL.routeTo(link);
     }
