@@ -1,11 +1,11 @@
-import { default as discourseComputed, on, observes } from 'discourse-common/utils/decorators';
-import { inject as service } from "@ember/service";
 import { computed } from "@ember/object";
-import { alias, or, not, and } from "@ember/object/computed";
+import { alias, and, not, or } from "@ember/object/computed";
 import Mixin from "@ember/object/mixin";
-import { scheduleOnce, bind, later, throttle, debounce } from "@ember/runloop";
+import { bind, debounce, scheduleOnce } from "@ember/runloop";
+import { inject as service } from "@ember/service";
 import { htmlSafe } from "@ember/template";
 import { iconHTML } from "discourse-common/lib/icon-library";
+import { default as discourseComputed, observes, on } from 'discourse-common/utils/decorators';
 import DiscourseURL from "discourse/lib/url";
 import { normalizeContext } from "../lib/layouts";
 
@@ -163,15 +163,15 @@ export default Mixin.create({
   },
 
   handleFullSidebar() {
-    if ($('aside.sidebar.left.full')) {
-      $("#main-outlet").addClass("push-right");
-      $('.desktop-view').css('overflow-x', "hidden");
-      $('aside.sidebar.left').addClass('full-left');
-    }    
-    if ($('aside.sidebar.right.full')) {
-      // $("#main-outlet").addClass('push-left');
-      $('aside.sidebar.right').addClass('full-right');
-    }
+    // if ($('aside.sidebar.left.full')) {
+    //   $("#main-outlet").addClass("push-right");
+    //   $('.desktop-view').css('overflow-x', "hidden");
+    //   // $('aside.sidebar.left').addClass('full-left');
+    // }    
+    // if ($('aside.sidebar.right.full')) {
+    //   $("#main-outlet").addClass('push-left');
+    //   // $('aside.sidebar.right').addClass('full-right');
+    // }
   },
 
   @discourseComputed('responsiveView')
@@ -222,12 +222,18 @@ export default Mixin.create({
   
   buildSidebarClasses(isResponsive, visible, side) {
     let classes = '';
+
     if (isResponsive) {
       classes += 'is-responsive';
       if (visible) classes += ' open';
     } else {
       if (!visible) classes += ' not-visible';
     }
+    if (this.siteSettings[`layouts_sidebar_${side}_position`] === 'full') {
+      classes += ` full-${side}`;
+      $('#main-outlet').addClass('push-right'); // TODO change to not jquery
+    }
+
     classes += ` ${this.siteSettings[`layouts_sidebar_${side}_position`]}`;
     return classes;
   },
