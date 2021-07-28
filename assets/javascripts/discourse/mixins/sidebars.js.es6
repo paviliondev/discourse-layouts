@@ -238,6 +238,9 @@ export default Mixin.create({
     if (this.site.mobileView) return;
     const mainLeftOffset = this.mainLeftOffset;
     const mainRightOffset = this.mainRightOffset;
+    const sidebarLeftPosition = this.siteSettings.layouts_sidebar_left_position;
+    const root = document.documentElement;
+     
     let offset = 0;
     let style = '';
     if (hasLeftSidebar) {
@@ -246,9 +249,12 @@ export default Mixin.create({
     if (hasRightSidebar) {
       offset += mainRightOffset;
     }
-    if (!$('aside.sidebar').hasClass('full')) {
-      style += `width: ${offset > 0 ? `calc(100% - ${offset}px)` : '100%'}`;
+    if (hasLeftSidebar && sidebarLeftPosition === 'full') {
+      offset = 0;
+      root.style.setProperty('overflow-x', 'hidden');
     }
+    style += `width: ${offset > 0 ? `calc(100% - ${offset}px)` : '100%'}`;
+
     return htmlSafe(style);
   },
 

@@ -12,14 +12,14 @@
   display: flex;
 }
 
-.push-right {
+.push-right #main-outlet {
   padding-left: var(--mainLeftOffset);
   padding-right: var(--mainRightOffset);
   margin: 0 auto;
   width: calc(95% - var(--mainRightOffset));
 }
 
-.push-left {
+.push-left #main-outlet {
   padding-left: 5%;
   padding-right: var(--mainRightOffset);
   margin: 0 auto;
