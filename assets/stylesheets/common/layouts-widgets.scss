@@ -45,6 +45,9 @@ aside.sidebar {
     .widget-container {
       background: inherit;
       border: none;
+      &:not(:last-of-type) {
+        border-bottom: 2px solid var(--primary-low);
+      }
     }
   }
 }
