@@ -40,10 +40,10 @@ aside.sidebar {
 
   &.full {
     position: fixed;
-
+    height: 100vh;
+    background: var(--primary-very-low);
     .widget-container {
-      height: 100vh;
-      background: var(--primary-very-low);
+      background: inherit;
       border: none;
     }
   }
@@ -53,10 +53,7 @@ aside.sidebar {
   top: 4em;
   height: 100vh;
   left: 0;
-  
-  .widget-container {
-    box-shadow: inset -16px 0px 14px rgba(0, 0, 0, 0.04);
-  }
+  box-shadow: inset -16px 0px 14px rgba(0, 0, 0, 0.04);
 }
 
 .right.full {
@@ -64,10 +61,7 @@ aside.sidebar {
   top: 4em;
   height: 100vh;
   right: 0;
-
-  .widget-container {
-    box-shadow: inset 16px 0px 14px rgba(0, 0, 0, 0.04);
-  }
+  box-shadow: inset 16px 0px 14px rgba(0, 0, 0, 0.04);
 }
 
 .toggle-sidebar {
