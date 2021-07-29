@@ -253,8 +253,7 @@ export default Mixin.create({
     const mainLeftOffset = this.mainLeftOffset;
     const mainRightOffset = this.mainRightOffset;
     const leftFull = this.leftFull;
-    const root = document.documentElement;
-     
+
     let offset = 0;
     let style = '';
     if (hasLeftSidebar) {
@@ -265,11 +264,19 @@ export default Mixin.create({
     }
     if (hasLeftSidebar && leftFull) {
       offset = 0;
-      root.style.setProperty('overflow-x', 'hidden');
     }
     style += `width: ${offset > 0 ? `calc(100% - ${offset}px)` : '100%'}`;
-
     return htmlSafe(style);
+  },
+
+  @discourseComputed('hasLeftSidebar', 'hasRightSidebar')
+  rootStyle(hasLeftSidebar, hasRightSidebar) {
+    const root = document.documentElement;
+    const leftFull = this.leftFull;
+
+    if (hasLeftSidebar && leftFull) {
+      root.style.setProperty('overflow-x', 'hidden');
+    }
   },
 
   @discourseComputed('path', 'isResponsive', 'leftSidebarVisible')
