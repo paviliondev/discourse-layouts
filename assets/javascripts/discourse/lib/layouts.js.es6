@@ -12,7 +12,20 @@ const contexts = [
   {
     name: 'tag-show',
     template: 'tags-show'
-  }
+  },
+  'groups-index',
+  'groups-new',
+  'group',
+  {
+    name: 'badges-index',
+    route: 'badges-index',
+    controller: 'badges/index'
+  },
+  {
+    name: 'badges-show',
+    route: 'badges-show',
+    controller: 'badges/show'
+  },
 ]
 
 function addSidebarProps(props) {
@@ -74,17 +87,21 @@ function normalizeContext(input, opts={}) {
     discovery: ['topics', 'discovery', 'topic list', 'Topics', "Discovery", "Topic List"],
     topic: ["topic", "Topic"],
     user: ["user", 'profile', "User", 'Profile'],
-    tag: ["tag", "tags", "Tag", "Tags", "tags-index", "tag-show"]
+    tag: ["tag", "tags", "Tag", "Tags", "tags-index", "tag-show"],
+    group: ["group", "groups-index", "groups-new"],
+    badge: ["badge", "badges-index", "badges-show"]
   };
   
   let context = Object.keys(map).find((c) => map[c].includes(input));
-  
+
   if (opts.name) {
     context = I18n.t({
       discovery: 'admin.layouts.widgets.context.discovery',
       topic: 'topic.title',
       user: 'user.profile',
-      tag: 'tagging.tags'
+      tag: 'tagging.tags',
+      group: 'groups.title.one',
+      badge: 'admin.badges.badge'
     }[context])
   }
   
@@ -117,6 +134,19 @@ function contextAttr(context, attr) {
   return result;
 }
 
+function getAttrFromContext(contextName, attr) {
+  let result;
+
+  contexts.some(context => {
+    if (contextAttr(context, 'name') === contextName) {
+      result = contextAttr(context, attr);
+      return true;
+    }
+  });
+
+  return result;
+}
+
 function setupContext(context, app) {
   const name = contextAttr(context, 'name');
   const route = contextAttr(context, 'route');
@@ -137,8 +167,13 @@ function setupContext(context, app) {
       }
     });
     
-    api.modifyClass(`controller:${controller}`, Sidebars);
-    api.modifyClass(`controller:${controller}`, { context: name });
+    let controllerClass = `controller:${controller}`;
+    let controllerExists = api._resolveClass(controllerClass);
+
+    if (controllerExists) {
+      api.modifyClass(controllerClass, Sidebars);
+      api.modifyClass(controllerClass, { context: name });
+    }
   });
 }
 
@@ -148,5 +183,6 @@ export {
   lookupLayoutsWidget,
   listLayoutsWidgets,
   normalizeContext,
-  setupContexts
+  setupContexts,
+  getAttrFromContext
 }
