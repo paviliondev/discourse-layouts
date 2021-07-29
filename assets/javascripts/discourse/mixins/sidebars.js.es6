@@ -1,5 +1,5 @@
 import { computed } from "@ember/object";
-import { alias, and, not, or } from "@ember/object/computed";
+import { alias, and, not, or, equal } from "@ember/object/computed";
 import Mixin from "@ember/object/mixin";
 import { bind, debounce, scheduleOnce } from "@ember/runloop";
 import { inject as service } from "@ember/service";
@@ -24,10 +24,13 @@ export default Mixin.create({
   eitherSidebarVisible: or('leftSidebarVisible', 'rightSidebarVisible'),
   neitherSidebarVisible: not('eitherSidebarVisible'),
   leftSidebarEnabled: computed('leftWidgets', function() { return hasWidgets(this.leftWidgets) }),
-  rightSidebarEnabled: computed('rightWidgets', function() { return hasWidgets(this.rightWidgets) }),
+  rightSidebarEnabled: computed('rightWidgets', 'leftFull', function() {
+    return !this.leftFull && hasWidgets(this.rightWidgets);
+  }),
   hasRightSidebar: and('rightSidebarEnabled', 'rightSidebarVisible'),
   hasLeftSidebar: and('leftSidebarEnabled', 'leftSidebarVisible'),
   widgetsSet: or('leftWidgetsSet', 'rightWidgetsSet'),
+  leftFull: equal('siteSettings.layouts_sidebar_left_position', 'full'),
   
   @discourseComputed('context', 'isResponsive')
   canHideRightSidebar(context, isResponsive) {
@@ -87,23 +90,34 @@ export default Mixin.create({
     });
   },
 
-  @observes('leftSidebarEnabled', 'widgetsSet')
-  addBodyClasses() {
+  @observes('leftSidebarEnabled', 'widgetsSet', 'isResponsive', 'path')
+  toggleBodyClasses() {
     const widgetsSet = this.widgetsSet;
     if (!widgetsSet) {
       return;
     }
 
     const leftSidebarEnabled = this.get('leftSidebarEnabled');
-    const leftPositionSetting = this.siteSettings.layouts_sidebar_left_position;
-    let classes = [];
+    const leftFull = this.get('leftFull');
+    const isResponsive = this.get('isResponsive');
 
-    if (leftSidebarEnabled && leftPositionSetting === 'full') {
-      classes.push('push-right');
+    let addClasses = [];
+    let removeClasses = [];
+
+    if (!isResponsive && leftSidebarEnabled && leftFull) {
+      addClasses.push('left-full');
+    } else {
+      removeClasses.push('left-full');
     }
 
-    if (classes.length) {
-      document.body.classList.add(classes);
+    addClasses = addClasses.filter(className => !removeClasses.includes(className));
+
+    if (addClasses.length) {
+      document.body.classList.add(...addClasses);
+    }
+
+    if (removeClasses.length) {
+      document.body.classList.remove(...removeClasses)
     }
   },
 
