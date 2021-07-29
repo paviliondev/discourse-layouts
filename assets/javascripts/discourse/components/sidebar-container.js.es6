@@ -2,6 +2,7 @@ import MountWidget from 'discourse/components/mount-widget';
 import { observes, default as discourseComputed, on } from 'discourse-common/utils/decorators';
 import { getOwner } from 'discourse-common/lib/get-owner';
 import { scheduleOnce } from "@ember/runloop";
+import { getAttrFromContext } from "../lib/layouts";
 
 export default MountWidget.extend({
   classNameBindings: [':sidebar-container', 'editing'],
@@ -17,7 +18,7 @@ export default MountWidget.extend({
   
   @discourseComputed('context')
   controller(context) {
-    return getOwner(this).lookup(`controller:${context}`);
+    return getOwner(this).lookup(`controller:${getAttrFromContext(context, 'controller')}`);
   },
 
   buildArgs() {
