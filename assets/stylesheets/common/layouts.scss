@@ -12,13 +12,35 @@
   display: flex;
 }
 
+body.left-full {
+  .wrap {
+    max-width: unset;
+  }
+
+  .d-header .wrap {
+    padding: 0 20px;
+  }
+
+  #main-outlet {
+    padding-left: var(--mainLeftOffset);
+    width: 100%;
+    box-sizing: border-box;
+
+    > .container,
+    > .content-wrapper {
+      max-width: 1110px;
+      margin: 0 auto;
+    }
+  }
+}
+
 html.mobile-device {
   .content-wrapper {
     display: initial;
   }
 }
 
-.main-content {
+body:not(.left-full) .main-content {
   margin-bottom: 100px;
 
   .list-controls {
@@ -37,7 +59,6 @@ html.mobile-device {
     .topic-list .posters {
       min-width: initial;
     }
-    
     .container.list-container {
       width: 100%;
     }

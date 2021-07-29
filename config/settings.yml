@@ -16,6 +16,7 @@ plugins:
       - fixed
       - absolute
       - sticky
+      - full
   layouts_sidebar_right_position:
     client: true
     default: 'fixed'

@@ -1,11 +1,11 @@
-import { default as discourseComputed, on, observes } from 'discourse-common/utils/decorators';
-import { inject as service } from "@ember/service";
 import { computed } from "@ember/object";
-import { alias, or, not, and } from "@ember/object/computed";
+import { alias, and, not, or, equal } from "@ember/object/computed";
 import Mixin from "@ember/object/mixin";
-import { scheduleOnce, bind, later, throttle, debounce } from "@ember/runloop";
+import { bind, debounce, scheduleOnce } from "@ember/runloop";
+import { inject as service } from "@ember/service";
 import { htmlSafe } from "@ember/template";
 import { iconHTML } from "discourse-common/lib/icon-library";
+import { default as discourseComputed, observes, on } from 'discourse-common/utils/decorators';
 import DiscourseURL from "discourse/lib/url";
 import { normalizeContext } from "../lib/layouts";
 
@@ -24,9 +24,13 @@ export default Mixin.create({
   eitherSidebarVisible: or('leftSidebarVisible', 'rightSidebarVisible'),
   neitherSidebarVisible: not('eitherSidebarVisible'),
   leftSidebarEnabled: computed('leftWidgets', function() { return hasWidgets(this.leftWidgets) }),
-  rightSidebarEnabled: computed('rightWidgets', function() { return hasWidgets(this.rightWidgets) }),
+  rightSidebarEnabled: computed('rightWidgets', 'leftFull', function() {
+    return !this.leftFull && hasWidgets(this.rightWidgets);
+  }),
   hasRightSidebar: and('rightSidebarEnabled', 'rightSidebarVisible'),
   hasLeftSidebar: and('leftSidebarEnabled', 'leftSidebarVisible'),
+  widgetsSet: or('leftWidgetsSet', 'rightWidgetsSet'),
+  leftFull: equal('siteSettings.layouts_sidebar_left_position', 'full'),
   
   @discourseComputed('context', 'isResponsive')
   canHideRightSidebar(context, isResponsive) {
@@ -86,20 +90,43 @@ export default Mixin.create({
     });
   },
 
+  @observes('leftSidebarEnabled', 'widgetsSet', 'isResponsive', 'path')
+  toggleBodyClasses() {
+    const widgetsSet = this.widgetsSet;
+    if (!widgetsSet) {
+      return;
+    }
+
+    const leftSidebarEnabled = this.get('leftSidebarEnabled');
+    const leftFull = this.get('leftFull');
+    const isResponsive = this.get('isResponsive');
+
+    let addClasses = [];
+    let removeClasses = [];
+
+    if (!isResponsive && leftSidebarEnabled && leftFull) {
+      addClasses.push('left-full');
+    } else {
+      removeClasses.push('left-full');
+    }
+
+    addClasses = addClasses.filter(className => !removeClasses.includes(className));
+
+    if (addClasses.length) {
+      document.body.classList.add(...addClasses);
+    }
+
+    if (removeClasses.length) {
+      document.body.classList.remove(...removeClasses)
+    }
+  },
+
   @on('willDestroy')
   teardownMixin() {
     $(window).off('resize', bind(this, this.handleWindowResize));
     this.appEvents.off('sidebar:toggle', this, this.toggleSidebars);
   },
-  
-  @observes('path')
-  resetHasWidgets() {
-    this.setProperties({
-      leftWidgets: undefined,
-      rightWidgets: undefined
-    })
-  },
-  
+
   sidebarVisibleDefault(side) {
     if (this.get('isResponsive')) return false;
     return this.siteSettings[`layouts_sidebar_${side}_default_visibility`] == 'show';
@@ -192,7 +219,7 @@ export default Mixin.create({
       }
     }
     if (loading) classes + ' loading';
-    
+   
     return classes;
   },
 
@@ -208,12 +235,14 @@ export default Mixin.create({
   
   buildSidebarClasses(isResponsive, visible, side) {
     let classes = '';
+
     if (isResponsive) {
       classes += 'is-responsive';
       if (visible) classes += ' open';
     } else {
       if (!visible) classes += ' not-visible';
     }
+
     classes += ` ${this.siteSettings[`layouts_sidebar_${side}_position`]}`;
     return classes;
   },
@@ -223,6 +252,8 @@ export default Mixin.create({
     if (this.site.mobileView) return;
     const mainLeftOffset = this.mainLeftOffset;
     const mainRightOffset = this.mainRightOffset;
+    const leftFull = this.leftFull;
+
     let offset = 0;
     let style = '';
     if (hasLeftSidebar) {
@@ -231,8 +262,21 @@ export default Mixin.create({
     if (hasRightSidebar) {
       offset += mainRightOffset;
     }
+    if (hasLeftSidebar && leftFull) {
+      offset = 0;
+    }
     style += `width: ${offset > 0 ? `calc(100% - ${offset}px)` : '100%'}`;
     return htmlSafe(style);
+  },
+
+  @discourseComputed('hasLeftSidebar', 'hasRightSidebar')
+  rootStyle(hasLeftSidebar, hasRightSidebar) {
+    const root = document.documentElement;
+    const leftFull = this.leftFull;
+
+    if (hasLeftSidebar && leftFull) {
+      root.style.setProperty('overflow-x', 'hidden');
+    }
   },
 
   @discourseComputed('path', 'isResponsive', 'leftSidebarVisible')
@@ -317,8 +361,9 @@ export default Mixin.create({
 
     setWidgets(side, widgets) {
       this.set(`${side}Widgets`, widgets);
+      this.set(`${side}WidgetsSet`, true);
     },
-    
+
     goToLink(link) {
       DiscourseURL.routeTo(link);
     }
