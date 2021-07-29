@@ -252,7 +252,7 @@ export default Mixin.create({
     if (this.site.mobileView) return;
     const mainLeftOffset = this.mainLeftOffset;
     const mainRightOffset = this.mainRightOffset;
-    const sidebarLeftPosition = this.siteSettings.layouts_sidebar_left_position;
+    const leftFull = this.leftFull;
     const root = document.documentElement;
      
     let offset = 0;
@@ -263,7 +263,7 @@ export default Mixin.create({
     if (hasRightSidebar) {
       offset += mainRightOffset;
     }
-    if (hasLeftSidebar && sidebarLeftPosition === 'full') {
+    if (hasLeftSidebar && leftFull) {
       offset = 0;
       root.style.setProperty('overflow-x', 'hidden');
     }
