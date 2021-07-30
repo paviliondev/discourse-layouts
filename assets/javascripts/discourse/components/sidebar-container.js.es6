@@ -1,12 +1,16 @@
 import MountWidget from 'discourse/components/mount-widget';
 import { observes, default as discourseComputed, on } from 'discourse-common/utils/decorators';
+import { alias } from "@ember/object/computed";
 import { getOwner } from 'discourse-common/lib/get-owner';
 import { scheduleOnce } from "@ember/runloop";
 import { getAttrFromContext } from "../lib/layouts";
+import { inject as service } from "@ember/service";
 
 export default MountWidget.extend({
   classNameBindings: [':sidebar-container', 'editing'],
   widget: 'sidebar',
+  router: service(),
+  path: alias("router._router.currentPath"),
 
   @on('init')
   setupRerenderTrigger() {
@@ -33,7 +37,10 @@ export default MountWidget.extend({
       side,
       controller
     };
-    
+
+    if (path && path.indexOf('admin') > -1) {
+      args.context = 'admin'; // admin is the only context we don't setup on initialization.
+    }
     if (context === 'discovery') {
       args.filter = this.filter;
     }
