@@ -45,7 +45,7 @@ aside.sidebar {
     left: 0;
     overflow-y: scroll;
     background: var(--primary-very-low);
-    box-shadow: inset -16px 0px 14px rgb(0 0 0 / 4%);
+    box-shadow: inset -16px 0px 14px rgba(0, 0, 0, 4%);
 
     .widget-container {
       background: inherit;
