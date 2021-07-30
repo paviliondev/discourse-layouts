@@ -9,8 +9,8 @@ import { default as discourseComputed, observes, on } from 'discourse-common/uti
 import DiscourseURL from "discourse/lib/url";
 import { normalizeContext } from "../lib/layouts";
 
-function hasWidgets(widgets) {
-  return (widgets === undefined || widgets === null) || widgets.length > 0;
+function hasWidgets(widgets, widgetsSet) {
+  return !widgetsSet || (widgets && widgets.length > 0);
 }
 
 export default Mixin.create({
@@ -23,9 +23,11 @@ export default Mixin.create({
   customSidebarProps: {},
   eitherSidebarVisible: or('leftSidebarVisible', 'rightSidebarVisible'),
   neitherSidebarVisible: not('eitherSidebarVisible'),
-  leftSidebarEnabled: computed('leftWidgets', function() { return hasWidgets(this.leftWidgets) }),
-  rightSidebarEnabled: computed('rightWidgets', 'leftFull', function() {
-    return !this.leftFull && hasWidgets(this.rightWidgets);
+  leftSidebarEnabled: computed('leftWidgets', 'widgetsSet', function() {
+    return hasWidgets(this.leftWidgets, this.widgetsSet);
+  }),
+  rightSidebarEnabled: computed('rightWidgets', 'leftFull', 'widgetsSet', function() {
+    return !this.leftFull && hasWidgets(this.rightWidgets, this.widgetsSet);
   }),
   hasRightSidebar: and('rightSidebarEnabled', 'rightSidebarVisible'),
   hasLeftSidebar: and('leftSidebarEnabled', 'leftSidebarVisible'),
@@ -90,7 +92,15 @@ export default Mixin.create({
     });
   },
 
-  @observes('leftSidebarEnabled', 'widgetsSet', 'isResponsive', 'path')
+  @observes('path')
+  unsetWidgetsSet() {
+    this.setProperties({
+      leftWidgetsSet: null,
+      rightWidgetsSet: null
+    });
+  },
+
+  @observes('leftSidebarEnabled', 'isResponsive')
   toggleBodyClasses() {
     const widgetsSet = this.widgetsSet;
     if (!widgetsSet) {
