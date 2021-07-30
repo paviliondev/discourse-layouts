@@ -8,6 +8,7 @@ const contexts = [
   'discovery',
   'topic',
   'user',
+  'users',
   'tags-index',
   {
     name: 'tag-show',
@@ -26,6 +27,14 @@ const contexts = [
     route: 'badges-show',
     controller: 'badges/show'
   },
+  'review',
+  'admin',
+  {
+    name: 'search',
+    route: 'full-page-search',
+    controller: 'full-page-search',
+    template: 'full-page-search'
+  }  
 ]
 
 function addSidebarProps(props) {
@@ -87,9 +96,13 @@ function normalizeContext(input, opts={}) {
     discovery: ['topics', 'discovery', 'topic list', 'Topics', "Discovery", "Topic List"],
     topic: ["topic", "Topic"],
     user: ["user", 'profile', "User", 'Profile'],
+    users: ["users"],
     tag: ["tag", "tags", "Tag", "Tags", "tags-index", "tag-show"],
     group: ["group", "groups-index", "groups-new"],
-    badge: ["badge", "badges-index", "badges-show"]
+    badge: ["badge", "badges-index", "badges-show"],
+    review: ["review"],
+    admin: ["admin"],
+    search: ["search"]
   };
   
   let context = Object.keys(map).find((c) => map[c].includes(input));
@@ -99,9 +112,13 @@ function normalizeContext(input, opts={}) {
       discovery: 'admin.layouts.widgets.context.discovery',
       topic: 'topic.title',
       user: 'user.profile',
+      users: 'user.users',
       tag: 'tagging.tags',
       group: 'groups.title.one',
-      badge: 'admin.badges.badge'
+      badge: 'admin.badges.badge',
+      review: 'review.title',
+      admin: 'admin_title',
+      search: 'search.search_button',
     }[context])
   }
   
@@ -173,6 +190,8 @@ function setupContext(context, app) {
     if (controllerExists) {
       api.modifyClass(controllerClass, Sidebars);
       api.modifyClass(controllerClass, { context: name });
+    } else {
+      console.log('Layouts sontext is missing a controller: ', name);
     }
   });
 }

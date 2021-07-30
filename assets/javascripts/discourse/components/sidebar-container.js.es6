@@ -38,9 +38,6 @@ export default MountWidget.extend({
       controller
     };
 
-    if (path && path.indexOf('admin') > -1) {
-      args.context = 'admin'; // admin is the only context we don't setup on initialization.
-    }
     if (context === 'discovery') {
       args.filter = this.filter;
     }

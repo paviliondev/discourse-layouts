@@ -88,16 +88,20 @@ export default Mixin.create({
       mainLeftOffset,
       mainRightOffset,
       leftSidebarVisible,
-      rightSidebarVisible
+      rightSidebarVisible,
+      leftWidgetsSet: false,
+      rightWidgetsSet: false
     });
-  },
 
-  @observes('path')
-  unsetWidgetsSet() {
-    this.setProperties({
-      leftWidgetsSet: null,
-      rightWidgetsSet: null
-    });
+    this.router.on('routeWillChange', (transition) => {
+      // won't run on initial load
+      if (transition.from) {
+        this.setProperties({
+          leftWidgetsSet: false,
+          rightWidgetsSet: false
+        });
+      }
+    })
   },
 
   @observes('leftSidebarEnabled', 'isResponsive')
@@ -212,7 +216,7 @@ export default Mixin.create({
     'showResponsiveMenu'
   ) mainClasses(path, loading, isResponsive, hasRight, hasLeft, showMenu) {
     let p = path.split('.');
-    let classes = `${p[0]} ${p[1].split(/(?=[A-Z])/)[0]}`;
+    let classes = `${p[0]} ${p[1] ? p[1].split(/(?=[A-Z])/)[0] : ''}`;
     
     if (hasLeft || hasRight) {
       classes += ' has-sidebars';
