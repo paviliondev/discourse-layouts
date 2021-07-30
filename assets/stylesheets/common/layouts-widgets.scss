@@ -40,31 +40,22 @@ aside.sidebar {
 
   &.full {
     position: fixed;
-    height: 100vh;
+    height: calc(100vh - 4em);
+    top: 4em;
+    left: 0;
+    overflow-y: scroll;
     background: var(--primary-very-low);
+    box-shadow: inset -16px 0px 14px rgb(0 0 0 / 4%);
+
     .widget-container {
       background: inherit;
       border: none;
+
       &:not(:last-of-type) {
         border-bottom: 2px solid var(--primary-low);
       }
     }
   }
-}
-
-.left.full {
-  top: 4em;
-  height: 100vh;
-  left: 0;
-  box-shadow: inset -16px 0px 14px rgba(0, 0, 0, 0.04);
-}
-
-.right.full {
-  position: fixed;
-  top: 4em;
-  height: 100vh;
-  right: 0;
-  box-shadow: inset 16px 0px 14px rgba(0, 0, 0, 0.04);
 }
 
 .toggle-sidebar {
