@@ -56,6 +56,8 @@
   padding: 0;
   height: 100%;
   box-sizing: border-box;
+  flex: 1 1 auto;
+  display: block;
   
   img, svg {
     height: 35px;
@@ -74,10 +76,16 @@ aside.sidebar.is-responsive {
   transition: all .2s ease;
   background: unset;
   box-shadow: unset;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 
   .sidebar-container {
     max-height: unset;
-    height: 100vh;
+    min-height: 100vh;
     background-color: $secondary;
     border-right: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
     position: absolute;
