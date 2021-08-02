@@ -1,5 +1,5 @@
 import LayoutWidget from '../models/layout-widget';
-import { listLayoutsWidgets, normalizeContext } from '../lib/layouts';
+import { listLayoutsWidgets, normalizeContext, listNormalisedContexts } from '../lib/layouts';
 import { default as discourseComputed, observes } from 'discourse-common/utils/decorators';
 import { not, empty } from "@ember/object/computed";
 import { computed } from "@ember/object";
@@ -65,7 +65,7 @@ export default Component.extend({
   },
   
   contextList: computed(function() { 
-    return buildSelectKit(['discovery', 'topic', 'user', 'users', 'tag', 'group', 'badge', 'review', 'admin', 'search'], 'context');
+    return buildSelectKit(listNormalisedContexts(), 'context');
   }),
   
   filterList: computed(function() { 

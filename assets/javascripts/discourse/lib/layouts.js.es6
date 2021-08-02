@@ -164,6 +164,10 @@ function getAttrFromContext(contextName, attr) {
   return result;
 }
 
+function listNormalisedContexts() {
+  return contexts.map(context => normalizeContext(contextAttr(context, 'name')));
+}
+
 function setupContext(context, app) {
   const name = contextAttr(context, 'name');
   const route = contextAttr(context, 'route');
@@ -203,5 +207,6 @@ export {
   listLayoutsWidgets,
   normalizeContext,
   setupContexts,
-  getAttrFromContext
+  getAttrFromContext,
+  listNormalisedContexts
 }
