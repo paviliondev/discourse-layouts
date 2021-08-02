@@ -106,11 +106,6 @@ export default Mixin.create({
 
   @observes('leftSidebarEnabled', 'isResponsive')
   toggleBodyClasses() {
-    const widgetsSet = this.widgetsSet;
-    if (!widgetsSet) {
-      return;
-    }
-
     const leftSidebarEnabled = this.get('leftSidebarEnabled');
     const leftFull = this.get('leftFull');
     const isResponsive = this.get('isResponsive');
