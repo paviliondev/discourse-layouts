@@ -4,6 +4,8 @@ import DiscourseRoute from "discourse/routes/discourse";
 import Controller from "@ember/controller";
 import { withPluginApi } from 'discourse/lib/plugin-api';
 
+const layoutsNamespace = "layouts";
+
 const contexts = [
   'discovery',
   'topic',
@@ -164,6 +166,24 @@ function getAttrFromContext(contextName, attr) {
   return result;
 }
 
+function getContextFromAttr(value, attr) {
+  let result;
+  
+  if (attr === 'route') {
+    value = value.replace(/\./g, '-');
+  }
+
+  contexts.some(context => {
+    let contextValue = contextAttr(context, attr);
+    if (contextValue === value) {
+      result = contextValue;
+      return true;
+    }
+  });
+
+  return result;
+}
+
 function listNormalisedContexts() {
   return contexts.map(context => normalizeContext(contextAttr(context, 'name')));
 }
@@ -195,7 +215,7 @@ function setupContext(context, app) {
       api.modifyClass(controllerClass, Sidebars);
       api.modifyClass(controllerClass, { context: name });
     } else {
-      console.log('Layouts sontext is missing a controller: ', name);
+      console.log('Layouts context is missing a controller: ', name);
     }
   });
 }
@@ -208,5 +228,7 @@ export {
   normalizeContext,
   setupContexts,
   getAttrFromContext,
-  listNormalisedContexts
+  getContextFromAttr,
+  listNormalisedContexts,
+  layoutsNamespace
 }

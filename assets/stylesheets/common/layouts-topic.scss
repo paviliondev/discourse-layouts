@@ -1,7 +1,7 @@
 $body-extension: 150px;
 $timeline-buffer: 100px;
 
-body:not(.left-full) .main-content.topic {  
+body:not(.layouts-left-full) .main-content.topic {  
   &.left-sidebar {
     .topic-body {
       width: calc(

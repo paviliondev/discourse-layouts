@@ -12,7 +12,7 @@
   display: flex;
 }
 
-body.left-full {
+body.layouts-left-full {
   .wrap {
     max-width: unset;
   }
@@ -40,7 +40,7 @@ html.mobile-device {
   }
 }
 
-body:not(.left-full) .main-content {
+body:not(.layouts-left-full) .main-content {
   margin-bottom: 100px;
 
   .list-controls {

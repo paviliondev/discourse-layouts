@@ -3,7 +3,7 @@ import { alias } from "@ember/object/computed";
 import{ inject as controller } from "@ember/controller";
 import { inject as service } from "@ember/service";
 import { readOnly } from "@ember/object/computed";
-import { setupContexts } from "../lib/layouts";
+import { setupContexts, getContextFromAttr, normalizeContext, layoutsNamespace } from "../lib/layouts";
 import { withPluginApi } from 'discourse/lib/plugin-api';
 
 export default {
@@ -11,11 +11,32 @@ export default {
   initialize(container, app) {
     const site = container.lookup('site:main');
     const siteSettings = container.lookup('site-settings:main');
+    const router = container.lookup('router:main');
 
     if (!siteSettings.layouts_enabled ||
         (site.mobileView && !siteSettings.layouts_mobile_enabled)) return;
     
     setupContexts(app);
+
+    router.on('routeDidChange', (transition) => {
+      if (!transition.from) { return }
+
+      const routeNames = transition.routeInfos.map(ri => ri.name);
+      let changedToContext;
+
+      routeNames.forEach(routeName => {
+        let routeContext = getContextFromAttr(routeName, 'route');
+
+        if (routeContext) {
+          changedToContext = normalizeContext(routeContext);
+        }
+      });
+
+      if (!changedToContext) {
+        let classes = document.body.className.split(" ").filter(c => !c.startsWith(`${layoutsNamespace}-`));
+        document.body.className = classes.join(" ").trim();
+      }
+    });
     
     withPluginApi('0.8.32', api => {
       api.modifyClass('controller:discovery', {

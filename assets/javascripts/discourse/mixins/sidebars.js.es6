@@ -7,7 +7,7 @@ import { htmlSafe } from "@ember/template";
 import { iconHTML } from "discourse-common/lib/icon-library";
 import { default as discourseComputed, observes, on } from 'discourse-common/utils/decorators';
 import DiscourseURL from "discourse/lib/url";
-import { normalizeContext } from "../lib/layouts";
+import { normalizeContext, layoutsNamespace } from "../lib/layouts";
 
 function hasWidgets(widgets, widgetsSet) {
   return !widgetsSet || (widgets && widgets.length > 0);
@@ -119,9 +119,9 @@ export default Mixin.create({
     let removeClasses = [];
 
     if (!isResponsive && leftSidebarEnabled && leftFull) {
-      addClasses.push('left-full');
+      addClasses.push(`${layoutsNamespace}-left-full`);
     } else {
-      removeClasses.push('left-full');
+      removeClasses.push(`${layoutsNamespace}-left-full`);
     }
 
     addClasses = addClasses.filter(className => !removeClasses.includes(className));
