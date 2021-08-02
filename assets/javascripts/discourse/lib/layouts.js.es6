@@ -3,6 +3,7 @@ import Sidebars from '../mixins/sidebars';
 import DiscourseRoute from "discourse/routes/discourse";
 import Controller from "@ember/controller";
 import { withPluginApi } from 'discourse/lib/plugin-api';
+import { dasherize } from "@ember/string";
 
 const layoutsNamespace = "layouts";
 
@@ -166,11 +167,19 @@ function getAttrFromContext(contextName, attr) {
   return result;
 }
 
+function isCamelCase(value) {
+  return /[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?/.test(value);
+}
+
 function getContextFromAttr(value, attr) {
   let result;
   
   if (attr === 'route') {
-    value = value.replace(/\./g, '-');
+    if (isCamelCase(value)) {
+      value = dasherize(value);
+    } else if (value.indexOf('.') !== -1) {
+      value = value.replace(/\./g, '-');
+    }
   }
 
   contexts.some(context => {

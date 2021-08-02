@@ -21,7 +21,8 @@ export default {
     router.on('routeDidChange', (transition) => {
       if (!transition.from) { return }
 
-      const routeNames = transition.routeInfos.map(ri => ri.name);
+      const routeInfos = transition.router.currentRouteInfos;
+      const routeNames = routeInfos.map(ri => ri.name);
       let changedToContext;
 
       routeNames.forEach(routeName => {
