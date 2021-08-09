@@ -33,6 +33,7 @@ export default Mixin.create({
   hasLeftSidebar: and('leftSidebarEnabled', 'leftSidebarVisible'),
   widgetsSet: or('leftWidgetsSet', 'rightWidgetsSet'),
   leftFull: equal('siteSettings.layouts_sidebar_left_position', 'full'),
+  sidebarMinimized: false,
   
   @discourseComputed('context', 'isResponsive')
   canHideRightSidebar(context, isResponsive) {
@@ -104,11 +105,12 @@ export default Mixin.create({
     })
   },
 
-  @observes('leftSidebarEnabled', 'isResponsive')
+  @observes('leftSidebarEnabled', 'isResponsive', 'sidebarMinimized')
   toggleBodyClasses() {
     const leftSidebarEnabled = this.get('leftSidebarEnabled');
     const leftFull = this.get('leftFull');
     const isResponsive = this.get('isResponsive');
+    const sidebarMinimized = this.get('sidebarMinimized');
 
     let addClasses = [];
     let removeClasses = [];
@@ -117,6 +119,12 @@ export default Mixin.create({
       addClasses.push(`${layoutsNamespace}-left-full`);
     } else {
       removeClasses.push(`${layoutsNamespace}-left-full`);
+    }
+
+    if (sidebarMinimized) {
+      addClasses.push('sidebar-minimized');
+    } else {
+      removeClasses.push('sidebar-minimized');
     }
 
     addClasses = addClasses.filter(className => !removeClasses.includes(className));
@@ -143,7 +151,7 @@ export default Mixin.create({
   
   toggleSidebars(opts) {
     const isResponsive = this.isResponsive;
-    const { side, value, target } = opts;
+    const { side, value, target, type } = opts;
     
     if (
       (target === 'responsive' && !isResponsive) ||
@@ -153,7 +161,13 @@ export default Mixin.create({
     let sides = side ? [side] : ['left', 'right'];
     
     sides.forEach(side => {
-      const newVal = [true, false].includes(value) ? value : !Boolean(this[`${side}SidebarVisible`]);
+      let newVal = [true, false].includes(value) ? value : !Boolean(this[`${side}SidebarVisible`]);   
+      
+      if (type === 'minimize') {
+        this.set('sidebarMinimized', true);
+      } else {
+        this.set('sidebarMinimized', false);
+      }
       
       if (isResponsive) {
         const $sidebar = $(`.sidebar.${side}`);      
@@ -232,24 +246,24 @@ export default Mixin.create({
     return classes;
   },
 
-  @discourseComputed('isResponsive', 'leftSidebarVisible')
-  leftClasses(isResponsive, visible) {
-    return this.buildSidebarClasses(isResponsive, visible, 'left');
+  @discourseComputed('isResponsive', 'leftSidebarVisible', 'sidebarMinimized')
+  leftClasses(isResponsive, visible, sidebarMinimized) {
+    return this.buildSidebarClasses(isResponsive, visible, 'left', sidebarMinimized);
   },
   
-  @discourseComputed('isResponsive', 'rightSidebarVisible')
-  rightClasses(isResponsive, visible) {
-    return this.buildSidebarClasses(isResponsive, visible, 'right');
+  @discourseComputed('isResponsive', 'rightSidebarVisible', 'sidebarMinimized')
+  rightClasses(isResponsive, visible, sidebarMinimized) {
+    return this.buildSidebarClasses(isResponsive, visible, 'right', sidebarMinimized);
   },
   
-  buildSidebarClasses(isResponsive, visible, side) {
+  buildSidebarClasses(isResponsive, visible, side, sidebarMinimized) {
     let classes = '';
 
     if (isResponsive) {
       classes += 'is-responsive';
       if (visible) classes += ' open';
     } else {
-      if (!visible) classes += ' not-visible';
+      if (!visible && !sidebarMinimized) classes += ' not-visible';
     }
 
     classes += ` ${this.siteSettings[`layouts_sidebar_${side}_position`]}`;
@@ -288,8 +302,8 @@ export default Mixin.create({
     }
   },
 
-  @discourseComputed('path', 'isResponsive', 'leftSidebarVisible')
-  leftStyle(path, isResponsive, visible) {
+  @discourseComputed('path', 'isResponsive', 'leftSidebarVisible', 'sidebarMinimized')
+  leftStyle(path, isResponsive, visible, sidebarMinimized) {
     const width = this.siteSettings.layouts_sidebar_left_width;
     let string;
     if (isResponsive) {
@@ -297,17 +311,25 @@ export default Mixin.create({
     } else {
       string = `width: ${visible ? width : 0}px;`;
     }
+
+    if (sidebarMinimized) {
+      string = 'width: max-content';
+    }
     return htmlSafe(string);
   },
 
-  @discourseComputed('path', 'isResponsive', 'rightSidebarVisible')
-  rightStyle(path, isResponsive, visible) {
+  @discourseComputed('path', 'isResponsive', 'rightSidebarVisible', 'sidebarMinimized')
+  rightStyle(path, isResponsive, visible, sidebarMinimized) {
     const width = this.siteSettings.layouts_sidebar_right_width;
     let string;
     if (isResponsive) {
       string = `width: 100vw; transform: translateX(${visible ? `0` : `100vw`});`
     } else {
       string = `width: ${visible ? width : 0}px;`;
+    }
+
+    if (sidebarMinimized) {
+      string = 'width: max-content';
     }
     return htmlSafe(string);
   },
