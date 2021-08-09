@@ -17,6 +17,7 @@ export default Mixin.create({
   router: service(),
   path: alias("router._router.currentPath"),
   responsiveView: false,
+  tabletView: false,
   showResponsiveMenu: and('isResponsive', 'responsiveMenuItems.length'),
   showLeftToggle: and('showSidebarToggles', 'leftSidebarEnabled'),
   showRightToggle: and('showSidebarToggles', 'rightSidebarEnabled'),
@@ -190,10 +191,12 @@ export default Mixin.create({
   
   handleWindowResize() {
     const windowWidth = $(window).width();
-    const threshold = this.siteSettings.layouts_sidebar_responsive_threshold;
+    const responsiveThreshold = this.siteSettings.layouts_sidebar_responsive_threshold;
+    const tabletThreshold = this.siteSettings.layouts_sidebar_tablet_threshold;
     const responsiveView = this.get("responsiveView");
+    const tabletView = this.get("tabletView");
     
-    if (windowWidth < Number(threshold)) {
+    if (windowWidth < Number(responsiveThreshold)) {
       if (!responsiveView) {
         this.setProperties({
           responsiveView: true,
@@ -207,6 +210,20 @@ export default Mixin.create({
         leftSidebarVisible: true,
         rightSidebarVisible: true
       });
+    }
+
+    if (windowWidth < Number(tabletThreshold)) {
+      if (!tabletView) {
+        this.setProperties({
+          tabletView: true,
+          sidebarMinimized: true
+        })
+      } else if (tabletView) {
+        this.setProperties({
+          tabletView: false,
+          sidebarMinimized: false,
+        })
+      }
     }
   },
 

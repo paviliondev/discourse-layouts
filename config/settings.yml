@@ -65,7 +65,10 @@ plugins:
       - hide
   layouts_sidebar_responsive_threshold:
     client: true
-    default: 850
+    default: 550
+  layouts_sidebar_tablet_threshold:
+    client: true
+    default: 850 
   layouts_mobile_enabled:
     client: true
     default: false
