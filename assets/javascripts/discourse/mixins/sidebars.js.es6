@@ -17,6 +17,7 @@ export default Mixin.create({
   router: service(),
   path: alias("router._router.currentPath"),
   responsiveView: false,
+  tabletView: false,
   showResponsiveMenu: and('isResponsive', 'responsiveMenuItems.length'),
   showLeftToggle: and('showSidebarToggles', 'leftSidebarEnabled'),
   showRightToggle: and('showSidebarToggles', 'rightSidebarEnabled'),
@@ -33,6 +34,7 @@ export default Mixin.create({
   hasLeftSidebar: and('leftSidebarEnabled', 'leftSidebarVisible'),
   widgetsSet: or('leftWidgetsSet', 'rightWidgetsSet'),
   leftFull: equal('siteSettings.layouts_sidebar_left_position', 'full'),
+  sidebarMinimized: false,
   
   @discourseComputed('context', 'isResponsive')
   canHideRightSidebar(context, isResponsive) {
@@ -104,19 +106,28 @@ export default Mixin.create({
     })
   },
 
-  @observes('leftSidebarEnabled', 'isResponsive')
+  @observes('leftSidebarEnabled', 'isResponsive', 'sidebarMinimized', 'leftSidebarVisible')
   toggleBodyClasses() {
     const leftSidebarEnabled = this.get('leftSidebarEnabled');
+    const leftSidebarVisible = this.get('leftSidebarVisible');
     const leftFull = this.get('leftFull');
     const isResponsive = this.get('isResponsive');
+    const sidebarMinimized = this.get('sidebarMinimized');
+    const mobileView = this.get('site.mobileView'); 
 
     let addClasses = [];
     let removeClasses = [];
 
-    if (!isResponsive && leftSidebarEnabled && leftFull) {
+    if (!isResponsive && leftSidebarEnabled && leftSidebarVisible && leftFull) {
       addClasses.push(`${layoutsNamespace}-left-full`);
     } else {
       removeClasses.push(`${layoutsNamespace}-left-full`);
+    }
+
+    if (!mobileView && sidebarMinimized) {
+      addClasses.push(`${layoutsNamespace}-sidebar-minimized`);
+    } else {
+      removeClasses.push(`${layoutsNamespace}-sidebar-minimized`);
     }
 
     addClasses = addClasses.filter(className => !removeClasses.includes(className));
@@ -144,42 +155,49 @@ export default Mixin.create({
   toggleSidebars(opts) {
     const isResponsive = this.isResponsive;
     const { side, value, target } = opts;
-    
+    let type = opts.type || 'visibility';
+
     if (
       (target === 'responsive' && !isResponsive) ||
       (target === 'desktop' && isResponsive)
     ) return;
-    
+
     let sides = side ? [side] : ['left', 'right'];
-    
+
     sides.forEach(side => {
-      const newVal = [true, false].includes(value) ? value : !Boolean(this[`${side}SidebarVisible`]);
-      
-      if (isResponsive) {
-        const $sidebar = $(`.sidebar.${side}`);      
-        const $sidebarCloak = $(".sidebar-cloak");
-              
-        if (newVal) {
-          $sidebar.addClass('open');
-          $sidebarCloak.css("opacity", 0.5);
-          $sidebarCloak.show();
-        } else {
-          $sidebar.removeClass('open');
-          $sidebarCloak.css("opacity", 0);
-          $sidebarCloak.hide();
+      if (type === 'minimize') {
+        this.set('sidebarMinimized', value);
+      } else {
+        let newVal = [true, false].includes(value) ? value : !Boolean(this[`${side}SidebarVisible`]); 
+
+        if (isResponsive) {
+          const $sidebar = $(`.sidebar.${side}`);      
+          const $sidebarCloak = $(".sidebar-cloak");
+
+          if (newVal) {
+            $sidebar.addClass('open');
+            $sidebarCloak.css("opacity", 0.5);
+            $sidebarCloak.show();
+          } else {
+            $sidebar.removeClass('open');
+            $sidebarCloak.css("opacity", 0);
+            $sidebarCloak.hide();
+          }
         }
+
+        this.set(`${side}SidebarVisible`, newVal);
       }
-            
-      this.set(`${side}SidebarVisible`, newVal);
     });
   },
   
   handleWindowResize() {
     const windowWidth = $(window).width();
-    const threshold = this.siteSettings.layouts_sidebar_responsive_threshold;
+    const responsiveThreshold = this.siteSettings.layouts_sidebar_responsive_threshold;
+    const tabletThreshold = this.siteSettings.layouts_sidebar_tablet_threshold;
     const responsiveView = this.get("responsiveView");
-    
-    if (windowWidth < Number(threshold)) {
+    const tabletView = this.get("tabletView");
+
+    if (windowWidth < Number(responsiveThreshold)) {
       if (!responsiveView) {
         this.setProperties({
           responsiveView: true,
@@ -193,6 +211,20 @@ export default Mixin.create({
         leftSidebarVisible: true,
         rightSidebarVisible: true
       });
+    }
+
+    if (windowWidth < Number(tabletThreshold)) {
+      if (!tabletView) {
+        this.setProperties({
+          tabletView: true,
+          sidebarMinimized: true
+        })
+      }
+    } else if (tabletView) {
+      this.setProperties({
+        tabletView: false,
+        sidebarMinimized: false,
+      })
     }
   },
 
@@ -232,17 +264,17 @@ export default Mixin.create({
     return classes;
   },
 
-  @discourseComputed('isResponsive', 'leftSidebarVisible')
-  leftClasses(isResponsive, visible) {
-    return this.buildSidebarClasses(isResponsive, visible, 'left');
+  @discourseComputed('isResponsive', 'leftSidebarVisible', 'sidebarMinimized')
+  leftClasses(isResponsive, visible, sidebarMinimized) {
+    return this.buildSidebarClasses(isResponsive, visible, 'left', sidebarMinimized);
   },
   
-  @discourseComputed('isResponsive', 'rightSidebarVisible')
-  rightClasses(isResponsive, visible) {
-    return this.buildSidebarClasses(isResponsive, visible, 'right');
+  @discourseComputed('isResponsive', 'rightSidebarVisible', 'sidebarMinimized')
+  rightClasses(isResponsive, visible, sidebarMinimized) {
+    return this.buildSidebarClasses(isResponsive, visible, 'right', sidebarMinimized);
   },
   
-  buildSidebarClasses(isResponsive, visible, side) {
+  buildSidebarClasses(isResponsive, visible, side, sidebarMinimized) {
     let classes = '';
 
     if (isResponsive) {
@@ -288,27 +320,41 @@ export default Mixin.create({
     }
   },
 
-  @discourseComputed('path', 'isResponsive', 'leftSidebarVisible')
-  leftStyle(path, isResponsive, visible) {
+  @discourseComputed('path', 'isResponsive', 'leftSidebarVisible', 'sidebarMinimized')
+  leftStyle(path, isResponsive, visible, sidebarMinimized) {
     const width = this.siteSettings.layouts_sidebar_left_width;
+    const mobileView = this.get('site.mobileView');
+
     let string;
     if (isResponsive) {
       string = `width: 100vw; transform: translateX(${visible ? '0' : `-100vw`});`
     } else {
       string = `width: ${visible ? width : 0}px;`;
     }
+
+    if (!mobileView && sidebarMinimized) {
+      string = 'width: max-content';
+    }
+
     return htmlSafe(string);
   },
 
-  @discourseComputed('path', 'isResponsive', 'rightSidebarVisible')
-  rightStyle(path, isResponsive, visible) {
+  @discourseComputed('path', 'isResponsive', 'rightSidebarVisible', 'sidebarMinimized')
+  rightStyle(path, isResponsive, visible, sidebarMinimized) {
     const width = this.siteSettings.layouts_sidebar_right_width;
+    const mobileView = this.get('site.mobileView');
+
     let string;
     if (isResponsive) {
       string = `width: 100vw; transform: translateX(${visible ? `0` : `100vw`});`
     } else {
       string = `width: ${visible ? width : 0}px;`;
     }
+
+    if (!mobileView && sidebarMinimized) {
+      string = 'width: max-content';
+    }
+
     return htmlSafe(string);
   },
   

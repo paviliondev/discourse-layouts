@@ -59,6 +59,16 @@ aside.sidebar {
         border-bottom: 2px solid var(--primary-low);
       }
     }
+
+    .toggle-sidebar {
+      &.left {
+        margin-left: 0;
+      }
+    }
+
+    &.not-visible {
+      overflow: visible;
+    }
   }
 }
 
