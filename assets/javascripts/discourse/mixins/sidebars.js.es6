@@ -123,9 +123,9 @@ export default Mixin.create({
     }
 
     if (sidebarMinimized) {
-      addClasses.push('sidebar-minimized');
+      addClasses.push(`${layoutsNamespace}-sidebar-minimized`);
     } else {
-      removeClasses.push('sidebar-minimized');
+      removeClasses.push(`${layoutsNamespace}-sidebar-minimized`);
     }
 
     addClasses = addClasses.filter(className => !removeClasses.includes(className));
