@@ -106,23 +106,25 @@ export default Mixin.create({
     })
   },
 
-  @observes('leftSidebarEnabled', 'isResponsive', 'sidebarMinimized')
+  @observes('leftSidebarEnabled', 'isResponsive', 'sidebarMinimized', 'leftSidebarVisible')
   toggleBodyClasses() {
     const leftSidebarEnabled = this.get('leftSidebarEnabled');
+    const leftSidebarVisible = this.get('leftSidebarVisible');
     const leftFull = this.get('leftFull');
     const isResponsive = this.get('isResponsive');
     const sidebarMinimized = this.get('sidebarMinimized');
+    const mobileView = this.get('site.mobileView'); 
 
     let addClasses = [];
     let removeClasses = [];
 
-    if (!isResponsive && leftSidebarEnabled && leftFull) {
+    if (!isResponsive && leftSidebarEnabled && leftSidebarVisible && leftFull) {
       addClasses.push(`${layoutsNamespace}-left-full`);
     } else {
       removeClasses.push(`${layoutsNamespace}-left-full`);
     }
 
-    if (sidebarMinimized) {
+    if (!mobileView && sidebarMinimized) {
       addClasses.push(`${layoutsNamespace}-sidebar-minimized`);
     } else {
       removeClasses.push(`${layoutsNamespace}-sidebar-minimized`);
@@ -152,40 +154,39 @@ export default Mixin.create({
   
   toggleSidebars(opts) {
     const isResponsive = this.isResponsive;
-    const { side, value, target, type } = opts;
-    
+    const { side, value, target } = opts;
+    let type = opts.type || 'visibility';
+
     if (
       (target === 'responsive' && !isResponsive) ||
       (target === 'desktop' && isResponsive)
     ) return;
-    
+
     let sides = side ? [side] : ['left', 'right'];
-    
+
     sides.forEach(side => {
-      let newVal = [true, false].includes(value) ? value : !Boolean(this[`${side}SidebarVisible`]);   
-      
       if (type === 'minimize') {
-        this.set('sidebarMinimized', true);
+        this.set('sidebarMinimized', value);
       } else {
-        this.set('sidebarMinimized', false);
-      }
-      
-      if (isResponsive) {
-        const $sidebar = $(`.sidebar.${side}`);      
-        const $sidebarCloak = $(".sidebar-cloak");
-              
-        if (newVal) {
-          $sidebar.addClass('open');
-          $sidebarCloak.css("opacity", 0.5);
-          $sidebarCloak.show();
-        } else {
-          $sidebar.removeClass('open');
-          $sidebarCloak.css("opacity", 0);
-          $sidebarCloak.hide();
+        let newVal = [true, false].includes(value) ? value : !Boolean(this[`${side}SidebarVisible`]); 
+
+        if (isResponsive) {
+          const $sidebar = $(`.sidebar.${side}`);      
+          const $sidebarCloak = $(".sidebar-cloak");
+
+          if (newVal) {
+            $sidebar.addClass('open');
+            $sidebarCloak.css("opacity", 0.5);
+            $sidebarCloak.show();
+          } else {
+            $sidebar.removeClass('open');
+            $sidebarCloak.css("opacity", 0);
+            $sidebarCloak.hide();
+          }
         }
+
+        this.set(`${side}SidebarVisible`, newVal);
       }
-            
-      this.set(`${side}SidebarVisible`, newVal);
     });
   },
   
@@ -195,7 +196,7 @@ export default Mixin.create({
     const tabletThreshold = this.siteSettings.layouts_sidebar_tablet_threshold;
     const responsiveView = this.get("responsiveView");
     const tabletView = this.get("tabletView");
-    
+
     if (windowWidth < Number(responsiveThreshold)) {
       if (!responsiveView) {
         this.setProperties({
@@ -218,12 +219,12 @@ export default Mixin.create({
           tabletView: true,
           sidebarMinimized: true
         })
-      } else if (tabletView) {
-        this.setProperties({
-          tabletView: false,
-          sidebarMinimized: false,
-        })
       }
+    } else if (tabletView) {
+      this.setProperties({
+        tabletView: false,
+        sidebarMinimized: false,
+      })
     }
   },
 
@@ -280,7 +281,7 @@ export default Mixin.create({
       classes += 'is-responsive';
       if (visible) classes += ' open';
     } else {
-      if (!visible && !sidebarMinimized) classes += ' not-visible';
+      if (!visible) classes += ' not-visible';
     }
 
     classes += ` ${this.siteSettings[`layouts_sidebar_${side}_position`]}`;
@@ -322,6 +323,8 @@ export default Mixin.create({
   @discourseComputed('path', 'isResponsive', 'leftSidebarVisible', 'sidebarMinimized')
   leftStyle(path, isResponsive, visible, sidebarMinimized) {
     const width = this.siteSettings.layouts_sidebar_left_width;
+    const mobileView = this.get('site.mobileView');
+
     let string;
     if (isResponsive) {
       string = `width: 100vw; transform: translateX(${visible ? '0' : `-100vw`});`
@@ -329,15 +332,18 @@ export default Mixin.create({
       string = `width: ${visible ? width : 0}px;`;
     }
 
-    if (sidebarMinimized) {
+    if (!mobileView && sidebarMinimized) {
       string = 'width: max-content';
     }
+
     return htmlSafe(string);
   },
 
   @discourseComputed('path', 'isResponsive', 'rightSidebarVisible', 'sidebarMinimized')
   rightStyle(path, isResponsive, visible, sidebarMinimized) {
     const width = this.siteSettings.layouts_sidebar_right_width;
+    const mobileView = this.get('site.mobileView');
+
     let string;
     if (isResponsive) {
       string = `width: 100vw; transform: translateX(${visible ? `0` : `100vw`});`
@@ -345,9 +351,10 @@ export default Mixin.create({
       string = `width: ${visible ? width : 0}px;`;
     }
 
-    if (sidebarMinimized) {
+    if (!mobileView && sidebarMinimized) {
       string = 'width: max-content';
     }
+
     return htmlSafe(string);
   },
   
