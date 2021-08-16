@@ -101,7 +101,7 @@ aside.sidebar {
     }
   }
 
-  &.is-responsive {
+  &.mobile {
     position: fixed;
     height: calc(100% - 60px);
     top: 60px;

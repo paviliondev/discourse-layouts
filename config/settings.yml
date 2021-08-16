@@ -63,7 +63,7 @@ plugins:
     choices:
       - show
       - hide
-  layouts_sidebar_responsive_threshold:
+  layouts_sidebar_mobile_threshold:
     client: true
     default: 550
   layouts_sidebar_tablet_threshold:

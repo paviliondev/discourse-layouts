@@ -30,12 +30,18 @@ export default MountWidget.extend({
     const controller = this.controller;
     const context = this.context;
     const path = this.path;
-    
+    const tabletView = this.tabletView;
+    const mobileView = this.mobileView;
+    const sidebarMinimized = this.sidebarMinimized;
+
     let args = {
       context,
       path,
       side,
-      controller
+      controller,
+      mobileView,
+      tabletView,
+      sidebarMinimized
     };
 
     if (context === 'discovery') {
@@ -48,16 +54,16 @@ export default MountWidget.extend({
     if (context === 'topic') {
       args.topic = this.topic;
     }
-    
+
     const customSidebarProps = this.customSidebarProps;
     if (customSidebarProps) {
       args.customSidebarProps = customSidebarProps;
     }
-                
+
     return args;
   },
 
-  @observes('path')
+  @observes('path', 'mobileView', 'tabletView')
   rerenderSidebars() {
     this.queueRerender();
     scheduleOnce('afterRender', () => {

@@ -16,9 +16,9 @@ function hasWidgets(widgets, widgetsSet) {
 export default Mixin.create({
   router: service(),
   path: alias("router._router.currentPath"),
-  responsiveView: false,
+  mobileView: false,
   tabletView: false,
-  showResponsiveMenu: and('isResponsive', 'responsiveMenuItems.length'),
+  showMobileMenu: and('mobileView', 'mobileMenuItems.length'),
   showLeftToggle: and('showSidebarToggles', 'leftSidebarEnabled'),
   showRightToggle: and('showSidebarToggles', 'rightSidebarEnabled'),
   customSidebarProps: {},
@@ -36,18 +36,18 @@ export default Mixin.create({
   leftFull: equal('siteSettings.layouts_sidebar_left_position', 'full'),
   sidebarMinimized: false,
   
-  @discourseComputed('context', 'isResponsive')
-  canHideRightSidebar(context, isResponsive) {
-    return this.canHide(context, 'right', isResponsive);
+  @discourseComputed('context', 'mobileView')
+  canHideRightSidebar(context, mobileView) {
+    return this.canHide(context, 'right', mobileView);
   },
   
-  @discourseComputed('context', 'isResponsive')
-  canHideLeftSidebar(context, isResponsive) {
-    return this.canHide(context, 'left', isResponsive);
+  @discourseComputed('context', 'mobileView')
+  canHideLeftSidebar(context, mobileView) {
+    return this.canHide(context, 'left', mobileView);
   },
   
-  canHide(context, side, isResponsive) {
-    return !isResponsive &&
+  canHide(context, side, mobileView) {
+    return !mobileView &&
       this.siteSettings[`layouts_sidebar_${side}_can_hide`].split('|')
         .map(normalizeContext)
         .indexOf(context) > -1;
@@ -76,16 +76,16 @@ export default Mixin.create({
     scheduleOnce('afterRender', () => {
       this.handleWindowResize();
       $(window).on('resize', () => debounce(this, this.handleWindowResize, 100));
-      
+
       const root = document.documentElement;
       root.style.setProperty('--mainLeftOffset', `${this.mainLeftOffset}px`);
       root.style.setProperty('--mainRightOffset', `${this.mainRightOffset}px`);
     });
     this.appEvents.on('sidebar:toggle', this, this.toggleSidebars);
-    
+
     let leftSidebarVisible = this.sidebarVisibleDefault('left');
     let rightSidebarVisible = this.sidebarVisibleDefault('right');
-    
+
     this.setProperties({
       mainLeftOffset,
       mainRightOffset,
@@ -106,19 +106,19 @@ export default Mixin.create({
     })
   },
 
-  @observes('leftSidebarEnabled', 'isResponsive', 'sidebarMinimized', 'leftSidebarVisible')
+  @observes('leftSidebarEnabled', 'mobileView', 'tabletView', 'sidebarMinimized', 'leftSidebarVisible')
   toggleBodyClasses() {
     const leftSidebarEnabled = this.get('leftSidebarEnabled');
     const leftSidebarVisible = this.get('leftSidebarVisible');
+    const mobileView = this.get('mobileView');
+    const tabletView = this.get("tabletView");
     const leftFull = this.get('leftFull');
-    const isResponsive = this.get('isResponsive');
     const sidebarMinimized = this.get('sidebarMinimized');
-    const mobileView = this.get('site.mobileView'); 
 
     let addClasses = [];
     let removeClasses = [];
 
-    if (!isResponsive && leftSidebarEnabled && leftSidebarVisible && leftFull) {
+    if (!mobileView && leftSidebarEnabled && leftSidebarVisible && leftFull) {
       addClasses.push(`${layoutsNamespace}-left-full`);
     } else {
       removeClasses.push(`${layoutsNamespace}-left-full`);
@@ -128,6 +128,12 @@ export default Mixin.create({
       addClasses.push(`${layoutsNamespace}-sidebar-minimized`);
     } else {
       removeClasses.push(`${layoutsNamespace}-sidebar-minimized`);
+    }
+
+    if (tabletView) {
+      addClasses.push(`${layoutsNamespace}-tablet`);
+    } else {
+      removeClasses.push(`${layoutsNamespace}-tablet`);
     }
 
     addClasses = addClasses.filter(className => !removeClasses.includes(className));
@@ -148,18 +154,18 @@ export default Mixin.create({
   },
 
   sidebarVisibleDefault(side) {
-    if (this.get('isResponsive')) return false;
+    if (this.mobileView) return false;
     return this.siteSettings[`layouts_sidebar_${side}_default_visibility`] == 'show';
   },
   
   toggleSidebars(opts) {
-    const isResponsive = this.isResponsive;
+    const mobileView = this.mobileView;
     const { side, value, target } = opts;
     let type = opts.type || 'visibility';
 
     if (
-      (target === 'responsive' && !isResponsive) ||
-      (target === 'desktop' && isResponsive)
+      (target === 'mobile' && !mobileView) ||
+      (target === 'desktop' && mobileView)
     ) return;
 
     let sides = side ? [side] : ['left', 'right'];
@@ -170,7 +176,7 @@ export default Mixin.create({
       } else {
         let newVal = [true, false].includes(value) ? value : !Boolean(this[`${side}SidebarVisible`]); 
 
-        if (isResponsive) {
+        if (mobileView) {
           const $sidebar = $(`.sidebar.${side}`);      
           const $sidebarCloak = $(".sidebar-cloak");
 
@@ -189,59 +195,59 @@ export default Mixin.create({
       }
     });
   },
-  
+
   handleWindowResize() {
     const windowWidth = $(window).width();
-    const responsiveThreshold = this.siteSettings.layouts_sidebar_responsive_threshold;
+    const mobileThreshold = this.siteSettings.layouts_sidebar_mobile_threshold;
     const tabletThreshold = this.siteSettings.layouts_sidebar_tablet_threshold;
-    const responsiveView = this.get("responsiveView");
+    const mobileView = this.get("mobileView");
     const tabletView = this.get("tabletView");
 
-    if (windowWidth < Number(responsiveThreshold)) {
-      if (!responsiveView) {
+    if (windowWidth < Number(mobileThreshold)) {
+      if (!mobileView) {
         this.setProperties({
-          responsiveView: true,
+          mobileView: true,
+          tabletView: false,
           leftSidebarVisible: false,
           rightSidebarVisible: false
         });
       }
-    } else if (responsiveView) {
-      this.setProperties({
-        responsiveView: false,
-        leftSidebarVisible: true,
-        rightSidebarVisible: true
-      });
-    }
-
-    if (windowWidth < Number(tabletThreshold)) {
-      if (!tabletView) {
+    } else {
+      if (mobileView) {
         this.setProperties({
-          tabletView: true,
-          sidebarMinimized: true
-        })
+          mobileView: false,
+          leftSidebarVisible: true,
+          rightSidebarVisible: true
+        });
       }
-    } else if (tabletView) {
-      this.setProperties({
-        tabletView: false,
-        sidebarMinimized: false,
-      })
-    }
-  },
 
-  @discourseComputed('responsiveView')
-  isResponsive(responsiveView) {
-    const mobileView = this.get('site.mobileView');
-    return mobileView || responsiveView;
+      if (windowWidth < Number(tabletThreshold)) {
+        if (!tabletView) {
+          this.setProperties({
+            tabletView: true,
+            sidebarMinimized: true
+          })
+        }
+      } else {
+        if (tabletView) {
+          this.setProperties({
+            tabletView: false,
+            sidebarMinimized: false,
+          })
+        }
+      }
+    }
   },
 
   @discourseComputed(
     'path',
     'loading',
-    'isResponsive',
+    'mobileView',
+    'tabletView',
     'hasRightSidebar',
     'hasLeftSidebar',
-    'showResponsiveMenu'
-  ) mainClasses(path, loading, isResponsive, hasRight, hasLeft, showMenu) {
+    'showMobileMenu'
+  ) mainClasses(path, loading, mobileView, tabletView, hasRight, hasLeft, showMenu) {
     let p = path.split('.');
     let classes = `${p[0]} ${p[1] ? p[1].split(/(?=[A-Z])/)[0] : ''}`;
     
@@ -252,36 +258,45 @@ export default Mixin.create({
     }
     if (hasLeft) classes += ' left-sidebar';
     if (hasRight) classes += ' right-sidebar';
-    if (isResponsive) {
-      classes += ' is-responsive';
+    if (mobileView) {
+      classes += ' mobile';
       
       if (showMenu) {
         classes += ' has-menu';
       }
     }
-    if (loading) classes + ' loading';
+    if (tabletView) classes += ' tablet';
+    if (loading) classes += ' loading';
    
     return classes;
   },
 
-  @discourseComputed('isResponsive', 'leftSidebarVisible', 'sidebarMinimized')
-  leftClasses(isResponsive, visible, sidebarMinimized) {
-    return this.buildSidebarClasses(isResponsive, visible, 'left', sidebarMinimized);
+  @discourseComputed('mobileView', 'tabletView', 'leftSidebarVisible', 'sidebarMinimized')
+  leftClasses(mobileView, tabletView, visible, sidebarMinimized) {
+    return this.buildSidebarClasses(mobileView, tabletView, visible, 'left', sidebarMinimized);
   },
   
-  @discourseComputed('isResponsive', 'rightSidebarVisible', 'sidebarMinimized')
-  rightClasses(isResponsive, visible, sidebarMinimized) {
-    return this.buildSidebarClasses(isResponsive, visible, 'right', sidebarMinimized);
+  @discourseComputed('mobileView', 'tabletView', 'rightSidebarVisible', 'sidebarMinimized')
+  rightClasses(mobileView, tabletView, visible, sidebarMinimized) {
+    return this.buildSidebarClasses(mobileView, tabletView, visible, 'right', sidebarMinimized);
   },
   
-  buildSidebarClasses(isResponsive, visible, side, sidebarMinimized) {
+  buildSidebarClasses(mobileView, tabletView, visible, side, sidebarMinimized) {
     let classes = '';
 
-    if (isResponsive) {
-      classes += 'is-responsive';
-      if (visible) classes += ' open';
+    if (mobileView) {
+      classes += 'mobile';
+
+      if (visible) {
+        classes += ' open';
+      }
     } else {
-      if (!visible) classes += ' not-visible';
+      if (!visible) {
+        classes += ' not-visible';
+      }
+      if (tabletView) {
+        classes += ' tablet';
+      }
     }
 
     classes += ` ${this.siteSettings[`layouts_sidebar_${side}_position`]}`;
@@ -290,7 +305,7 @@ export default Mixin.create({
   
   @discourseComputed('path', 'hasLeftSidebar', 'hasRightSidebar')
   mainStyle(path, hasLeftSidebar, hasRightSidebar) {
-    if (this.site.mobileView) return;
+    if (this.mobileView) return;
     const mainLeftOffset = this.mainLeftOffset;
     const mainRightOffset = this.mainRightOffset;
     const leftFull = this.leftFull;
@@ -320,13 +335,12 @@ export default Mixin.create({
     }
   },
 
-  @discourseComputed('path', 'isResponsive', 'leftSidebarVisible', 'sidebarMinimized')
-  leftStyle(path, isResponsive, visible, sidebarMinimized) {
+  @discourseComputed('path', 'mobileView', 'leftSidebarVisible', 'sidebarMinimized')
+  leftStyle(path, mobileView, visible, sidebarMinimized) {
     const width = this.siteSettings.layouts_sidebar_left_width;
-    const mobileView = this.get('site.mobileView');
 
     let string;
-    if (isResponsive) {
+    if (mobileView) {
       string = `width: 100vw; transform: translateX(${visible ? '0' : `-100vw`});`
     } else {
       string = `width: ${visible ? width : 0}px;`;
@@ -339,13 +353,12 @@ export default Mixin.create({
     return htmlSafe(string);
   },
 
-  @discourseComputed('path', 'isResponsive', 'rightSidebarVisible', 'sidebarMinimized')
-  rightStyle(path, isResponsive, visible, sidebarMinimized) {
+  @discourseComputed('path', 'mobileView', 'rightSidebarVisible', 'sidebarMinimized')
+  rightStyle(path, mobileView, visible, sidebarMinimized) {
     const width = this.siteSettings.layouts_sidebar_right_width;
-    const mobileView = this.get('site.mobileView');
 
     let string;
-    if (isResponsive) {
+    if (mobileView) {
       string = `width: 100vw; transform: translateX(${visible ? `0` : `100vw`});`
     } else {
       string = `width: ${visible ? width : 0}px;`;
@@ -359,7 +372,7 @@ export default Mixin.create({
   },
   
   @discourseComputed('leftSidebarEnabled', 'rightSidebarEnabled')
-  responsiveMenuItems() {
+  mobileMenuItems() {
     const inputs = this.siteSettings.layouts_mobile_menu.split('|');
     return inputs.reduce((items, input) => {
       let firstSeperator = input.indexOf("~~");
@@ -379,11 +392,11 @@ export default Mixin.create({
         let iconClass, iconHtml, action, actionParam;
                 
         if (isSidebarToggle && this[`${type}SidebarEnabled`]) {
-          iconClass = `responsive-toggle ${type}`;
+          iconClass = `mobile-toggle ${type}`;
           action = 'toggleSidebar';
           actionParam = type;
         } else if (isLink) {
-          iconClass = 'responsive-link';
+          iconClass = 'mobile-link';
           action = 'goToLink';
           actionParam = url;
         }

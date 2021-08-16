@@ -33,17 +33,28 @@ export default createWidget('sidebar', {
       filter,
       category,
       topic,
-      customSidebarProps
+      customSidebarProps,
+      tabletView,
+      mobileView,
+      sidebarMinimized
     } = args;
-        
+
     let siteWidgets = this.site.layout_widgets || [];
     if (customWidgets.length) {
       siteWidgets = siteWidgets.concat(customWidgets);
     }
-    
+
     context = normalizeContext(context);
-    
-    let props = { topic, category, side, path };
+
+    let props = {
+      topic,
+      category,
+      side,
+      path,
+      mobileView,
+      tabletView,
+      sidebarMinimized
+    };
 
     if (customSidebarProps) {
       Object.keys(customSidebarProps).forEach((p) => {
@@ -112,7 +123,7 @@ export default createWidget('sidebar', {
     this.appEvents.trigger('sidebar:toggle', {
       side: this.attrs.side,
       value: false,
-      target: 'responsive'
+      target: 'mobile'
     });
   },
   

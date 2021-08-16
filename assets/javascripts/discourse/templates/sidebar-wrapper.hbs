@@ -13,6 +13,9 @@
         side="left"
         topic=model
         customSidebarProps=customSidebarProps
+        tabletView=tabletView
+        mobileView=mobileView
+        sidebarMinimized=sidebarMinimized
         category=category
         filter=sidebarFilter
         context=context}}
@@ -22,7 +25,9 @@
         args=(hash
           customSidebarProps=customSidebarProps
           category=category
-          isResponsive=isResponsive
+          tabletView=tabletView
+          mobileView=mobileView
+          sidebarMinimized=sidebarMinimized
           context=context
           path=path)}}
     </aside>
@@ -46,6 +51,9 @@
         side="right"
         topic=model
         customSidebarProps=customSidebarProps
+        tabletView=tabletView
+        mobileView=mobileView
+        sidebarMinimized=sidebarMinimized
         category=category
         filter=sidebarFilter
         context=context}}
@@ -55,15 +63,17 @@
         args=(hash 
           customSidebarProps=customSidebarProps
           category=category
-          isResponsive=isResponsive
+          tabletView=tabletView
+          mobileView=mobileView
+          sidebarMinimized=sidebarMinimized
           context=context
           path=path)}}
     </aside>
   {{/if}}
   
-  {{#if showResponsiveMenu}}
-    <div class="layouts-responsive-menu">
-      {{#each responsiveMenuItems as |item|}}
+  {{#if showMobileMenu}}
+    <div class="layouts-mobile-menu">
+      {{#each mobileMenuItems as |item|}}
         {{#d-button
           class=item.class
           action=item.action

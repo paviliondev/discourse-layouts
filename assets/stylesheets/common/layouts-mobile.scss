@@ -1,4 +1,4 @@
-.main-content.is-responsive {
+.main-content.mobile {
   width: 100% !important;
   margin: 0 0 60px 0 !important;
 
@@ -26,7 +26,7 @@
   }
 }
 
-.layouts-responsive-menu {
+.layouts-mobile-menu {
   position: fixed;
   width: 100vw;
   height: 3.66em;
@@ -41,7 +41,7 @@
   justify-content: space-around;
 }
 
-.main-content.topic.is-responsive.has-menu {
+.main-content.topic.mobile.has-menu {
   .d-toc-toggle {
     bottom: calc(3.66em + 5px);
   }
@@ -50,8 +50,8 @@
   }
 }
 
-.responsive-toggle,
-.responsive-link {
+.mobile-toggle,
+.mobile-link {
   background: none;
   padding: 0;
   height: 100%;
@@ -65,7 +65,7 @@
   }
 }
 
-aside.sidebar.is-responsive {
+aside.sidebar.mobile {
   height: 100vh;
   max-height: 100vh;
   position: fixed;
