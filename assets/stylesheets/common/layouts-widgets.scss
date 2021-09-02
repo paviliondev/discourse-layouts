@@ -105,7 +105,7 @@ aside.sidebar {
     position: fixed;
     height: calc(100% - 60px);
     top: 60px;
-    background-color: $secondary;
+    background-color: var(--secondary);
     font-size: 14px;
 
     &.open {
@@ -122,7 +122,7 @@ aside.sidebar {
       transition: left 0.2s linear;
 
       &.open {
-        border-right: 1px solid $primary-low-mid;
+        border-right: 1px solid var(--primary-low-mid);
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 
         // intercepts clicks outside the sidebar to close it
@@ -143,7 +143,7 @@ aside.sidebar {
       transition: right 0.2s linear;
 
       &.open {
-        border-left: 1px solid $primary-low-mid;
+        border-left: 1px solid var(--primary-low-mid);
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 
         // intercepts clicks outside the sidebar to close it
@@ -179,7 +179,7 @@ aside.sidebar {
 
     .mobile-toggle {
       position: fixed;
-      background-color: $secondary;
+      background-color: var(--secondary);
       bottom: 0;
       padding: 6px;
       box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
@@ -187,7 +187,7 @@ aside.sidebar {
       width: 50px;
 
       &:hover {
-        color: $primary;
+        color: var(--primary-low);
       }
 
       i {
@@ -195,14 +195,14 @@ aside.sidebar {
       }
 
       &.left {
-        border-right: 1px solid $primary-low-mid;
-        border-top: 1px solid $primary-low-mid;
+        border-right: 1px solid var(--primary-low-mid);
+        border-top: 1px solid var(--primary-low-mid);
         left: 0;
       }
 
       &.right {
-        border-left: 1px solid $primary-low-mid;
-        border-top: 1px solid $primary-low-mid;
+        border-left: 1px solid var(--primary-low-mid);
+        border-top: 1px solid var(--primary-low-mid);
         right: 0;
       }
     }
@@ -211,8 +211,8 @@ aside.sidebar {
 
 .widget-container {
   padding: 15px;
-  border: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
-  background-color: $secondary;
+  border: 1px solid var(--primary-low);
+  background-color: var(--secondary);
   position: relative;
 
   .widget-inner {
@@ -267,7 +267,7 @@ aside.sidebar {
       width: 100%;
       cursor: pointer;
       padding: 5px 0;
-      border-top: 1px solid $primary-low;
+      border-top: 1px solid var(--primary-low);
 
       &:first-of-type {
         margin-top: 0;
@@ -296,7 +296,7 @@ aside.sidebar {
 
     .widget-list-controls,
     .no-items {
-      border-top: 1px solid $primary-low;
+      border-top: 1px solid var(--primary-low);
       padding-top: 5px;
 
       a {
