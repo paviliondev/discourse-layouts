@@ -63,6 +63,9 @@ plugins:
     choices:
       - show
       - hide
+  layouts_sidebar_left_default_minimized:
+    client: true
+    default: false
   layouts_sidebar_mobile_threshold:
     client: true
     default: 550

@@ -11,6 +11,7 @@ en:
     layouts_sidebar_show_icon: "Show sidebar icon. See <a href='https://github.com/discourse/discourse/blob/master/lib/svg_sprite/svg_sprite.rb#L4'>list of available icons</a>."
     layouts_sidebar_left_default_visibility: "Determines if left sidebar is showing on initial load. Sidebar will not show if it has no widgets."
     layouts_sidebar_right_default_visibility: "Determines if right sidebar is showing on initial load. Sidebar will not show if it has no widgets."
+    layouts_sidebar_left_default_minimized: "Left sidebar minimized by default"
     layouts_sidebar_mobile_threshold: "Window width (px) when mobile layout is applied"
     layouts_sidebar_tablet_threshold: "Window width (px) when tablet layout is applied"
     layouts_mobile_enabled: "Enable mobile layouts"

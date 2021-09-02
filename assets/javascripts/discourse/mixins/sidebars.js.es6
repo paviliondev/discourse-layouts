@@ -34,7 +34,6 @@ export default Mixin.create({
   hasLeftSidebar: and('leftSidebarEnabled', 'leftSidebarVisible'),
   widgetsSet: or('leftWidgetsSet', 'rightWidgetsSet'),
   leftFull: equal('siteSettings.layouts_sidebar_left_position', 'full'),
-  sidebarMinimized: false,
   
   @discourseComputed('context', 'mobileView')
   canHideRightSidebar(context, mobileView) {
@@ -92,7 +91,9 @@ export default Mixin.create({
       leftSidebarVisible,
       rightSidebarVisible,
       leftWidgetsSet: false,
-      rightWidgetsSet: false
+      rightWidgetsSet: false,
+      leftSidebarMinimized: settings.layouts_sidebar_left_default_minimized,
+      rightSidebarMinimized: false
     });
 
     this.router.on('routeWillChange', (transition) => {
@@ -106,14 +107,14 @@ export default Mixin.create({
     })
   },
 
-  @observes('leftSidebarEnabled', 'mobileView', 'tabletView', 'sidebarMinimized', 'leftSidebarVisible')
+  @observes('leftSidebarEnabled', 'mobileView', 'tabletView', 'leftSidebarMinimized', 'leftSidebarVisible')
   toggleBodyClasses() {
     const leftSidebarEnabled = this.get('leftSidebarEnabled');
     const leftSidebarVisible = this.get('leftSidebarVisible');
     const mobileView = this.get('mobileView');
     const tabletView = this.get("tabletView");
     const leftFull = this.get('leftFull');
-    const sidebarMinimized = this.get('sidebarMinimized');
+    const leftSidebarMinimized = this.get('leftSidebarMinimized');
 
     let addClasses = [];
     let removeClasses = [];
@@ -124,7 +125,7 @@ export default Mixin.create({
       removeClasses.push(`${layoutsNamespace}-left-full`);
     }
 
-    if (!mobileView && sidebarMinimized) {
+    if (!mobileView && leftSidebarMinimized) {
       addClasses.push(`${layoutsNamespace}-sidebar-minimized`);
     } else {
       removeClasses.push(`${layoutsNamespace}-sidebar-minimized`);
@@ -172,7 +173,7 @@ export default Mixin.create({
 
     sides.forEach(side => {
       if (type === 'minimize') {
-        this.set('sidebarMinimized', value);
+        this.set(`${side}SidebarMinimized`, value);
       } else {
         let newVal = [true, false].includes(value) ? value : !Boolean(this[`${side}SidebarVisible`]); 
 
@@ -225,14 +226,14 @@ export default Mixin.create({
         if (!tabletView) {
           this.setProperties({
             tabletView: true,
-            sidebarMinimized: true
+            leftSidebarMinimized: true
           })
         }
       } else {
         if (tabletView) {
           this.setProperties({
             tabletView: false,
-            sidebarMinimized: false,
+            leftSidebarMinimized: false,
           })
         }
       }
@@ -271,14 +272,14 @@ export default Mixin.create({
     return classes;
   },
 
-  @discourseComputed('mobileView', 'tabletView', 'leftSidebarVisible', 'sidebarMinimized')
-  leftClasses(mobileView, tabletView, visible, sidebarMinimized) {
-    return this.buildSidebarClasses(mobileView, tabletView, visible, 'left', sidebarMinimized);
+  @discourseComputed('mobileView', 'tabletView', 'leftSidebarVisible', 'leftSidebarMinimized')
+  leftClasses(mobileView, tabletView, visible, leftSidebarMinimized) {
+    return this.buildSidebarClasses(mobileView, tabletView, visible, 'left', leftSidebarMinimized);
   },
   
-  @discourseComputed('mobileView', 'tabletView', 'rightSidebarVisible', 'sidebarMinimized')
-  rightClasses(mobileView, tabletView, visible, sidebarMinimized) {
-    return this.buildSidebarClasses(mobileView, tabletView, visible, 'right', sidebarMinimized);
+  @discourseComputed('mobileView', 'tabletView', 'rightSidebarVisible')
+  rightClasses(mobileView, tabletView, visible) {
+    return this.buildSidebarClasses(mobileView, tabletView, visible, 'right', false);
   },
   
   buildSidebarClasses(mobileView, tabletView, visible, side, sidebarMinimized) {
@@ -335,8 +336,8 @@ export default Mixin.create({
     }
   },
 
-  @discourseComputed('path', 'mobileView', 'leftSidebarVisible', 'sidebarMinimized')
-  leftStyle(path, mobileView, visible, sidebarMinimized) {
+  @discourseComputed('path', 'mobileView', 'leftSidebarVisible', 'leftSidebarMinimized')
+  leftStyle(path, mobileView, visible, leftSidebarMinimized) {
     const width = this.siteSettings.layouts_sidebar_left_width;
 
     let string;
@@ -346,15 +347,15 @@ export default Mixin.create({
       string = `width: ${visible ? width : 0}px;`;
     }
 
-    if (!mobileView && sidebarMinimized) {
+    if (!mobileView && leftSidebarMinimized) {
       string = 'width: max-content';
     }
 
     return htmlSafe(string);
   },
 
-  @discourseComputed('path', 'mobileView', 'rightSidebarVisible', 'sidebarMinimized')
-  rightStyle(path, mobileView, visible, sidebarMinimized) {
+  @discourseComputed('path', 'mobileView', 'rightSidebarVisible')
+  rightStyle(path, mobileView, visible) {
     const width = this.siteSettings.layouts_sidebar_right_width;
 
     let string;
@@ -362,10 +363,6 @@ export default Mixin.create({
       string = `width: 100vw; transform: translateX(${visible ? `0` : `100vw`});`
     } else {
       string = `width: ${visible ? width : 0}px;`;
-    }
-
-    if (!mobileView && sidebarMinimized) {
-      string = 'width: max-content';
     }
 
     return htmlSafe(string);
