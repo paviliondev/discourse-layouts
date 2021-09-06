@@ -33,7 +33,7 @@
   left: 0;
   bottom: 0;
   box-sizing: border-box;
-  background-color: $secondary;
+  background-color: var(--secondary);
   z-index: 300;
   box-shadow: 0 -2px 4px -1px rgba(0,0,0,0.25);
   display: flex;
@@ -86,8 +86,8 @@ aside.sidebar.mobile {
   .sidebar-container {
     max-height: unset;
     min-height: 100vh;
-    background-color: $secondary;
-    border-right: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+    background-color: var(--secondary);
+    border-right: 1px solid var(--primary-low);
     position: absolute;
     max-width: 80%;
     
@@ -97,7 +97,7 @@ aside.sidebar.mobile {
     
     .widget-container {
       border: none;
-      border-bottom: 1px solid dark-light-diff($primary, $secondary, 90%, -65%);
+      border-bottom: 1px solid var(--primary-low);
     }
   }
   
