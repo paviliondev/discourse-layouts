@@ -84,6 +84,10 @@ export default Mixin.create({
 
     let leftSidebarVisible = this.sidebarVisibleDefault('left');
     let rightSidebarVisible = this.sidebarVisibleDefault('right');
+    let cachedLeftSidebar = localStorage.getItem('layouts-left-sidebar-minimized');
+    let leftSidebarMinimized = ['true', 'false'].includes(cachedLeftSidebar) ?
+      cachedLeftSidebar === 'true' :
+      settings.layouts_sidebar_left_default_minimized;
 
     this.setProperties({
       mainLeftOffset,
@@ -92,7 +96,7 @@ export default Mixin.create({
       rightSidebarVisible,
       leftWidgetsSet: false,
       rightWidgetsSet: false,
-      leftSidebarMinimized: settings.layouts_sidebar_left_default_minimized,
+      leftSidebarMinimized,
       rightSidebarMinimized: false
     });
 
@@ -173,6 +177,7 @@ export default Mixin.create({
 
     sides.forEach(side => {
       if (type === 'minimize') {
+        localStorage.setItem('layouts-left-sidebar-minimized', value);
         this.set(`${side}SidebarMinimized`, value);
       } else {
         let newVal = [true, false].includes(value) ? value : !Boolean(this[`${side}SidebarVisible`]); 
