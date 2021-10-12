@@ -41,6 +41,7 @@ export default {
     
     withPluginApi('0.8.32', api => {
       api.modifyClass('controller:discovery', {
+        pluginId: "discourse-layouts",
         router: service(),
         currentPath: readOnly("router.currentRouteName"),
         navigationDefault: controller("navigation/default"),
@@ -60,11 +61,13 @@ export default {
       });
       
       api.modifyClass('controller:topic', {
+        pluginId: "discourse-layouts",
         category: alias('model.category'),
         userHideRightSidebar: false
       });
       
       api.modifyClass('component:topic-navigation', {
+        pluginId: "discourse-layouts",
         controller: controller('topic'),
         
         @observes('controller.hasRightSidebar')

@@ -206,6 +206,8 @@ function setupContext(context, app) {
   
   withPluginApi('0.8.32', api => {
     api.modifyClass(`route:${route}`, {
+      pluginId: "discourse-layouts",
+
       renderTemplate() {
         this.render('sidebar-wrapper');
         this.render(template, {
@@ -222,7 +224,7 @@ function setupContext(context, app) {
 
     if (controllerExists) {
       api.modifyClass(controllerClass, Sidebars);
-      api.modifyClass(controllerClass, { context: name });
+      api.modifyClass(controllerClass, { pluginId: "discourse-layouts", context: name });
     } else {
       console.log('Layouts context is missing a controller: ', name);
     }
