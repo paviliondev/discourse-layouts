@@ -4,6 +4,10 @@ $timeline-buffer: 100px;
 body .main-content.topic {
   .container.posts {
     grid-template-columns: calc(100% - 100px) 100px;
+
+    @media screen and (max-width: 924px) {
+      grid-template-areas: "posts posts";
+    }
   }
 
   .topic-area > .loading-container {
