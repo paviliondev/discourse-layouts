@@ -6,6 +6,7 @@ import { withPluginApi } from 'discourse/lib/plugin-api';
 import { dasherize } from "@ember/string";
 
 const layoutsNamespace = "layouts";
+const PLUGIN_ID = 'discourse-layouts';
 
 const contexts = [
   'discovery',
@@ -206,7 +207,7 @@ function setupContext(context, app) {
   
   withPluginApi('0.8.32', api => {
     api.modifyClass(`route:${route}`, {
-      pluginId: "discourse-layouts",
+      pluginId: PLUGIN_ID,
 
       renderTemplate() {
         this.render('sidebar-wrapper');
@@ -224,7 +225,7 @@ function setupContext(context, app) {
 
     if (controllerExists) {
       api.modifyClass(controllerClass, Sidebars);
-      api.modifyClass(controllerClass, { pluginId: "discourse-layouts", context: name });
+      api.modifyClass(controllerClass, { pluginId: PLUGIN_ID, context: name });
     } else {
       console.log('Layouts context is missing a controller: ', name);
     }

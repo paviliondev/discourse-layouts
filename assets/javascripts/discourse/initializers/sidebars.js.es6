@@ -6,6 +6,8 @@ import { readOnly } from "@ember/object/computed";
 import { setupContexts, getContextFromAttr, normalizeContext, layoutsNamespace } from "../lib/layouts";
 import { withPluginApi } from 'discourse/lib/plugin-api';
 
+const PLUGIN_ID = 'discourse-layouts';
+
 export default {
   name: 'sidebars',
   initialize(container, app) {
@@ -41,7 +43,7 @@ export default {
     
     withPluginApi('0.8.32', api => {
       api.modifyClass('controller:discovery', {
-        pluginId: "discourse-layouts",
+        pluginId: PLUGIN_ID,
         router: service(),
         currentPath: readOnly("router.currentRouteName"),
         navigationDefault: controller("navigation/default"),
@@ -61,13 +63,13 @@ export default {
       });
       
       api.modifyClass('controller:topic', {
-        pluginId: "discourse-layouts",
+        pluginId: PLUGIN_ID,
         category: alias('model.category'),
         userHideRightSidebar: false
       });
       
       api.modifyClass('component:topic-navigation', {
-        pluginId: "discourse-layouts",
+        pluginId: PLUGIN_ID,
         controller: controller('topic'),
         
         @observes('controller.hasRightSidebar')
