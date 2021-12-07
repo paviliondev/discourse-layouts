@@ -54,7 +54,10 @@ export default Mixin.create({
   
   @discourseComputed('rightSidebarVisible')
   toggleRightSidebarIcon(visible) {
-    return visible ? 'minus' : 'plus';
+    const settings = this.siteSettings;
+    return visible ?
+      settings.layouts_sidebar_hide_icon :
+      settings.layouts_sidebar_show_icon;
   },
   
   @discourseComputed('leftSidebarVisible')
