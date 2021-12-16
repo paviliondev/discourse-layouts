@@ -49,7 +49,7 @@ export default Mixin.create({
     return !mobileView &&
       this.siteSettings[`layouts_sidebar_${side}_can_hide`].split('|')
         .map(normalizeContext)
-        .indexOf(context) > -1;
+        .includes(normalizeContext(context));
   },
   
   @discourseComputed('rightSidebarVisible')
