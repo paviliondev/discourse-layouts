@@ -48,7 +48,8 @@ export default Mixin.create({
   canHide(context, side, mobileView) {
     return !mobileView &&
       this.siteSettings[`layouts_sidebar_${side}_can_hide`].split('|')
-        .map(normalizeContext);
+        .map(normalizeContext)
+        .includes(normalizeContext(context));
   },
   
   @discourseComputed('rightSidebarVisible')
