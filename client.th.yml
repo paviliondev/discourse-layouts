@@ -1,0 +1,40 @@
+th:
+  admin_js:
+    admin:
+      layouts:
+        label: "Layouts"
+        widgets:
+          nav: "Widgets"
+          title: "Layouts Widgets"
+          add: "Add Widget"
+          widget: "Widget"
+          save: "Save"
+          enabled: "Enabled"
+          none: "No widgets"
+          select: "Select"
+          select_widget: "Select a widget..."
+          remove: "Remove"
+          order:
+            label: "Order"
+            start: "Start"
+            end: "End"
+          position:
+            label: "Position"
+            left: "Left"
+            right: "Right"
+          filter:
+            label: "Filters"
+          context:
+            label: "Contexts"
+            discovery: "Topic List"
+          group:
+            label: "Groups"
+            users: "Users"
+            guests: "Guests"
+            hidden: "Hidden"
+          category:
+            label: "Categories"
+          excluded_category:
+            label: "Excluded Categories"
+        settings:
+          label: "Settings"
