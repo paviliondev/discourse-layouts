@@ -20,21 +20,21 @@ ta:
             end: "End"
           position:
             label: "Position"
-            left: "Left"
-            right: "Right"
+            left: "இடது"
+            right: "வலது"
           filter:
             label: "Filters"
           context:
             label: "Contexts"
             discovery: "Topic List"
           group:
-            label: "Groups"
-            users: "Users"
+            label: "குழுக்கள்"
+            users: "பயனர்கள்"
             guests: "Guests"
             hidden: "Hidden"
           category:
-            label: "Categories"
+            label: "வகைகள்"
           excluded_category:
-            label: "Excluded Categories"
+            label: "விலக்கப்பட்ட வகைகள்"
         settings:
           label: "Settings"
