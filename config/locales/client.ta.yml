@@ -2,39 +2,39 @@ ta:
   admin_js:
     admin:
       layouts:
-        label: "Layouts"
+        label: "தளவமைப்புகள்"
         widgets:
-          nav: "Widgets"
-          title: "Layouts Widgets"
-          add: "Add Widget"
-          widget: "Widget"
-          save: "Save"
-          enabled: "Enabled"
-          none: "No widgets"
-          select: "Select"
-          select_widget: "Select a widget..."
-          remove: "Remove"
+          nav: "விட்ஜெட்டுகள்"
+          title: "தளவமைப்பு விட்ஜெட்டுகள்"
+          add: "விட்ஜெட்டைச் சேர்க்கவும்"
+          widget: "விட்ஜெட்"
+          save: "சேமி"
+          enabled: "இயக்கப்பட்டது"
+          none: "விட்ஜெட்டுகள் இல்லை"
+          select: "தேர்ந்தெடு"
+          select_widget: "விட்ஜெட்டைத் தேர்ந்தெடுக்கவும்..."
+          remove: "வெளியே எடு"
           order:
-            label: "Order"
-            start: "Start"
-            end: "End"
+            label: "வரிசை முறை"
+            start: "தொடங்கு"
+            end: "முடிவு"
           position:
-            label: "Position"
+            label: "நிலை"
             left: "இடது"
             right: "வலது"
           filter:
-            label: "Filters"
+            label: "வடிப்பான்கள்"
           context:
-            label: "Contexts"
-            discovery: "Topic List"
+            label: "சூழல்கள்"
+            discovery: "தலைப்புகளின் பட்டியல்"
           group:
             label: "குழுக்கள்"
             users: "பயனர்கள்"
-            guests: "Guests"
-            hidden: "Hidden"
+            guests: "விருந்தினர்"
+            hidden: "மறைக்கப்பட்டது"
           category:
             label: "வகைகள்"
           excluded_category:
             label: "விலக்கப்பட்ட வகைகள்"
         settings:
-          label: "Settings"
+          label: "அமைத்தல்"
