@@ -1,0 +1,22 @@
+kn:
+  site_settings:
+    layouts_enabled: "Enable Layouts plugin"
+    layouts_sidebar_left_width: "Left sidebar width (pixels)"
+    layouts_sidebar_right_width: "Right sidebar width (pixels)"
+    layouts_sidebar_left_position: "Left sidebar positioning"
+    layouts_sidebar_right_position: "Right sidebar positioning"
+    layouts_sidebar_left_can_hide: "User can hide left sidebar in these contexts"
+    layouts_sidebar_right_can_hide: "User can hide right sidebar in these contexts"
+    layouts_sidebar_hide_icon: "Hide sidebar icon. See <a href='https://github.com/discourse/discourse/blob/master/lib/svg_sprite/svg_sprite.rb#L4'>list of available icons</a>."
+    layouts_sidebar_show_icon: "Show sidebar icon. See <a href='https://github.com/discourse/discourse/blob/master/lib/svg_sprite/svg_sprite.rb#L4'>list of available icons</a>."
+    layouts_sidebar_left_default_visibility: "Determines if left sidebar is showing on initial load. Sidebar will not show if it has no widgets."
+    layouts_sidebar_right_default_visibility: "Determines if right sidebar is showing on initial load. Sidebar will not show if it has no widgets."
+    layouts_sidebar_left_default_minimized: "Left sidebar minimized by default"
+    layouts_sidebar_mobile_threshold: "Window width (px) when mobile layout is applied"
+    layouts_sidebar_tablet_threshold: "Window width (px) when tablet layout is applied"
+    layouts_mobile_enabled: "Enable mobile layouts"
+    layouts_mobile_menu: |
+      List of menu items for bottom mobile menu with format type~~icon~~url.
+      icon can be either a fontawesome class or an absolute image url.
+      type can be either 'left' or 'right' for mobile sidebar toggle, or 'link' for link.
+      url is only necessary for 'link' type.
