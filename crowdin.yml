@@ -1,0 +1,5 @@
+files:
+  - source: config/locales/client.en.yml
+    translation: /client.%two_letters_code%.yml
+  - source: config/locales/server.en.yml
+    translation: /server.%two_letters_code%.yml
