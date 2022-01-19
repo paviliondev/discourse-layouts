@@ -1,0 +1,40 @@
+ta:
+  admin_js:
+    admin:
+      layouts:
+        label: "Layouts"
+        widgets:
+          nav: "Widgets"
+          title: "Layouts Widgets"
+          add: "Add Widget"
+          widget: "Widget"
+          save: "Save"
+          enabled: "Enabled"
+          none: "No widgets"
+          select: "Select"
+          select_widget: "Select a widget..."
+          remove: "Remove"
+          order:
+            label: "Order"
+            start: "Start"
+            end: "End"
+          position:
+            label: "Position"
+            left: "இடது"
+            right: "வலது"
+          filter:
+            label: "Filters"
+          context:
+            label: "Contexts"
+            discovery: "Topic List"
+          group:
+            label: "குழுக்கள்"
+            users: "பயனர்கள்"
+            guests: "Guests"
+            hidden: "Hidden"
+          category:
+            label: "வகைகள்"
+          excluded_category:
+            label: "விலக்கப்பட்ட வகைகள்"
+        settings:
+          label: "Settings"
