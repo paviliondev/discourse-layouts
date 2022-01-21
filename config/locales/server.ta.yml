@@ -14,7 +14,7 @@ ta:
     layouts_sidebar_left_default_minimized: "Left sidebar minimized by default"
     layouts_sidebar_mobile_threshold: "Window width (px) when mobile layout is applied"
     layouts_sidebar_tablet_threshold: "Window width (px) when tablet layout is applied"
-    layouts_mobile_enabled: "மொபைல் தளவமைப்புகளை இயக்கு"
+    layouts_mobile_enabled: "Enable mobile layouts"
     layouts_mobile_menu: |
       List of menu items for bottom mobile menu with format type~~icon~~url.
       icon can be either a fontawesome class or an absolute image url.
