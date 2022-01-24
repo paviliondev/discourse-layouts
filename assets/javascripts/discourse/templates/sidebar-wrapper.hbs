@@ -36,6 +36,7 @@
   {{/if}}
   
   <div class="main-content {{mainClasses}}" style={{mainStyle}}>
+    {{plugin-outlet name="above-layouts-main-content"}}
     {{outlet 'main-content'}}
   </div>
   
