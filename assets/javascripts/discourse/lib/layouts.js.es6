@@ -221,8 +221,8 @@ function setupContext(context, app) {
     let controllerExists = api._resolveClass(controllerClass);
 
     if (controllerExists) {
-      api.modifyClass(controllerClass, Sidebars);
-      api.modifyClass(controllerClass, { context: name });
+      api.modifyClass(controllerClass, Sidebars);      
+      api.modifyClass(controllerClass, { layouts_context: name });
     } else {
       console.log('Layouts context is missing a controller: ', name);
     }
