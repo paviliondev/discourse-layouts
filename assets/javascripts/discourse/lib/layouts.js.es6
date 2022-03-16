@@ -222,6 +222,11 @@ function setupContext(context, app) {
 
     if (controllerExists) {
       api.modifyClass(controllerClass, Sidebars);
+      
+      if (context.name === 'search') {
+        api.modifyClass(controllerClass, { skip_context: true, context: name });
+      }
+      
       api.modifyClass(controllerClass, { context: name });
     } else {
       console.log('Layouts context is missing a controller: ', name);
