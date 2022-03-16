@@ -35,12 +35,12 @@ export default Mixin.create({
   widgetsSet: or('leftWidgetsSet', 'rightWidgetsSet'),
   leftFull: equal('siteSettings.layouts_sidebar_left_position', 'full'),
   
-  @discourseComputed('context', 'mobileView')
+  @discourseComputed('layouts_context', 'mobileView')
   canHideRightSidebar(context, mobileView) {
     return this.canHide(context, 'right', mobileView);
   },
   
-  @discourseComputed('context', 'mobileView')
+  @discourseComputed('layouts_context', 'mobileView')
   canHideLeftSidebar(context, mobileView) {
     return this.canHide(context, 'left', mobileView);
   },
