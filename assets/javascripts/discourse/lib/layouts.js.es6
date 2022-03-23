@@ -15,7 +15,7 @@ const contexts = [
   'tags-index',
   {
     name: 'tag-show',
-    template: 'tags-show'
+    template: 'tag-show'
   },
   'groups-index',
   'groups-new',
