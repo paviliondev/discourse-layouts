@@ -35,12 +35,12 @@ export default Mixin.create({
   widgetsSet: or('leftWidgetsSet', 'rightWidgetsSet'),
   leftFull: equal('siteSettings.layouts_sidebar_left_position', 'full'),
   
-  @discourseComputed('context', 'mobileView')
+  @discourseComputed('layouts_context', 'mobileView')
   canHideRightSidebar(context, mobileView) {
     return this.canHide(context, 'right', mobileView);
   },
   
-  @discourseComputed('context', 'mobileView')
+  @discourseComputed('layouts_context', 'mobileView')
   canHideLeftSidebar(context, mobileView) {
     return this.canHide(context, 'left', mobileView);
   },
@@ -49,12 +49,15 @@ export default Mixin.create({
     return !mobileView &&
       this.siteSettings[`layouts_sidebar_${side}_can_hide`].split('|')
         .map(normalizeContext)
-        .indexOf(context) > -1;
+        .includes(normalizeContext(context));
   },
   
   @discourseComputed('rightSidebarVisible')
   toggleRightSidebarIcon(visible) {
-    return visible ? 'minus' : 'plus';
+    const settings = this.siteSettings;
+    return visible ?
+      settings.layouts_sidebar_hide_icon :
+      settings.layouts_sidebar_show_icon;
   },
   
   @discourseComputed('leftSidebarVisible')

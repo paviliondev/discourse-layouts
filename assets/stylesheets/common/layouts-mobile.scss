@@ -16,6 +16,10 @@
       border: none;
     }
 
+    .container.posts {
+      grid-template-columns: unset;
+    }
+
     .topic-post>.boxed>.row {
       padding: 5px;
     }

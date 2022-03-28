@@ -18,22 +18,25 @@
         sidebarMinimized=leftSidebarMinimized
         category=category
         filter=sidebarFilter
-        context=context}}
+        context=layouts_context}}
       
       {{plugin-outlet
         name="sidebar-left-bottom"
+        tagName="span"
+        connectorTagName="div"
         args=(hash
           customSidebarProps=customSidebarProps
           category=category
           tabletView=tabletView
           mobileView=mobileView
           sidebarMinimized=leftSidebarMinimized
-          context=context
+          context=layouts_context
           path=path)}}
     </aside>
   {{/if}}
   
   <div class="main-content {{mainClasses}}" style={{mainStyle}}>
+    {{plugin-outlet name="above-layouts-main-content"}}
     {{outlet 'main-content'}}
   </div>
   
@@ -56,17 +59,19 @@
         sidebarMinimized=rightSidebarMinimized
         category=category
         filter=sidebarFilter
-        context=context}}
+        context=layouts_context}}
       
       {{plugin-outlet
         name="sidebar-right-bottom"
+        tagName="span"
+        connectorTagName="div"
         args=(hash 
           customSidebarProps=customSidebarProps
           category=category
           tabletView=tabletView
           mobileView=mobileView
           sidebarMinimized=rightSidebarMinimized
-          context=context
+          context=layouts_context
           path=path)}}
     </aside>
   {{/if}}
