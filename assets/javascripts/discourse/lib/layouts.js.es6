@@ -225,7 +225,7 @@ function setupContext(context, app) {
 
     if (controllerExists) {
       api.modifyClass(controllerClass, Sidebars);
-      api.modifyClass(controllerClass, { pluginId: PLUGIN_ID, context: name });
+      api.modifyClass(controllerClass, { pluginId: PLUGIN_ID, layouts_context: name });
     } else {
       console.log('Layouts context is missing a controller: ', name);
     }
