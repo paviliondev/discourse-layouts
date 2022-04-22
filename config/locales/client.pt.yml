@@ -23,18 +23,18 @@ pt:
             left: "Esquerda"
             right: "Direita"
           filter:
-            label: "Filters"
+            label: "Filtros"
           context:
-            label: "Contexts"
-            discovery: "Topic List"
+            label: "Contextos"
+            discovery: "Lista de tópicos"
           group:
-            label: "Groups"
-            users: "Users"
-            guests: "Guests"
-            hidden: "Hidden"
+            label: "Grupos"
+            users: "Usuários"
+            guests: "Convidados"
+            hidden: "Esconder"
           category:
-            label: "Categories"
+            label: "Categorias"
           excluded_category:
-            label: "Excluded Categories"
+            label: "Categorias Excluídas"
         settings:
-          label: "Settings"
+          label: "Configurações"
