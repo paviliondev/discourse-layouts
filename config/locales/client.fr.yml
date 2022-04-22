@@ -20,7 +20,7 @@ fr:
             end: "End"
           position:
             label: "Position"
-            left: "Left"
+            left: "À gauche"
             right: "Right"
           filter:
             label: "Filters"
