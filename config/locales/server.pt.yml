@@ -1,22 +1,22 @@
 pt:
   site_settings:
-    layouts_enabled: "Enable Layouts plugin"
-    layouts_sidebar_left_width: "Left sidebar width (pixels)"
-    layouts_sidebar_right_width: "Right sidebar width (pixels)"
-    layouts_sidebar_left_position: "Left sidebar positioning"
-    layouts_sidebar_right_position: "Right sidebar positioning"
-    layouts_sidebar_left_can_hide: "User can hide left sidebar in these contexts"
-    layouts_sidebar_right_can_hide: "User can hide right sidebar in these contexts"
-    layouts_sidebar_hide_icon: "Hide sidebar icon. See <a href='https://github.com/discourse/discourse/blob/master/lib/svg_sprite/svg_sprite.rb#L4'>list of available icons</a>."
-    layouts_sidebar_show_icon: "Show sidebar icon. See <a href='https://github.com/discourse/discourse/blob/master/lib/svg_sprite/svg_sprite.rb#L4'>list of available icons</a>."
-    layouts_sidebar_left_default_visibility: "Determines if left sidebar is showing on initial load. Sidebar will not show if it has no widgets."
-    layouts_sidebar_right_default_visibility: "Determines if right sidebar is showing on initial load. Sidebar will not show if it has no widgets."
-    layouts_sidebar_left_default_minimized: "Left sidebar minimized by default"
-    layouts_sidebar_mobile_threshold: "Window width (px) when mobile layout is applied"
-    layouts_sidebar_tablet_threshold: "Window width (px) when tablet layout is applied"
-    layouts_mobile_enabled: "Enable mobile layouts"
+    layouts_enabled: "Habilitar plugin Layouts"
+    layouts_sidebar_left_width: "Largura da barra lateral esquerda (pixels)"
+    layouts_sidebar_right_width: "Largura da barra lateral direita (pixels)"
+    layouts_sidebar_left_position: "Posicionamento da barra lateral esquerda"
+    layouts_sidebar_right_position: "Posicionamento da barra lateral direita"
+    layouts_sidebar_left_can_hide: "O usuário pode ocultar a barra lateral esquerda nestes contextos"
+    layouts_sidebar_right_can_hide: "O usuário pode ocultar a barra lateral direita nesses contextos"
+    layouts_sidebar_hide_icon: "Mostrar ícone da barra lateral. Veja <a href='https://github.com/discourse/discourse/blob/master/lib/svg_sprite/svg_sprite.rb#L4'>lista de ícones disponíveis</a>."
+    layouts_sidebar_show_icon: "Mostrar ícone da barra lateral. Veja <a href='https://github.com/discourse/discourse/blob/master/lib/svg_sprite/svg_sprite.rb#L4'>lista de ícones disponíveis</a>."
+    layouts_sidebar_left_default_visibility: "Determina se a barra lateral esquerda está sendo exibida no carregamento inicial. Barra lateral não será exibida se não tem widgets."
+    layouts_sidebar_right_default_visibility: "Determina se a barra lateral esquerda está sendo exibida no carregamento inicial. Barra lateral não será exibida se não tem widgets."
+    layouts_sidebar_left_default_minimized: "Barra lateral esquerda minimizada por padrão"
+    layouts_sidebar_mobile_threshold: "Largura da janela (px) quando o layout móvel é aplicado"
+    layouts_sidebar_tablet_threshold: "Largura da janela (px) quando o layout do tablet é aplicado"
+    layouts_mobile_enabled: "Ativar layouts móveis"
     layouts_mobile_menu: |
-      List of menu items for bottom mobile menu with format type~~icon~~url.
-      icon can be either a fontawesome class or an absolute image url.
-      type can be either 'left' or 'right' for mobile sidebar toggle, or 'link' for link.
-      url is only necessary for 'link' type.
+      Lista de itens de menu para baixo menu móvel com tipo ~~~icon~~url.
+      ícone pode ser uma classe fontawesome ou uma Url de imagem absoluta.
+      tipo pode ser tanto 'esquerda' ou 'direita' para alternância na barra lateral móvel, ou 'link' para o link.
+      url só é necessária para o tipo 'link'.
