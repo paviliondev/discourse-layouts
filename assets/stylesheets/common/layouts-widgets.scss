@@ -3,7 +3,7 @@ aside.sidebar {
   position: relative;
 
   &.not-visible {
-    .sidebar-container {
+    .layouts-sidebar-container {
       display: none;
     }
 
@@ -13,7 +13,7 @@ aside.sidebar {
   }
 
   &.fixed {
-    .sidebar-container {
+    .layouts-sidebar-container {
       position: fixed;
       max-height: calc(100vh - 100px);
       overflow-y: auto;
@@ -25,7 +25,7 @@ aside.sidebar {
   }
 
   &.sticky {
-    .sidebar-container {
+    .layouts-sidebar-container {
       position: sticky;
       max-height: calc(100vh - 100px);
       overflow: auto;
@@ -47,7 +47,7 @@ aside.sidebar {
     background: var(--primary-very-low);
     box-shadow: inset -30px 0px 14px rgba(0, 0, 0, 0.04);
 
-    .sidebar-container {
+    .layouts-sidebar-container {
       width: 100%;
     }
 
@@ -86,7 +86,7 @@ aside.sidebar {
   }
 }
 
-.sidebar-container {
+.layouts-sidebar-container {
   width: inherit;
   z-index: 10;
 
@@ -159,7 +159,7 @@ aside.sidebar {
       }
     }
 
-    .sidebar-container {
+    .layouts-sidebar-container {
       position: relative !important;
       min-height: 100%;
       padding-bottom: 0;

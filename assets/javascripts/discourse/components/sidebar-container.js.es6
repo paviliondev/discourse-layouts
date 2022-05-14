@@ -7,7 +7,7 @@ import { getAttrFromContext } from "../lib/layouts";
 import { inject as service } from "@ember/service";
 
 export default MountWidget.extend({
-  classNameBindings: [':sidebar-container', 'editing'],
+  classNameBindings: [':layouts-sidebar-container', 'editing'],
   widget: 'sidebar',
   router: service(),
   path: alias("router._router.currentPath"),
