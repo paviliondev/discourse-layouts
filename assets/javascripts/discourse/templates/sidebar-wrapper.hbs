@@ -4,7 +4,7 @@
       {{#if canHideLeftSidebar}}
         {{d-button
           class="toggle-sidebar left"
-          action="toggleSidebar"
+          action=(action "toggleSidebar")
           actionParam="left"
           icon=toggleLeftSidebarIcon}}
       {{/if}}
@@ -45,7 +45,7 @@
       {{#if canHideRightSidebar}}
         {{d-button
           class="toggle-sidebar right"
-          action="toggleSidebar"
+          action=(action "toggleSidebar")
           actionParam="right"
           icon=toggleRightSidebarIcon}}
       {{/if}}
@@ -81,7 +81,7 @@
       {{#each mobileMenuItems as |item|}}
         {{#d-button
           class=item.class
-          action=item.action
+          action=(action item.action)
           actionParam=item.actionParam
         }}
           {{item.icon}}

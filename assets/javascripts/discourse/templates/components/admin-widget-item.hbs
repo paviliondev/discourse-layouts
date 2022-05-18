@@ -26,14 +26,14 @@
       {{loading-spinner size="small"}}
     {{else}}
       {{d-button
-        action="save"
+        action=(action "save")
         class="btn btn-primary"
         label="admin.layouts.widgets.save"
         icon="save"
         disabled=saveDisabled}}
         
       {{d-button
-        action="remove"
+        action=(action "remove")
         class="btn"
         label="admin.layouts.widgets.remove"
         icon="times"}}
