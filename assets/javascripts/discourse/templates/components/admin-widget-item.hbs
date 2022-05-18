@@ -4,6 +4,7 @@
       {{combo-box
         value=widget.name
         content=widgetList
+        onChange=(action "updateNewWidgetName")
         options=(hash
           none='admin.layouts.widgets.select_widget'
           allowAny=true
@@ -26,14 +27,14 @@
       {{loading-spinner size="small"}}
     {{else}}
       {{d-button
-        action="save"
+        action=(action "save")
         class="btn btn-primary"
         label="admin.layouts.widgets.save"
         icon="save"
         disabled=saveDisabled}}
         
       {{d-button
-        action="remove"
+        action=(action "remove")
         class="btn"
         label="admin.layouts.widgets.remove"
         icon="times"}}
