@@ -150,6 +150,10 @@ export default Component.extend({
     updateContexts(contexts) {
       this.update('contexts', contexts);
     },
+
+    updateNewWidgetName(widget) {
+      this.set("widget.name", widget);
+    },
        
     save() {
       if (!this.dirty) return false;

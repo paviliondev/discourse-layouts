@@ -4,6 +4,7 @@
       {{combo-box
         value=widget.name
         content=widgetList
+        onChange=(action "updateNewWidgetName")
         options=(hash
           none='admin.layouts.widgets.select_widget'
           allowAny=true
