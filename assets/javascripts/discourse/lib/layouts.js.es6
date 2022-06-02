@@ -4,6 +4,7 @@ import DiscourseRoute from "discourse/routes/discourse";
 import Controller from "@ember/controller";
 import { withPluginApi } from 'discourse/lib/plugin-api';
 import { dasherize } from "@ember/string";
+import I18n from "I18n";
 
 const layoutsNamespace = "layouts";
 const PLUGIN_ID = 'discourse-layouts';
@@ -38,19 +39,19 @@ const contexts = [
     route: 'full-page-search',
     controller: 'full-page-search',
     template: 'full-page-search'
-  }  
+  }
 ]
 
 function addSidebarProps(props) {
   if ($.isEmptyObject(props)) return;
-  
+
   const container = Discourse.__container__;
   const appEvents = container.lookup("service:app-events");
-  
+
   contexts.forEach(context => {
     const controllerName = contextAttr(context, 'controller');
     const controller = container.lookup(`controller:${controllerName}`);
-    
+
     if (controller) {
       controller.set(
         'customSidebarProps',
@@ -58,7 +59,7 @@ function addSidebarProps(props) {
       )
     }
   });
-  
+
   appEvents.trigger('sidebars:rerender');
 }
 
@@ -67,13 +68,13 @@ const namespace = 'layouts';
 
 function createLayoutsWidget(name, opts) {
   const fullName = `${namespace}-${name}`;
-  
+
   const widget = createWidget(fullName,
     Object.assign({},
       {
         tagName: `div.widget-container.${fullName}`,
         buildKey: () => fullName,
-            
+
         shouldRender(attrs) {
           return true;
         }
@@ -81,9 +82,9 @@ function createLayoutsWidget(name, opts) {
       opts
     )
   )
-  
+
   _layouts_widget_registry[fullName] = widget;
-    
+
   return widget;
 }
 
@@ -108,7 +109,7 @@ function normalizeContext(input, opts={}) {
     admin: ["admin"],
     search: ["search"]
   };
-  
+
   let context = Object.keys(map).find((c) => map[c].includes(input));
 
   if (opts.name) {
@@ -125,7 +126,7 @@ function normalizeContext(input, opts={}) {
       search: 'search.search_button',
     }[context])
   }
-  
+
   return context;
 };
 
@@ -137,7 +138,7 @@ function setupContexts(app) {
 
 function contextAttr(context, attr) {
   let result;
-  
+
   if (typeof context === 'object') {
     if (context[attr]) {
       result = context[attr];
@@ -147,11 +148,11 @@ function contextAttr(context, attr) {
   } else {
     result = context;
   }
-  
+
   if (attr === 'template') {
     result = result.replace(/-/g, '.');
   }
-  
+
   return result;
 }
 
@@ -174,7 +175,7 @@ function isCamelCase(value) {
 
 function getContextFromAttr(value, attr) {
   let result;
-  
+
   if (attr === 'route') {
     if (isCamelCase(value)) {
       value = dasherize(value);
@@ -204,7 +205,7 @@ function setupContext(context, app) {
   const controller = contextAttr(context, 'controller');
   const template = contextAttr(context, 'template');
   const model = contextAttr(context, 'model');
-  
+
   withPluginApi('0.8.32', api => {
     api.modifyClass(`route:${route}`, {
       pluginId: PLUGIN_ID,
@@ -219,7 +220,7 @@ function setupContext(context, app) {
         });
       }
     });
-    
+
     let controllerClass = `controller:${controller}`;
     let controllerExists = api._resolveClass(controllerClass);
 

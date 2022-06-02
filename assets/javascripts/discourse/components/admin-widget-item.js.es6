@@ -4,24 +4,25 @@ import { default as discourseComputed, observes } from 'discourse-common/utils/d
 import { not, empty } from "@ember/object/computed";
 import { computed } from "@ember/object";
 import Component from '@ember/component';
+import I18n from "I18n";
 
 function buildSelectKit(items, type=null) {
   return items.map(item => {
     let name = item;
     let id = item;
-    
+
     if (['position', 'order'].indexOf(type) > -1 && isNaN(item)) {
       name = I18n.t(`admin.layouts.widgets.${type}.${item}`);
     }
-    
+
     if (type === 'filter') {
       name = I18n.t(`filters.${item}.title`);
     }
-    
+
     if (type === 'context') {
       name = normalizeContext(item, { name: true });
     }
-    
+
     if (['group', 'category'].indexOf(type) > -1) {
       if (item === 0) {
         name = I18n.t('categories.all');
@@ -30,7 +31,7 @@ function buildSelectKit(items, type=null) {
         id = item.id;
       }
     }
-    
+
     return {
       id,
       name
@@ -48,11 +49,11 @@ export default Component.extend({
   classNames: 'admin-layouts-widget',
   saveDisabled: not('dirty'),
   dirty: false,
-  
-  positionList: computed(function() { 
+
+  positionList: computed(function() {
     return buildSelectKit(['left', 'right'], 'position');
   }),
-  
+
   @discourseComputed('widgets.length')
   orderList(widgetCount) {
     const items = ['start', 'end'];
@@ -63,15 +64,15 @@ export default Component.extend({
     }
     return buildSelectKit(items, 'order');
   },
-  
-  contextList: computed(function() { 
+
+  contextList: computed(function() {
     return buildSelectKit(listNormalisedContexts(), 'context');
   }),
-  
-  filterList: computed(function() { 
+
+  filterList: computed(function() {
     return buildSelectKit([...this.site.filters, 'top', 'categories'], 'filter');
   }),
-  
+
   @discourseComputed('site.groups')
   groupList(siteGroups) {
     let list = buildSelectKit(siteGroups.filter((group) => {
@@ -79,22 +80,22 @@ export default Component.extend({
     }), 'group');
     return list;
   },
-  
+
   @discourseComputed('site.categories')
   categoryList(siteCategories) {
     return buildSelectKit([0, ...siteCategories], 'category');
   },
 
   didInsertElement() {
-    this._super(...arguments);    
+    this._super(...arguments);
     if (!this.widget.isNew) {
       this.set('existingWidget', JSON.parse(JSON.stringify(this.widget)));
     }
   },
-  
+
   update(type, value) {
     this.set(`widget.${type}`, value);
-    
+
     const widget = this.widget;
     if (widget.isNew) {
       this.set('dirty', !!widget.name);
@@ -102,12 +103,12 @@ export default Component.extend({
       this.set('dirty', value !== this.existingWidget[type]);
     }
   },
-  
+
   @discourseComputed('widget.name')
   widgetDisplayName(name) {
     return generateDisplayName(name);
   },
-  
+
   @discourseComputed
   widgetList() {
     return listLayoutsWidgets().map(name => {
@@ -122,31 +123,31 @@ export default Component.extend({
     updateOrder(order) {
       this.update('order', order);
     },
-    
+
     updatePosition(position) {
       this.update('position', position);
     },
-    
+
     updateGroups(groups) {
       this.update('groups', groups);
     },
-    
+
     updateEnabled(enabled) {
       this.update('enabled', enabled);
     },
-    
+
     updateCategoryIds(categoryIds) {
       this.update('category_ids', categoryIds);
     },
-    
+
     updateExcludedCategoryIds(categoryIds) {
       this.update('excluded_category_ids', categoryIds);
     },
-    
+
     updateFilters(filters) {
       this.update('filters', filters);
     },
-    
+
     updateContexts(contexts) {
       this.update('contexts', contexts);
     },
@@ -154,18 +155,18 @@ export default Component.extend({
     updateNewWidgetName(widget) {
       this.set("widget.name", widget);
     },
-       
+
     save() {
       if (!this.dirty) return false;
-      
+
       const widget = this.widget;
-            
+
       if (widget.isNew && !widget.name) {
         return false;
       }
-      
+
       this.set('saving', true);
-      
+
       LayoutWidget.save(widget).then(result => {
         if (result.widget) {
           this.setProperties({
@@ -175,15 +176,15 @@ export default Component.extend({
         } else if (this.existingWidget) {
           this.set('widget', this.existingWidget);
         }
-        
+
         this.set('dirty', false);
       }).finally(() => this.set('saving', false));
     },
-    
+
     remove() {
       const widget = this.widget;
       if (!widget) return false;
-      
+
       this.set('saving', true);
       LayoutWidget.remove(widget).then(result => {
         if (result.success) {
