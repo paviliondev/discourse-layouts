@@ -32,13 +32,13 @@ jobs:
       - name: Install semver
         run: npm install --include=dev
 
-      - name: Check version
-        uses: actions/github-script@v5
-        with:
-          script: |
-            const semver = require('semver');
-            const { head_version, base_version } = process.env;
-
-            if (semver.lte(head_version, base_version)) {
-              core.setFailed("Head version is equal to or lower than base version.");
-            }
+      #- name: Check version
+        #uses: actions/github-script@v5
+        #with:
+          #script: |
+            #const semver = require('semver');
+            #const { head_version, base_version } = process.env;
+            #
+            #if (semver.lte(head_version, base_version)) {
+              #core.setFailed("Head version is equal to or lower than base version.");
+            #}
