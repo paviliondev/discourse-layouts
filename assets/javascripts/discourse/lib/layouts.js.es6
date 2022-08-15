@@ -1,10 +1,9 @@
 import { createWidget } from 'discourse/widgets/widget';
 import Sidebars from '../mixins/sidebars';
-import DiscourseRoute from "discourse/routes/discourse";
-import Controller from "@ember/controller";
 import { withPluginApi } from 'discourse/lib/plugin-api';
 import { dasherize } from "@ember/string";
 import I18n from "I18n";
+import deprecated from "discourse-common/lib/deprecated";
 
 const layoutsNamespace = "layouts";
 const PLUGIN_ID = 'discourse-layouts';
@@ -40,12 +39,19 @@ const contexts = [
     controller: 'full-page-search',
     template: 'full-page-search'
   }
-]
+];
 
-function addSidebarProps(props) {
-  if ($.isEmptyObject(props)) return;
+function addSidebarProps(props, container = null) {
+  if ($.isEmptyObject(props)) {return;}
 
-  const container = Discourse.__container__;
+  if (!container) {
+    deprecated("you must pass 'container' as a second argument to addSidebarProps", {
+      dropFrom: "3.0.0",
+    });
+  }
+
+  // eslint-disable-next-line no-undef
+  container = container  || Discourse.__container__;
   const appEvents = container.lookup("service:app-events");
 
   contexts.forEach(context => {
@@ -56,7 +62,7 @@ function addSidebarProps(props) {
       controller.set(
         'customSidebarProps',
         Object.assign({}, controller.customSidebarProps, props)
-      )
+      );
     }
   });
 
@@ -75,13 +81,14 @@ function createLayoutsWidget(name, opts) {
         tagName: `div.widget-container.${fullName}`,
         buildKey: () => fullName,
 
+        // eslint-disable-next-line no-unused-vars
         shouldRender(attrs) {
           return true;
         }
       },
       opts
     )
-  )
+  );
 
   _layouts_widget_registry[fullName] = widget;
 
@@ -89,7 +96,7 @@ function createLayoutsWidget(name, opts) {
 }
 
 function lookupLayoutsWidget(name) {
-  return _layouts_widget_registry[name]
+  return _layouts_widget_registry[name];
 }
 
 function listLayoutsWidgets() {
@@ -124,16 +131,16 @@ function normalizeContext(input, opts={}) {
       review: 'review.title',
       admin: 'admin_title',
       search: 'search.search_button',
-    }[context])
+    }[context]);
   }
 
   return context;
 };
 
-function setupContexts(app) {
+function setupContexts() {
   contexts.forEach(context => {
-    setupContext(context, app);
-  })
+    setupContext(context);
+  });
 }
 
 function contextAttr(context, attr) {
@@ -199,7 +206,7 @@ function listNormalisedContexts() {
   return contexts.map(context => normalizeContext(contextAttr(context, 'name')));
 }
 
-function setupContext(context, app) {
+function setupContext(context) {
   const name = contextAttr(context, 'name');
   const route = contextAttr(context, 'route');
   const controller = contextAttr(context, 'controller');
@@ -229,7 +236,8 @@ function setupContext(context, app) {
       klass.class.reopen(Sidebars);
       api.modifyClass(controllerClass, { pluginId: PLUGIN_ID, layouts_context: name });
     } else {
-      console.log('Layouts context is missing a controller: ', name);
+      // eslint-disable-next-line no-console
+      console.warn('Layouts context is missing a controller: ', name);
     }
   });
 }
@@ -245,4 +253,4 @@ export {
   getContextFromAttr,
   listNormalisedContexts,
   layoutsNamespace
-}
+};

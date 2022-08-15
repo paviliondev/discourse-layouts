@@ -1,6 +1,5 @@
 import { createWidget } from 'discourse/widgets/widget';
 import { lookupLayoutsWidget, normalizeContext } from '../lib/layouts';
-import { later } from "@ember/runloop";
 
 const customWidgets = [];
 const addCustomWidget = function(widget) {
@@ -24,7 +23,6 @@ export default createWidget('sidebar', {
   tagName: 'div.sidebar-content',
 
   html(args) {
-    const user = this.currentUser;
     let {
       side,
       context,
@@ -61,18 +59,18 @@ export default createWidget('sidebar', {
         props[p] = customSidebarProps[p];
       });
     };
-                        
+
     let widgets = siteWidgets.filter((w) => {
       if (
           (!this.widgetExists(w.name)) ||
-          
+
           (w.position !== side) ||
-          
+
           (w.contexts.indexOf(context) === -1) ||
-          
+
           (!category &&
             w.category_ids.length) ||
-          
+
           (category &&
             w.category_ids.length &&
             w.category_ids.map(id => Number(id))
@@ -80,7 +78,7 @@ export default createWidget('sidebar', {
                 return (Number(category.id) === id) ||
                   (Number(category.parent_category_id) === id);
               }).length === 0) ||
-          
+
           (category &&
             w.excluded_category_ids.length &&
             w.excluded_category_ids.map(id => Number(id))
@@ -88,7 +86,7 @@ export default createWidget('sidebar', {
                 return (Number(category.id) === id) ||
                   (Number(category.parent_category_id) === id);
               })) ||
-          
+
           (context === 'discovery' &&
             w.filters.length &&
             w.filters.indexOf(filter) === -1)
@@ -96,16 +94,16 @@ export default createWidget('sidebar', {
         return false;
       } else {
         let LayoutsWidgetClass = this.lookupWidgetClass(w.name);
-        return LayoutsWidgetClass && 
+        return LayoutsWidgetClass &&
           LayoutsWidgetClass.prototype.shouldRender(props);
       }
     }).sort(function(a, b) {
-      if (a.order === b.order) return 0;
-      if (a.order === 'start') return -1;
-      if (a.order === 'end' || b.order === 'start') return 1;
+      if (a.order === b.order) {return 0;}
+      if (a.order === 'start') {return -1;}
+      if (a.order === 'end' || b.order === 'start') {return 1;}
       return Number(a.order) - Number(b.order);
     }).map(w => w.name);
-            
+
     let contents = [];
 
     if (widgets.length > 0) {
@@ -113,7 +111,7 @@ export default createWidget('sidebar', {
         contents.push(this.attach(w, props));
       });
     }
-                
+
     controller.send('setWidgets', side, widgets);
 
     return contents;
@@ -126,7 +124,7 @@ export default createWidget('sidebar', {
       target: 'mobile'
     });
   },
-  
+
   widgetExists(widgetName) {
     return lookupLayoutsWidget(widgetName) ||
       this.register.lookupFactory(`widget:${widgetName}`);

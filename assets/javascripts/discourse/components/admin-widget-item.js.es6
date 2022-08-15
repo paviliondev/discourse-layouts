@@ -1,7 +1,7 @@
 import LayoutWidget from '../models/layout-widget';
-import { listLayoutsWidgets, normalizeContext, listNormalisedContexts } from '../lib/layouts';
-import { default as discourseComputed, observes } from 'discourse-common/utils/decorators';
-import { not, empty } from "@ember/object/computed";
+import { listLayoutsWidgets, listNormalisedContexts, normalizeContext } from '../lib/layouts';
+import discourseComputed from 'discourse-common/utils/decorators';
+import { not } from "@ember/object/computed";
 import { computed } from "@ember/object";
 import Component from '@ember/component';
 import I18n from "I18n";
@@ -35,8 +35,8 @@ function buildSelectKit(items, type=null) {
     return {
       id,
       name
-    }
-  })
+    };
+  });
 }
 
 function generateDisplayName(name) {
@@ -115,8 +115,8 @@ export default Component.extend({
       return {
         id: name,
         name: generateDisplayName(name)
-      }
-    })
+      };
+    });
   },
 
   actions: {
@@ -157,7 +157,7 @@ export default Component.extend({
     },
 
     save() {
-      if (!this.dirty) return false;
+      if (!this.dirty) {return false;}
 
       const widget = this.widget;
 
@@ -183,7 +183,7 @@ export default Component.extend({
 
     remove() {
       const widget = this.widget;
-      if (!widget) return false;
+      if (!widget) {return false;}
 
       this.set('saving', true);
       LayoutWidget.remove(widget).then(result => {

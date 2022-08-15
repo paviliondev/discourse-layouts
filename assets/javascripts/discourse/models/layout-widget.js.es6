@@ -8,7 +8,7 @@ LayoutWidget.reopenClass({
   list() {
     return ajax("/admin/layouts/widgets", {
       type: 'GET'
-    }).catch(popupAjaxError)
+    }).catch(popupAjaxError);
   },
 
   save(widget) {
@@ -17,13 +17,13 @@ LayoutWidget.reopenClass({
       data: {
         widget: JSON.parse(JSON.stringify(widget))
       }
-    }).catch(popupAjaxError)
+    }).catch(popupAjaxError);
   },
-  
+
   remove(widget) {
     return ajax(`/admin/layouts/widgets/${widget.name}`, {
       type: 'DELETE',
-    }).catch(popupAjaxError)
+    }).catch(popupAjaxError);
   }
 });
 

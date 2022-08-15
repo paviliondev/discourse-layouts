@@ -1,5 +1,5 @@
 import MountWidget from 'discourse/components/mount-widget';
-import { observes, default as discourseComputed, on } from 'discourse-common/utils/decorators';
+import { default as discourseComputed, observes, on } from 'discourse-common/utils/decorators';
 import { alias } from "@ember/object/computed";
 import { getOwner } from 'discourse-common/lib/get-owner';
 import { scheduleOnce } from "@ember/runloop";
@@ -14,12 +14,11 @@ export default MountWidget.extend({
 
   @on('init')
   setupRerenderTrigger() {
-    const side = this.get('side');
     this.appEvents.on('sidebars:rerender', () => {
       this.rerenderSidebars();
     });
   },
-  
+
   @discourseComputed('context')
   controller(context) {
     return getOwner(this).lookup(`controller:${getAttrFromContext(context, 'controller')}`);

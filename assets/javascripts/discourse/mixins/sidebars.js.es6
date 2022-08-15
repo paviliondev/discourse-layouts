@@ -1,5 +1,5 @@
 import { computed } from "@ember/object";
-import { alias, and, not, or, equal } from "@ember/object/computed";
+import { alias, and, equal, not, or } from "@ember/object/computed";
 import Mixin from "@ember/object/mixin";
 import { bind, debounce, scheduleOnce } from "@ember/runloop";
 import { inject as service } from "@ember/service";
@@ -7,7 +7,7 @@ import { htmlSafe } from "@ember/template";
 import { iconHTML } from "discourse-common/lib/icon-library";
 import { default as discourseComputed, observes, on } from 'discourse-common/utils/decorators';
 import DiscourseURL from "discourse/lib/url";
-import { normalizeContext, layoutsNamespace } from "../lib/layouts";
+import { layoutsNamespace, normalizeContext } from "../lib/layouts";
 
 function hasWidgets(widgets, widgetsSet) {
   return !widgetsSet || (widgets && widgets.length > 0);
@@ -34,24 +34,24 @@ export default Mixin.create({
   hasLeftSidebar: and('leftSidebarEnabled', 'leftSidebarVisible'),
   widgetsSet: or('leftWidgetsSet', 'rightWidgetsSet'),
   leftFull: equal('siteSettings.layouts_sidebar_left_position', 'full'),
-  
+
   @discourseComputed('layouts_context', 'mobileView')
   canHideRightSidebar(context, mobileView) {
     return this.canHide(context, 'right', mobileView);
   },
-  
+
   @discourseComputed('layouts_context', 'mobileView')
   canHideLeftSidebar(context, mobileView) {
     return this.canHide(context, 'left', mobileView);
   },
-  
+
   canHide(context, side, mobileView) {
     return !mobileView &&
       this.siteSettings[`layouts_sidebar_${side}_can_hide`].split('|')
         .map(normalizeContext)
         .includes(normalizeContext(context));
   },
-  
+
   @discourseComputed('rightSidebarVisible')
   toggleRightSidebarIcon(visible) {
     const settings = this.siteSettings;
@@ -59,7 +59,7 @@ export default Mixin.create({
       settings.layouts_sidebar_hide_icon :
       settings.layouts_sidebar_show_icon;
   },
-  
+
   @discourseComputed('leftSidebarVisible')
   toggleLeftSidebarIcon(visible) {
     const settings = this.siteSettings;
@@ -111,7 +111,7 @@ export default Mixin.create({
           rightWidgetsSet: false
         });
       }
-    })
+    });
   },
 
   @observes('leftSidebarEnabled', 'mobileView', 'tabletView', 'leftSidebarMinimized', 'leftSidebarVisible')
@@ -151,7 +151,7 @@ export default Mixin.create({
     }
 
     if (removeClasses.length) {
-      document.body.classList.remove(...removeClasses)
+      document.body.classList.remove(...removeClasses);
     }
   },
 
@@ -162,10 +162,10 @@ export default Mixin.create({
   },
 
   sidebarVisibleDefault(side) {
-    if (this.mobileView) return false;
-    return this.siteSettings[`layouts_sidebar_${side}_default_visibility`] == 'show';
+    if (this.mobileView) {return false;}
+    return this.siteSettings[`layouts_sidebar_${side}_default_visibility`] === 'show';
   },
-  
+
   toggleSidebars(opts) {
     const mobileView = this.mobileView;
     const { side, value, target } = opts;
@@ -174,19 +174,19 @@ export default Mixin.create({
     if (
       (target === 'mobile' && !mobileView) ||
       (target === 'desktop' && mobileView)
-    ) return;
+    ) {return;}
 
     let sides = side ? [side] : ['left', 'right'];
 
-    sides.forEach(side => {
+    sides.forEach(s => {
       if (type === 'minimize') {
         localStorage.setItem('layouts-left-sidebar-minimized', value);
-        this.set(`${side}SidebarMinimized`, value);
+        this.set(`${s}SidebarMinimized`, value);
       } else {
-        let newVal = [true, false].includes(value) ? value : !Boolean(this[`${side}SidebarVisible`]); 
+        let newVal = [true, false].includes(value) ? value : !Boolean(this[`${s}SidebarVisible`]);
 
         if (mobileView) {
-          const $sidebar = $(`.sidebar.${side}`);      
+          const $sidebar = $(`.sidebar.${s}`);
           const $sidebarCloak = $(".sidebar-cloak");
 
           if (newVal) {
@@ -200,7 +200,7 @@ export default Mixin.create({
           }
         }
 
-        this.set(`${side}SidebarVisible`, newVal);
+        this.set(`${s}SidebarVisible`, newVal);
       }
     });
   },
@@ -235,14 +235,14 @@ export default Mixin.create({
           this.setProperties({
             tabletView: true,
             leftSidebarMinimized: true
-          })
+          });
         }
       } else {
         if (tabletView) {
           this.setProperties({
             tabletView: false,
             leftSidebarMinimized: false,
-          })
+          });
         }
       }
     }
@@ -259,38 +259,38 @@ export default Mixin.create({
   ) mainClasses(path, loading, mobileView, tabletView, hasRight, hasLeft, showMenu) {
     let p = path.split('.');
     let classes = `${p[0]} ${p[1] ? p[1].split(/(?=[A-Z])/)[0] : ''}`;
-    
+
     if (hasLeft || hasRight) {
       classes += ' has-sidebars';
     } else {
       classes += ' no-sidebars';
     }
-    if (hasLeft) classes += ' left-sidebar';
-    if (hasRight) classes += ' right-sidebar';
+    if (hasLeft) {classes += ' left-sidebar';}
+    if (hasRight) {classes += ' right-sidebar';}
     if (mobileView) {
       classes += ' mobile';
-      
+
       if (showMenu) {
         classes += ' has-menu';
       }
     }
-    if (tabletView) classes += ' tablet';
-    if (loading) classes += ' loading';
-   
+    if (tabletView) {classes += ' tablet';}
+    if (loading) {classes += ' loading';}
+
     return classes;
   },
 
   @discourseComputed('mobileView', 'tabletView', 'leftSidebarVisible', 'leftSidebarMinimized')
-  leftClasses(mobileView, tabletView, visible, leftSidebarMinimized) {
-    return this.buildSidebarClasses(mobileView, tabletView, visible, 'left', leftSidebarMinimized);
+  leftClasses(mobileView, tabletView, visible) {
+    return this.buildSidebarClasses(mobileView, tabletView, visible, 'left');
   },
-  
+
   @discourseComputed('mobileView', 'tabletView', 'rightSidebarVisible')
   rightClasses(mobileView, tabletView, visible) {
-    return this.buildSidebarClasses(mobileView, tabletView, visible, 'right', false);
+    return this.buildSidebarClasses(mobileView, tabletView, visible, 'right');
   },
-  
-  buildSidebarClasses(mobileView, tabletView, visible, side, sidebarMinimized) {
+
+  buildSidebarClasses(mobileView, tabletView, visible, side) {
     let classes = '';
 
     if (mobileView) {
@@ -311,10 +311,10 @@ export default Mixin.create({
     classes += ` ${this.siteSettings[`layouts_sidebar_${side}_position`]}`;
     return classes;
   },
-  
+
   @discourseComputed('path', 'hasLeftSidebar', 'hasRightSidebar')
   mainStyle(path, hasLeftSidebar, hasRightSidebar) {
-    if (this.mobileView) return;
+    if (this.mobileView) {return;}
     const mainLeftOffset = this.mainLeftOffset;
     const mainRightOffset = this.mainRightOffset;
     const leftFull = this.leftFull;
@@ -335,7 +335,7 @@ export default Mixin.create({
   },
 
   @discourseComputed('hasLeftSidebar', 'hasRightSidebar')
-  rootStyle(hasLeftSidebar, hasRightSidebar) {
+  rootStyle(hasLeftSidebar) {
     const root = document.documentElement;
     const leftFull = this.leftFull;
 
@@ -350,7 +350,7 @@ export default Mixin.create({
 
     let string;
     if (mobileView) {
-      string = `width: 100vw; transform: translateX(${visible ? '0' : `-100vw`});`
+      string = `width: 100vw; transform: translateX(${visible ? '0' : `-100vw`});`;
     } else {
       string = `width: ${visible ? width : 0}px;`;
     }
@@ -368,14 +368,14 @@ export default Mixin.create({
 
     let string;
     if (mobileView) {
-      string = `width: 100vw; transform: translateX(${visible ? `0` : `100vw`});`
+      string = `width: 100vw; transform: translateX(${visible ? `0` : `100vw`});`;
     } else {
       string = `width: ${visible ? width : 0}px;`;
     }
 
     return htmlSafe(string);
   },
-  
+
   @discourseComputed('leftSidebarEnabled', 'rightSidebarEnabled')
   mobileMenuItems() {
     const inputs = this.siteSettings.layouts_mobile_menu.split('|');
@@ -385,17 +385,17 @@ export default Mixin.create({
       let type = input.substring(0, firstSeperator), icon, url;
       let isLink = type === 'link';
       let isSidebarToggle = ['left', 'right'].indexOf(type) > -1;
-      
+
       if (isLink) {
         icon = input.substring(firstSeperator + 2, lastSeperator);
         url = input.substring(lastSeperator + 2, input.length);
       } else if (isSidebarToggle) {
         icon = input.substring(firstSeperator + 2, input.length);
       }
-      
+
       if (icon) {
         let iconClass, iconHtml, action, actionParam;
-                
+
         if (isSidebarToggle && this[`${type}SidebarEnabled`]) {
           iconClass = `mobile-toggle ${type}`;
           action = 'toggleSidebar';
@@ -405,14 +405,14 @@ export default Mixin.create({
           action = 'goToLink';
           actionParam = url;
         }
-        
+
         try {
           let iconUrl = new URL(icon);
           iconHtml = htmlSafe(`<img src=${iconUrl.href} class="image-icon">`);
         } catch (_) {
-          iconHtml = iconHTML(icon).htmlSafe(); 
+          iconHtml = iconHTML(icon).htmlSafe();
         }
-          
+
         if (iconHtml && iconClass && action && actionParam) {
           items.push({
             icon: iconHtml,
@@ -422,14 +422,14 @@ export default Mixin.create({
           });
         }
       }
-      
+
       return items;
     }, []);
   },
-  
+
   actions: {
     toggleSidebar(side) {
-      this.appEvents.trigger('sidebar:toggle', { side })
+      this.appEvents.trigger('sidebar:toggle', { side });
     },
 
     setWidgets(side, widgets) {
