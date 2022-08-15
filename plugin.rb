@@ -23,8 +23,8 @@ after_initialize do
     ../lib/layouts/category.rb
     ../extensions/category_bumped_at.rb
     ../config/routes.rb
-    ../serializers/layouts/widget.rb
-    ../controllers/layouts/widgets.rb
+    ../app/serializers/layouts/widget_serializer.rb
+    ../app/controllers/layouts/widgets_controller.rb
   ].each do |key|
     load File.expand_path(key, __FILE__)
   end
