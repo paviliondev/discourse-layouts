@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class DiscourseLayouts::WidgetsController < ::Admin::AdminController
   before_action :ensure_admin
 
@@ -5,10 +6,10 @@ class DiscourseLayouts::WidgetsController < ::Admin::AdminController
     render json: MultiJson.dump(serialize_widgets)
   end
 
-  def save    
+  def save
     handle_update_result(DiscourseLayouts::Widget.update(widget_params))
   end
-  
+
   def create
     handle_update_result(DiscourseLayouts::Widget.add(widget_params[:name],
       widget_params.slice!(:name)
@@ -24,9 +25,9 @@ class DiscourseLayouts::WidgetsController < ::Admin::AdminController
       render json: failed_json
     end
   end
-  
+
   private
-  
+
   def handle_update_result(result)
     if result[:widget]
       render json: success_json.merge(
@@ -44,7 +45,7 @@ class DiscourseLayouts::WidgetsController < ::Admin::AdminController
         root: false
     )
   end
-  
+
   def widget_params
     @widget_params ||= begin
       params.require(:widget)

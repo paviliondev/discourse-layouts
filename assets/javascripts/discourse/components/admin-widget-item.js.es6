@@ -1,31 +1,35 @@
-import LayoutWidget from '../models/layout-widget';
-import { listLayoutsWidgets, normalizeContext, listNormalisedContexts } from '../lib/layouts';
-import { default as discourseComputed, observes } from 'discourse-common/utils/decorators';
-import { not, empty } from "@ember/object/computed";
+import LayoutWidget from "../models/layout-widget";
+import {
+  listLayoutsWidgets,
+  listNormalisedContexts,
+  normalizeContext,
+} from "../lib/layouts";
+import discourseComputed from "discourse-common/utils/decorators";
+import { not } from "@ember/object/computed";
 import { computed } from "@ember/object";
-import Component from '@ember/component';
+import Component from "@ember/component";
 import I18n from "I18n";
 
-function buildSelectKit(items, type=null) {
-  return items.map(item => {
+function buildSelectKit(items, type = null) {
+  return items.map((item) => {
     let name = item;
     let id = item;
 
-    if (['position', 'order'].indexOf(type) > -1 && isNaN(item)) {
+    if (["position", "order"].indexOf(type) > -1 && isNaN(item)) {
       name = I18n.t(`admin.layouts.widgets.${type}.${item}`);
     }
 
-    if (type === 'filter') {
+    if (type === "filter") {
       name = I18n.t(`filters.${item}.title`);
     }
 
-    if (type === 'context') {
+    if (type === "context") {
       name = normalizeContext(item, { name: true });
     }
 
-    if (['group', 'category'].indexOf(type) > -1) {
+    if (["group", "category"].indexOf(type) > -1) {
       if (item === 0) {
-        name = I18n.t('categories.all');
+        name = I18n.t("categories.all");
       } else {
         name = item.name;
         id = item.id;
@@ -34,62 +38,69 @@ function buildSelectKit(items, type=null) {
 
     return {
       id,
-      name
-    }
-  })
+      name,
+    };
+  });
 }
 
 function generateDisplayName(name) {
-  return name.replace("layouts-", "")
-    .replace(/[_\-]+/g, ' ')
+  return name
+    .replace("layouts-", "")
+    .replace(/[_\-]+/g, " ")
     .replace(/(^\w|\b\w)/g, (m) => m.toUpperCase());
 }
 
 export default Component.extend({
-  classNames: 'admin-layouts-widget',
-  saveDisabled: not('dirty'),
+  classNames: "admin-layouts-widget",
+  saveDisabled: not("dirty"),
   dirty: false,
 
-  positionList: computed(function() {
-    return buildSelectKit(['left', 'right'], 'position');
+  positionList: computed(function () {
+    return buildSelectKit(["left", "right"], "position");
   }),
 
-  @discourseComputed('widgets.length')
+  @discourseComputed("widgets.length")
   orderList(widgetCount) {
-    const items = ['start', 'end'];
+    const items = ["start", "end"];
     if (widgetCount > 0) {
-      for (let i=1; i<=widgetCount; i++) {
+      for (let i = 1; i <= widgetCount; i++) {
         items.push(i.toString());
       }
     }
-    return buildSelectKit(items, 'order');
+    return buildSelectKit(items, "order");
   },
 
-  contextList: computed(function() {
-    return buildSelectKit(listNormalisedContexts(), 'context');
+  contextList: computed(function () {
+    return buildSelectKit(listNormalisedContexts(), "context");
   }),
 
-  filterList: computed(function() {
-    return buildSelectKit([...this.site.filters, 'top', 'categories'], 'filter');
+  filterList: computed(function () {
+    return buildSelectKit(
+      [...this.site.filters, "top", "categories"],
+      "filter"
+    );
   }),
 
-  @discourseComputed('site.groups')
+  @discourseComputed("site.groups")
   groupList(siteGroups) {
-    let list = buildSelectKit(siteGroups.filter((group) => {
-      return group.name !== 'everyone';
-    }), 'group');
+    let list = buildSelectKit(
+      siteGroups.filter((group) => {
+        return group.name !== "everyone";
+      }),
+      "group"
+    );
     return list;
   },
 
-  @discourseComputed('site.categories')
+  @discourseComputed("site.categories")
   categoryList(siteCategories) {
-    return buildSelectKit([0, ...siteCategories], 'category');
+    return buildSelectKit([0, ...siteCategories], "category");
   },
 
   didInsertElement() {
     this._super(...arguments);
     if (!this.widget.isNew) {
-      this.set('existingWidget', JSON.parse(JSON.stringify(this.widget)));
+      this.set("existingWidget", JSON.parse(JSON.stringify(this.widget)));
     }
   },
 
@@ -98,58 +109,58 @@ export default Component.extend({
 
     const widget = this.widget;
     if (widget.isNew) {
-      this.set('dirty', !!widget.name);
+      this.set("dirty", !!widget.name);
     } else {
-      this.set('dirty', value !== this.existingWidget[type]);
+      this.set("dirty", value !== this.existingWidget[type]);
     }
   },
 
-  @discourseComputed('widget.name')
+  @discourseComputed("widget.name")
   widgetDisplayName(name) {
     return generateDisplayName(name);
   },
 
   @discourseComputed
   widgetList() {
-    return listLayoutsWidgets().map(name => {
+    return listLayoutsWidgets().map((name) => {
       return {
         id: name,
-        name: generateDisplayName(name)
-      }
-    })
+        name: generateDisplayName(name),
+      };
+    });
   },
 
   actions: {
     updateOrder(order) {
-      this.update('order', order);
+      this.update("order", order);
     },
 
     updatePosition(position) {
-      this.update('position', position);
+      this.update("position", position);
     },
 
     updateGroups(groups) {
-      this.update('groups', groups);
+      this.update("groups", groups);
     },
 
     updateEnabled(enabled) {
-      this.update('enabled', enabled);
+      this.update("enabled", enabled);
     },
 
     updateCategoryIds(categoryIds) {
-      this.update('category_ids', categoryIds);
+      this.update("category_ids", categoryIds);
     },
 
     updateExcludedCategoryIds(categoryIds) {
-      this.update('excluded_category_ids', categoryIds);
+      this.update("excluded_category_ids", categoryIds);
     },
 
     updateFilters(filters) {
-      this.update('filters', filters);
+      this.update("filters", filters);
     },
 
     updateContexts(contexts) {
-      this.update('contexts', contexts);
+      this.update("contexts", contexts);
     },
 
     updateNewWidgetName(widget) {
@@ -157,7 +168,9 @@ export default Component.extend({
     },
 
     save() {
-      if (!this.dirty) return false;
+      if (!this.dirty) {
+        return false;
+      }
 
       const widget = this.widget;
 
@@ -165,34 +178,38 @@ export default Component.extend({
         return false;
       }
 
-      this.set('saving', true);
+      this.set("saving", true);
 
-      LayoutWidget.save(widget).then(result => {
-        if (result.widget) {
-          this.setProperties({
-            widget: result.widget,
-            existingWidget: JSON.parse(JSON.stringify(result.widget))
-          });
-        } else if (this.existingWidget) {
-          this.set('widget', this.existingWidget);
-        }
+      LayoutWidget.save(widget)
+        .then((result) => {
+          if (result.widget) {
+            this.setProperties({
+              widget: result.widget,
+              existingWidget: JSON.parse(JSON.stringify(result.widget)),
+            });
+          } else if (this.existingWidget) {
+            this.set("widget", this.existingWidget);
+          }
 
-        this.set('dirty', false);
-      }).finally(() => this.set('saving', false));
+          this.set("dirty", false);
+        })
+        .finally(() => this.set("saving", false));
     },
 
     remove() {
       const widget = this.widget;
-      if (!widget) return false;
+      if (!widget) {
+        return false;
+      }
 
-      this.set('saving', true);
-      LayoutWidget.remove(widget).then(result => {
+      this.set("saving", true);
+      LayoutWidget.remove(widget).then((result) => {
         if (result.success) {
           this.removeWidget(widget);
         } else {
-          this.set('saving', false);
-        };
+          this.set("saving", false);
+        }
       });
-    }
-  }
+    },
+  },
 });

@@ -1,7 +1,7 @@
-@import 'layouts-admin';
-@import 'layouts-topic';
-@import 'layouts-widgets';
-@import 'layouts-mobile';
+@import "layouts-admin";
+@import "layouts-topic";
+@import "layouts-widgets";
+@import "layouts-mobile";
 
 :root {
   --mainLeftOffset: 0px;
@@ -64,11 +64,13 @@ body:not(.layouts-left-full) .main-content {
     }
   }
 
-  &.left-sidebar, &.left-sidebar.loading {
+  &.left-sidebar,
+  &.left-sidebar.loading {
     margin-left: 20px;
   }
 
-  &.right-sidebar, &.right-sidebar.loading {
+  &.right-sidebar,
+  &.right-sidebar.loading {
     margin-right: 20px;
   }
 
@@ -89,7 +91,8 @@ body:not(.layouts-left-full) .main-content {
       margin: 7px 7px 0 7px;
     }
 
-    h2, .tags-admin-menu {
+    h2,
+    .tags-admin-menu {
       margin-top: 0;
     }
   }

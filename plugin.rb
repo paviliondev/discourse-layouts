@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 # name: discourse-layouts
 # about: A framework for custom Discourse layouts.
-# version: 0.2
+# version: 0.3
 # authors: Angus McLeod, Keegan George
 # contact_emails: development@pavilion.tech
 # url: https://github.com/paviliondev/discourse-layouts
@@ -22,8 +23,8 @@ after_initialize do
     ../lib/layouts/category.rb
     ../extensions/category_bumped_at.rb
     ../config/routes.rb
-    ../serializers/layouts/widget.rb
-    ../controllers/layouts/widgets.rb
+    ../app/serializers/layouts/widget_serializer.rb
+    ../app/controllers/layouts/widgets_controller.rb
   ].each do |key|
     load File.expand_path(key, __FILE__)
   end
