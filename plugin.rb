@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # name: discourse-layouts
 # about: A framework for custom Discourse layouts.
 # version: 0.2

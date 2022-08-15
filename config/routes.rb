@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 DiscourseLayouts::Engine.routes.draw do
   get 'widgets' => 'widgets#index'
   put 'widgets/:name' => 'widgets#save'
