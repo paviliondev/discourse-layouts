@@ -130,7 +130,7 @@ jobs:
         if: matrix.build_type == 'backend'
         run: bin/rake plugin:spec[${{ github.event.repository.name }}]
 
-      - name: Plugin QUnit
-        if: matrix.build_type == 'frontend'
-        run: QUNIT_EMBER_CLI=1 bundle exec rake plugin:qunit['${{ github.event.repository.name }}','1200000']
-        timeout-minutes: 10
+      #- name: Plugin QUnit
+        #if: matrix.build_type == 'frontend'
+        #run: QUNIT_EMBER_CLI=1 bundle exec rake plugin:qunit['${{ github.event.repository.name }}','1200000']
+        #timeout-minutes: 10
