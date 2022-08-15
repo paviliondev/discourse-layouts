@@ -22,10 +22,10 @@ body .main-content.topic {
 
   // TOC needs more breathing room when there's a left sidebar
   :not(.rtl) .d-toc-post .d-toc-article {
-    >.row {
+    > .row {
       padding-right: 20px;
     }
-    >.d-toc {
+    > .d-toc {
       max-width: 250px;
     }
   }
@@ -39,37 +39,32 @@ body:not(.layouts-left-full) .main-content.topic {
   &.left-sidebar {
     .topic-body {
       width: calc(
-        (#{$topic-body-width} +
-        #{$topic-body-width-padding*2} +
-        #{$body-extension})
-        - var(--mainLeftOffset)
+        (
+            #{$topic-body-width} + #{$topic-body-width-padding * 2} + #{$body-extension}
+          ) - var(--mainLeftOffset)
       );
       max-width: calc(
-        (#{$topic-body-width} +
-        #{$topic-body-width-padding*2} +
-        #{$body-extension})
-        - var(--mainLeftOffset)
+        (
+            #{$topic-body-width} + #{$topic-body-width-padding * 2} + #{$body-extension}
+          ) - var(--mainLeftOffset)
       );
     }
-    
+
     .post-notice,
     .small-action {
       max-width: calc(
-        (#{$topic-body-width} +
-        #{$topic-body-width-padding*2} +
-        #{$body-extension}) +
-        #{$topic-avatar-width}
-        - var(--mainLeftOffset)
+        (
+            #{$topic-body-width} + #{$topic-body-width-padding * 2} + #{$body-extension}
+          ) + #{$topic-avatar-width} - var(--mainLeftOffset)
       );
     }
-    
+
     .timeline-container {
-      margin-left: calc( 
-        (#{$topic-body-width} +
-        #{$topic-body-width-padding*2} +
-        #{$body-extension} +
-        #{$timeline-buffer})
-        - var(--mainLeftOffset)
+      margin-left: calc(
+        (
+            #{$topic-body-width} + #{$topic-body-width-padding * 2} + #{$body-extension} +
+              #{$timeline-buffer}
+          ) - var(--mainLeftOffset)
       );
     }
 
@@ -77,25 +72,23 @@ body:not(.layouts-left-full) .main-content.topic {
     :not(.rtl) .d-toc-post {
       article.onscreen-post > .row {
         display: flex;
-        
+
         .topic-avatar {
           float: none;
         }
       }
     }
   }
-  
+
   &.right-sidebar {
     #topic-progress-wrapper {
       max-width: calc(
-        (#{$topic-body-width} +
-        #{$body-extension}) +
-        #{$topic-avatar-width}
-        - var(--mainLeftOffset)
-        - #{$topic-body-width-padding*2}
+        (#{$topic-body-width} + #{$body-extension}) + #{$topic-avatar-width} - var(
+            --mainLeftOffset
+          ) - #{$topic-body-width-padding * 2}
       );
     }
-    
+
     .container.posts {
       display: block;
     }
@@ -108,7 +101,7 @@ body:not(.layouts-left-full) .main-content.topic {
   .container.posts {
     grid-template-areas: "posts";
     grid-template-columns: auto;
-    
+
     .topic-navigation {
       grid-area: unset;
       display: none;
@@ -118,7 +111,7 @@ body:not(.layouts-left-full) .main-content.topic {
     .container.posts {
       grid-template-areas: "posts timeline";
       grid-template-columns: auto auto;
-      
+
       .topic-navigation {
         grid-area: timeline;
       }

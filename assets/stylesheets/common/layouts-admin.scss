@@ -4,50 +4,50 @@
 
 .admin-layouts-widget-list {
   margin-top: 20px;
-} 
+}
 
 .admin-layouts-widget {
   border-top: 1px solid var(--primary-low);
   margin-top: 20px;
   padding: 20px 0;
-  
+
   .top {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
     min-height: 30px;
-    
+
     h3 {
       margin: 0;
     }
-    
+
     .details {
       display: flex;
       align-items: center;
     }
-    
+
     .enabled {
       display: flex;
       align-items: center;
-      
+
       input {
         margin: 0 7px 0 30px;
       }
     }
-    
+
     .controls {
       display: flex;
       align-items: center;
-      
+
       button {
         margin-left: 15px;
       }
     }
   }
-  
+
   .bottom {
     display: flex;
-    
+
     .taxonomy-attributes,
     .filter-attributes {
       display: flex;
@@ -55,19 +55,19 @@
       flex-direction: column;
       margin-left: 30px;
     }
-    
+
     .control-group {
       margin: 15px 0 0 0;
     }
-    
+
     .combo-box {
       width: 130px;
-      
+
       .select-kit-header {
         min-height: 36px;
       }
     }
-    
+
     .select-kit.multi-select {
       width: 100%;
     }

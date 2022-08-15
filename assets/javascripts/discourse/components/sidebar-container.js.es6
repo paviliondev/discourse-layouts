@@ -1,27 +1,33 @@
-import MountWidget from 'discourse/components/mount-widget';
-import { default as discourseComputed, observes, on } from 'discourse-common/utils/decorators';
+import MountWidget from "discourse/components/mount-widget";
+import {
+  default as discourseComputed,
+  observes,
+  on,
+} from "discourse-common/utils/decorators";
 import { alias } from "@ember/object/computed";
-import { getOwner } from 'discourse-common/lib/get-owner';
+import { getOwner } from "discourse-common/lib/get-owner";
 import { scheduleOnce } from "@ember/runloop";
 import { getAttrFromContext } from "../lib/layouts";
 import { inject as service } from "@ember/service";
 
 export default MountWidget.extend({
-  classNameBindings: [':layouts-sidebar-container', 'editing'],
-  widget: 'sidebar',
+  classNameBindings: [":layouts-sidebar-container", "editing"],
+  widget: "sidebar",
   router: service(),
   path: alias("router._router.currentPath"),
 
-  @on('init')
+  @on("init")
   setupRerenderTrigger() {
-    this.appEvents.on('sidebars:rerender', () => {
+    this.appEvents.on("sidebars:rerender", () => {
       this.rerenderSidebars();
     });
   },
 
-  @discourseComputed('context')
+  @discourseComputed("context")
   controller(context) {
-    return getOwner(this).lookup(`controller:${getAttrFromContext(context, 'controller')}`);
+    return getOwner(this).lookup(
+      `controller:${getAttrFromContext(context, "controller")}`
+    );
   },
 
   buildArgs() {
@@ -40,17 +46,19 @@ export default MountWidget.extend({
       controller,
       mobileView,
       tabletView,
-      sidebarMinimized
+      sidebarMinimized,
     };
 
-    if (context === 'discovery') {
+    if (context === "discovery") {
       args.filter = this.filter;
     }
-    if (['discovery', 'topic'].indexOf(context) > -1 &&
-          path !== "discovery.categories") {
+    if (
+      ["discovery", "topic"].indexOf(context) > -1 &&
+      path !== "discovery.categories"
+    ) {
       args.category = this.category;
     }
-    if (context === 'topic') {
+    if (context === "topic") {
       args.topic = this.topic;
     }
 
@@ -62,11 +70,11 @@ export default MountWidget.extend({
     return args;
   },
 
-  @observes('path', 'mobileView', 'tabletView')
+  @observes("path", "mobileView", "tabletView")
   rerenderSidebars() {
     this.queueRerender();
-    scheduleOnce('afterRender', () => {
-      this.appEvents.trigger('sidebars:after-render');
+    scheduleOnce("afterRender", () => {
+      this.appEvents.trigger("sidebars:after-render");
     });
-  }
+  },
 });

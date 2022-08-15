@@ -1,82 +1,89 @@
-import { createWidget } from 'discourse/widgets/widget';
-import Sidebars from '../mixins/sidebars';
-import { withPluginApi } from 'discourse/lib/plugin-api';
+import { createWidget } from "discourse/widgets/widget";
+import Sidebars from "../mixins/sidebars";
+import { withPluginApi } from "discourse/lib/plugin-api";
 import { dasherize } from "@ember/string";
 import I18n from "I18n";
 import deprecated from "discourse-common/lib/deprecated";
 
 const layoutsNamespace = "layouts";
-const PLUGIN_ID = 'discourse-layouts';
+const PLUGIN_ID = "discourse-layouts";
 
 const contexts = [
-  'discovery',
-  'topic',
-  'user',
-  'users',
-  'tags-index',
+  "discovery",
+  "topic",
+  "user",
+  "users",
+  "tags-index",
   {
-    name: 'tag-show',
-    template: 'tag-show'
+    name: "tag-show",
+    template: "tag-show",
   },
-  'groups-index',
-  'groups-new',
-  'group',
+  "groups-index",
+  "groups-new",
+  "group",
   {
-    name: 'badges-index',
-    route: 'badges-index',
-    controller: 'badges/index'
+    name: "badges-index",
+    route: "badges-index",
+    controller: "badges/index",
   },
   {
-    name: 'badges-show',
-    route: 'badges-show',
-    controller: 'badges/show'
+    name: "badges-show",
+    route: "badges-show",
+    controller: "badges/show",
   },
-  'review',
-  'admin',
+  "review",
+  "admin",
   {
-    name: 'search',
-    route: 'full-page-search',
-    controller: 'full-page-search',
-    template: 'full-page-search'
-  }
+    name: "search",
+    route: "full-page-search",
+    controller: "full-page-search",
+    template: "full-page-search",
+  },
 ];
 
 function addSidebarProps(props, container = null) {
-  if ($.isEmptyObject(props)) {return;}
+  if ($.isEmptyObject(props)) {
+    return;
+  }
 
   if (!container) {
-    deprecated("you must pass 'container' as a second argument to addSidebarProps", {
-      dropFrom: "3.0.0",
-    });
+    deprecated(
+      "you must pass 'container' as a second argument to addSidebarProps",
+      {
+        dropFrom: "3.0.0",
+      }
+    );
   }
 
   // eslint-disable-next-line no-undef
-  container = container  || Discourse.__container__;
+  container = container || Discourse.__container__;
   const appEvents = container.lookup("service:app-events");
 
-  contexts.forEach(context => {
-    const controllerName = contextAttr(context, 'controller');
+  contexts.forEach((context) => {
+    const controllerName = contextAttr(context, "controller");
     const controller = container.lookup(`controller:${controllerName}`);
 
     if (controller) {
       controller.set(
-        'customSidebarProps',
+        "customSidebarProps",
         Object.assign({}, controller.customSidebarProps, props)
       );
     }
   });
 
-  appEvents.trigger('sidebars:rerender');
+  appEvents.trigger("sidebars:rerender");
 }
 
 const _layouts_widget_registry = {};
-const namespace = 'layouts';
+const namespace = "layouts";
 
 function createLayoutsWidget(name, opts) {
   const fullName = `${namespace}-${name}`;
 
-  const widget = createWidget(fullName,
-    Object.assign({},
+  const widget = createWidget(
+    fullName,
+    Object.assign(
+      {},
       {
         tagName: `div.widget-container.${fullName}`,
         buildKey: () => fullName,
@@ -84,7 +91,7 @@ function createLayoutsWidget(name, opts) {
         // eslint-disable-next-line no-unused-vars
         shouldRender(attrs) {
           return true;
-        }
+        },
       },
       opts
     )
@@ -103,42 +110,51 @@ function listLayoutsWidgets() {
   return Object.keys(_layouts_widget_registry);
 }
 
-function normalizeContext(input, opts={}) {
+function normalizeContext(input, opts = {}) {
   let map = {
-    discovery: ['topics', 'discovery', 'topic list', 'Topics', "Discovery", "Topic List"],
+    discovery: [
+      "topics",
+      "discovery",
+      "topic list",
+      "Topics",
+      "Discovery",
+      "Topic List",
+    ],
     topic: ["topic", "Topic"],
-    user: ["user", 'profile', "User", 'Profile'],
+    user: ["user", "profile", "User", "Profile"],
     users: ["users"],
     tag: ["tag", "tags", "Tag", "Tags", "tags-index", "tag-show"],
     group: ["group", "groups-index", "groups-new"],
     badge: ["badge", "badges-index", "badges-show"],
     review: ["review"],
     admin: ["admin"],
-    search: ["search"]
+    search: ["search"],
   };
 
   let context = Object.keys(map).find((c) => map[c].includes(input));
 
   if (opts.name) {
-    context = I18n.t({
-      discovery: 'admin.layouts.widgets.context.discovery',
-      topic: 'topic.title',
-      user: 'user.profile',
-      users: 'user.users',
-      tag: 'tagging.tags',
-      group: 'groups.title.one',
-      badge: 'admin.badges.badge',
-      review: 'review.title',
-      admin: 'admin_title',
-      search: 'search.search_button',
-    }[context]);
+    context = I18n.t(
+      {
+        discovery: "admin.layouts.widgets.context.discovery",
+        topic: "topic.title",
+        user: "user.profile",
+        users: "user.users",
+        tag: "tagging.tags",
+        group: "groups.title.one",
+        badge: "admin.badges.badge",
+        review: "review.title",
+        admin: "admin_title",
+        search: "search.search_button",
+      }[context]
+    );
   }
 
   return context;
-};
+}
 
 function setupContexts() {
-  contexts.forEach(context => {
+  contexts.forEach((context) => {
     setupContext(context);
   });
 }
@@ -146,18 +162,18 @@ function setupContexts() {
 function contextAttr(context, attr) {
   let result;
 
-  if (typeof context === 'object') {
+  if (typeof context === "object") {
     if (context[attr]) {
       result = context[attr];
     } else {
-      result = context['name'];
+      result = context["name"];
     }
   } else {
     result = context;
   }
 
-  if (attr === 'template') {
-    result = result.replace(/-/g, '.');
+  if (attr === "template") {
+    result = result.replace(/-/g, ".");
   }
 
   return result;
@@ -166,8 +182,8 @@ function contextAttr(context, attr) {
 function getAttrFromContext(contextName, attr) {
   let result;
 
-  contexts.some(context => {
-    if (contextAttr(context, 'name') === contextName) {
+  contexts.some((context) => {
+    if (contextAttr(context, "name") === contextName) {
       result = contextAttr(context, attr);
       return true;
     }
@@ -183,15 +199,15 @@ function isCamelCase(value) {
 function getContextFromAttr(value, attr) {
   let result;
 
-  if (attr === 'route') {
+  if (attr === "route") {
     if (isCamelCase(value)) {
       value = dasherize(value);
-    } else if (value.indexOf('.') !== -1) {
-      value = value.replace(/\./g, '-');
+    } else if (value.indexOf(".") !== -1) {
+      value = value.replace(/\./g, "-");
     }
   }
 
-  contexts.some(context => {
+  contexts.some((context) => {
     let contextValue = contextAttr(context, attr);
     if (contextValue === value) {
       result = contextValue;
@@ -203,29 +219,31 @@ function getContextFromAttr(value, attr) {
 }
 
 function listNormalisedContexts() {
-  return contexts.map(context => normalizeContext(contextAttr(context, 'name')));
+  return contexts.map((context) =>
+    normalizeContext(contextAttr(context, "name"))
+  );
 }
 
 function setupContext(context) {
-  const name = contextAttr(context, 'name');
-  const route = contextAttr(context, 'route');
-  const controller = contextAttr(context, 'controller');
-  const template = contextAttr(context, 'template');
-  const model = contextAttr(context, 'model');
+  const name = contextAttr(context, "name");
+  const route = contextAttr(context, "route");
+  const controller = contextAttr(context, "controller");
+  const template = contextAttr(context, "template");
+  const model = contextAttr(context, "model");
 
-  withPluginApi('0.8.32', api => {
+  withPluginApi("0.8.32", (api) => {
     api.modifyClass(`route:${route}`, {
       pluginId: PLUGIN_ID,
 
       renderTemplate() {
-        this.render('sidebar-wrapper');
+        this.render("sidebar-wrapper");
         this.render(template, {
-          into: 'sidebar-wrapper',
-          outlet: 'main-content',
+          into: "sidebar-wrapper",
+          outlet: "main-content",
           controller,
-          model: this.modelFor(model)
+          model: this.modelFor(model),
         });
-      }
+      },
     });
 
     let controllerClass = `controller:${controller}`;
@@ -234,10 +252,13 @@ function setupContext(context) {
     if (controllerExists) {
       const klass = api._resolveClass(controllerClass, {});
       klass.class.reopen(Sidebars);
-      api.modifyClass(controllerClass, { pluginId: PLUGIN_ID, layouts_context: name });
+      api.modifyClass(controllerClass, {
+        pluginId: PLUGIN_ID,
+        layouts_context: name,
+      });
     } else {
       // eslint-disable-next-line no-console
-      console.warn('Layouts context is missing a controller: ', name);
+      console.warn("Layouts context is missing a controller: ", name);
     }
   });
 }
@@ -252,5 +273,5 @@ export {
   getAttrFromContext,
   getContextFromAttr,
   listNormalisedContexts,
-  layoutsNamespace
+  layoutsNamespace,
 };
