@@ -5,6 +5,10 @@ export default DiscourseRoute.extend({
     this.transitionTo("adminLayouts.widgets");
   },
 
+  model() {
+    return this.store.findAll("theme");
+  },
+
   actions: {
     showSettings() {
       const controller = this.controllerFor("adminSiteSettings");

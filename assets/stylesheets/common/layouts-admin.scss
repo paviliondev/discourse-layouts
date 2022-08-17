@@ -26,9 +26,14 @@
       align-items: center;
     }
 
+    .control-group {
+      margin-right: 1rem;
+    }
+
     .enabled {
       display: flex;
       align-items: center;
+      margin-top: 12px;
 
       input {
         margin: 0 7px 0 30px;
@@ -42,6 +47,10 @@
       button {
         margin-left: 15px;
       }
+    }
+
+    input[type="text"] {
+      margin-bottom: 0;
     }
   }
 
@@ -71,5 +80,21 @@
     .select-kit.multi-select {
       width: 100%;
     }
+  }
+
+  .settings {
+    display: flex;
+    gap: 1em;
+
+    textarea {
+      width: 500px;
+      min-height: 150px;
+    }
+  }
+}
+
+.admin-install-layout-widget-modal {
+  .modal-inner-container {
+    width: 100%;
   }
 }

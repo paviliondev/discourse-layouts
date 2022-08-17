@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 class DiscourseLayouts::WidgetSerializer < ::ApplicationSerializer
-  attributes :name,
+  attributes :nickname,
+             :name,
+             :theme_id,
              :position,
              :order,
              :groups,
@@ -8,5 +10,6 @@ class DiscourseLayouts::WidgetSerializer < ::ApplicationSerializer
              :excluded_category_ids,
              :contexts,
              :filters,
-             :enabled
+             :enabled,
+             :settings
 end

@@ -6,7 +6,9 @@ en:
         widgets:
           nav: "Widgets"
           title: "Layouts Widgets"
-          add: "Add Widget"
+          add_widget: "Add Widget"
+          add: "Add"
+          install_and_add: "Install and Add"
           widget: "Widget"
           save: "Save"
           enabled: "Enabled"
@@ -14,6 +16,8 @@ en:
           select: "Select"
           select_widget: "Select a widget..."
           remove: "Remove"
+          settings: settings
+          nickname: Nickname
           order:
             label: "Order"
             start: "Start"

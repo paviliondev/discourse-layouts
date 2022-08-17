@@ -1,0 +1,15 @@
+<label class="control-label">{{label}}</label>
+<div class="controls">
+  {{#if isText}}
+    {{input
+      type="text"
+      value=currentValue
+      change=(action "changeInputValue")}}
+  {{/if}}
+
+  {{#if isTextarea}}
+    {{textarea
+      value=currentValue
+      key-press=(action "changeInputValue")}}
+  {{/if}}
+</div>

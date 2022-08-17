@@ -4,7 +4,9 @@ class DiscourseLayouts::Widget
 
   NAMESPACE = "layouts"
 
-  attr_accessor :name,
+  attr_accessor :nickname,
+                :name,
+                :theme_id,
                 :position,
                 :order,
                 :groups,
@@ -12,13 +14,16 @@ class DiscourseLayouts::Widget
                 :excluded_category_ids,
                 :filters,
                 :contexts,
-                :enabled
+                :enabled,
+                :settings
 
   def initialize(attrs = {})
     attrs = attrs.with_indifferent_access
     raise Discourse::InvalidParameters.new(:name) if attrs[:name].blank?
 
     @name = attrs[:name]
+    @nickname = attrs[:nickname]
+    @theme_id = attrs[:theme_id].to_i
     @position = attrs[:position].present? ? attrs[:position] : 'left'
     @order = attrs[:order].present? ? attrs[:order] : 'start'
 
@@ -28,6 +33,8 @@ class DiscourseLayouts::Widget
       val = val.map(&:to_s) if [:filters, :contexts].include?(attr)
       send("#{attr.to_s}=", val)
     end
+
+    @settings = attrs[:settings]
 
     @enabled = ActiveModel::Type::Boolean.new.cast(attrs[:enabled])
   end

@@ -1,7 +1,5 @@
 import LayoutWidget from "../models/layout-widget";
 import DiscourseRoute from "discourse/routes/discourse";
-import EmberObject from "@ember/object";
-import { A } from "@ember/array";
 
 export default DiscourseRoute.extend({
   model() {
@@ -9,6 +7,6 @@ export default DiscourseRoute.extend({
   },
 
   setupController(controller, model) {
-    controller.set("widgets", A(model.map((w) => EmberObject.create(w))));
+    controller.set("widgets", LayoutWidget.createtList(model));
   },
 });

@@ -75,6 +75,7 @@ function addSidebarProps(props, container = null) {
 }
 
 const _layouts_widget_registry = {};
+const _layouts_widget_settings = {};
 const namespace = "layouts";
 
 function createLayoutsWidget(name, opts) {
@@ -99,11 +100,19 @@ function createLayoutsWidget(name, opts) {
 
   _layouts_widget_registry[fullName] = widget;
 
+  if (opts.settings) {
+    _layouts_widget_settings[fullName] = opts.settings;
+  }
+
   return widget;
 }
 
 function lookupLayoutsWidget(name) {
   return _layouts_widget_registry[name];
+}
+
+function lookupLayoutsWidgetSettings(name) {
+  return _layouts_widget_settings[name];
 }
 
 function listLayoutsWidgets() {
@@ -263,10 +272,18 @@ function setupContext(context) {
   });
 }
 
+function generateDisplayName(name) {
+  return name
+    .replace("layouts-", "")
+    .replace(/[_\-]+/g, " ")
+    .replace(/(^\w|\b\w)/g, (m) => m.toUpperCase());
+}
+
 export {
   addSidebarProps,
   createLayoutsWidget,
   lookupLayoutsWidget,
+  lookupLayoutsWidgetSettings,
   listLayoutsWidgets,
   normalizeContext,
   setupContexts,
@@ -274,4 +291,5 @@ export {
   getContextFromAttr,
   listNormalisedContexts,
   layoutsNamespace,
+  generateDisplayName
 };

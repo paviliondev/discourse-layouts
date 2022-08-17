@@ -1,7 +1,7 @@
-<div class="admin-layouts-widget-title">  
+<div class="admin-layouts-widget-title">
   {{d-button
     action=(action "addWidget")
-    label="admin.layouts.widgets.add"
+    label="admin.layouts.widgets.add_widget"
     icon="plus"}}
 </div>
 
@@ -11,6 +11,7 @@
       {{admin-widget-item
         widget=widget
         widgets=widgets
+        widgetList=widgetList
         removeWidget=(action 'removeWidget')}}
     {{/each}}
   {{else}}

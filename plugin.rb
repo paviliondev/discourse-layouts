@@ -22,6 +22,7 @@ after_initialize do
     ../lib/layouts/widget.rb
     ../lib/layouts/category.rb
     ../extensions/category_bumped_at.rb
+    ../extensions/remote_theme.rb
     ../config/routes.rb
     ../app/serializers/layouts/widget_serializer.rb
     ../app/controllers/layouts/widgets_controller.rb
@@ -45,6 +46,7 @@ after_initialize do
   ::Category.prepend LayoutsCategoryExtension
   ::Category.singleton_class.prepend LayoutsCategoryClassExtension
   ::PostCreator.prepend LayoutsPostCreatorExtension
+  ::RemoteTheme.singleton_class.prepend LayoutsRemoteThemeExtension
 
   Site.preloaded_category_custom_fields << "bumped_at"
   add_to_serializer(:site_category, :bumped_at) { object.custom_fields['bumped_at'] }

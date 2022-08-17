@@ -111,14 +111,13 @@ export default createWidget("sidebar", {
           return 1;
         }
         return Number(a.order) - Number(b.order);
-      })
-      .map((w) => w.name);
+      });
 
     let contents = [];
 
     if (widgets.length > 0) {
       widgets.forEach((w) => {
-        contents.push(this.attach(w, props));
+        contents.push(this.attach(w.name, Object.assign({}, props, (w.settings || {}))));
       });
     }
 

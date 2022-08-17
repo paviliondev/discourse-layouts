@@ -1,10 +1,11 @@
 import LayoutWidget from "../models/layout-widget";
 import {
-  listLayoutsWidgets,
   listNormalisedContexts,
   normalizeContext,
+  generateDisplayName,
+  lookupLayoutsWidgetSettings
 } from "../lib/layouts";
-import discourseComputed from "discourse-common/utils/decorators";
+import discourseComputed, { observes } from "discourse-common/utils/decorators";
 import { not } from "@ember/object/computed";
 import { computed } from "@ember/object";
 import Component from "@ember/component";
@@ -41,13 +42,6 @@ function buildSelectKit(items, type = null) {
       name,
     };
   });
-}
-
-function generateDisplayName(name) {
-  return name
-    .replace("layouts-", "")
-    .replace(/[_\-]+/g, " ")
-    .replace(/(^\w|\b\w)/g, (m) => m.toUpperCase());
 }
 
 export default Component.extend({
@@ -115,19 +109,20 @@ export default Component.extend({
     }
   },
 
+  @observes('widget.nickname')
+  nicknameUpdated() {
+    let existingNickname = this.existingWidget.nickname || "";
+    this.set("dirty", this.widget.nickname !== existingNickname);
+  },
+
   @discourseComputed("widget.name")
   widgetDisplayName(name) {
     return generateDisplayName(name);
   },
 
-  @discourseComputed
-  widgetList() {
-    return listLayoutsWidgets().map((name) => {
-      return {
-        id: name,
-        name: generateDisplayName(name),
-      };
-    });
+  @discourseComputed("widget.name")
+  widgetSettings(name) {
+    return lookupLayoutsWidgetSettings(name);
   },
 
   actions: {
@@ -184,7 +179,7 @@ export default Component.extend({
         .then((result) => {
           if (result.widget) {
             this.setProperties({
-              widget: result.widget,
+              widget: LayoutWidget.create(result.widget),
               existingWidget: JSON.parse(JSON.stringify(result.widget)),
             });
           } else if (this.existingWidget) {
@@ -211,5 +206,9 @@ export default Component.extend({
         }
       });
     },
+
+    setDirty() {
+      this.set("dirty", true);
+    }
   },
 });

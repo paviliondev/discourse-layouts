@@ -51,6 +51,8 @@ class DiscourseLayouts::WidgetsController < ::Admin::AdminController
       params.require(:widget)
         .permit(
           :name,
+          :nickname,
+          :theme_id,
           :position,
           :order,
           :enabled,
@@ -58,7 +60,8 @@ class DiscourseLayouts::WidgetsController < ::Admin::AdminController
           category_ids: [],
           excluded_category_ids: [],
           filters: [],
-          contexts: []
+          contexts: [],
+          settings: {}
         ).to_h
     end
   end

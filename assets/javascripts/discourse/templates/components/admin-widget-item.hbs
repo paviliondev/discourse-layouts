@@ -1,18 +1,33 @@
 <div class="top">
   <div class="details">
-    {{#if widget.isNew}}
-      {{combo-box
-        value=widget.name
-        content=widgetList
-        onChange=(action "updateNewWidgetName")
-        options=(hash
-          none='admin.layouts.widgets.select_widget'
-          allowAny=true
-        )}}
-    {{else}}
-      <h3>{{widgetDisplayName}}</h3>
-    {{/if}}
-    
+    <div class="control-group nickname">
+      <label class="control-label">
+        {{i18n 'admin.layouts.widgets.nickname'}}
+      </label>
+      <div class="controls">
+        {{input type="text" value=widget.nickname}}
+      </div>
+    </div>
+
+    <div class="control-group theme">
+      <label class="control-label">
+        {{i18n 'admin.layouts.widgets.widget'}}
+        {{#if widget.settingsUrl}}
+          <a href="{{widget.settingsUrl}}">{{i18n 'admin.layouts.widgets.settings'}}</a>
+        {{/if}}
+      </label>
+      <div class="controls">
+        {{combo-box
+          value=widget.name
+          content=widgetList
+          onChange=(action "updateNewWidgetName")
+          options=(hash
+            none='admin.layouts.widgets.select_widget'
+            allowAny=true
+          )}}
+      </div>
+    </div>
+
     <div class="enabled">
       {{input
         type="checkbox"
@@ -21,7 +36,7 @@
       <span>{{i18n 'admin.layouts.widgets.enabled'}}</span>
     </div>
   </div>
-  
+
   <div class="controls">
     {{#if saving}}
       {{loading-spinner size="small"}}
@@ -32,7 +47,7 @@
         label="admin.layouts.widgets.save"
         icon="save"
         disabled=saveDisabled}}
-        
+
       {{d-button
         action=(action "remove")
         class="btn"
@@ -74,7 +89,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="filter-attributes">
     <div class="control-group contexts">
       <label class="control-label">
@@ -108,7 +123,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="taxonomy-attributes">
     <div class="control-group groups">
       <label class="control-label">
@@ -141,7 +156,7 @@
           )}}
       </div>
     </div>
-    
+
     <div class="control-group excluded-categories">
       <label class="control-label">
         {{i18n 'admin.layouts.widgets.excluded_category.label'}}
@@ -160,3 +175,10 @@
   </div>
 </div>
 
+{{#if widgetSettings}}
+  <div class="settings">
+    {{#each widgetSettings as |setting|}}
+      {{widget-setting setting=setting widget=widget dirty=dirty setDirty=(action "setDirty")}}
+    {{/each}}
+  </div>
+{{/if}}
