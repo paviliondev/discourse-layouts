@@ -4,17 +4,20 @@ import {
   observes,
   on,
 } from "discourse-common/utils/decorators";
-import { alias } from "@ember/object/computed";
+import { alias, readOnly } from "@ember/object/computed";
 import { getOwner } from "discourse-common/lib/get-owner";
 import { scheduleOnce } from "@ember/runloop";
 import { getAttrFromContext } from "../lib/layouts";
 import { inject as service } from "@ember/service";
 
 export default MountWidget.extend({
-  classNameBindings: [":layouts-sidebar-container", "editing"],
-  widget: "sidebar",
+  classNameBindings: [":layouts-widgets-container", "editing"],
+  widget: "layouts-widgets",
   router: service(),
   path: alias("router._router.currentPath"),
+  customSidebarProps: readOnly("controller.customSidebarProps"),
+  category: readOnly("controller.category"),
+  filter: alias("controller.layoutsFilter"),
 
   @on("init")
   setupRerenderTrigger() {
@@ -31,7 +34,7 @@ export default MountWidget.extend({
   },
 
   buildArgs() {
-    const side = this.side;
+    const position = this.position;
     const controller = this.controller;
     const context = this.context;
     const path = this.path;
@@ -42,7 +45,7 @@ export default MountWidget.extend({
     let args = {
       context,
       path,
-      side,
+      position,
       controller,
       mobileView,
       tabletView,

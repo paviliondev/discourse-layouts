@@ -88,7 +88,7 @@ aside.sidebar.mobile {
     height: 0;
   }
 
-  .layouts-sidebar-container {
+  .layouts-widgets-container {
     max-height: unset;
     min-height: 100vh;
     background-color: var(--secondary);
@@ -97,7 +97,7 @@ aside.sidebar.mobile {
     max-width: 80%;
     top: 0;
 
-    .sidebar-content {
+    .widgets-content {
       height: 100%;
     }
 
@@ -107,7 +107,7 @@ aside.sidebar.mobile {
     }
   }
 
-  &.right .layouts-sidebar-container {
+  &.right .layouts-widgets-container {
     right: 0;
   }
 }

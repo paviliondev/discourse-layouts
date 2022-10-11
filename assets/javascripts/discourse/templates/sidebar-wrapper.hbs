@@ -8,18 +8,15 @@
           actionParam="left"
           icon=toggleLeftSidebarIcon}}
       {{/if}}
-      
-      {{sidebar-container
-        side="left"
+
+      {{layouts-widgets-container
+        position="left"
         topic=model
-        customSidebarProps=customSidebarProps
         tabletView=tabletView
         mobileView=mobileView
         sidebarMinimized=leftSidebarMinimized
-        category=category
-        filter=sidebarFilter
         context=layouts_context}}
-      
+
       {{plugin-outlet
         name="sidebar-left-bottom"
         tagName="span"
@@ -34,12 +31,12 @@
           path=path)}}
     </aside>
   {{/if}}
-  
+
   <div class="main-content {{mainClasses}}" style={{mainStyle}}>
     {{plugin-outlet name="above-layouts-main-content"}}
     {{outlet 'main-content'}}
   </div>
-  
+
   {{#if rightSidebarEnabled}}
     <aside class="sidebar right {{rightClasses}}" style={{rightStyle}}>
       {{#if canHideRightSidebar}}
@@ -49,23 +46,20 @@
           actionParam="right"
           icon=toggleRightSidebarIcon}}
       {{/if}}
-      
-      {{sidebar-container
-        side="right"
+
+      {{layouts-widgets-container
+        position="right"
         topic=model
-        customSidebarProps=customSidebarProps
         tabletView=tabletView
         mobileView=mobileView
         sidebarMinimized=rightSidebarMinimized
-        category=category
-        filter=sidebarFilter
         context=layouts_context}}
-      
+
       {{plugin-outlet
         name="sidebar-right-bottom"
         tagName="span"
         connectorTagName="div"
-        args=(hash 
+        args=(hash
           customSidebarProps=customSidebarProps
           category=category
           tabletView=tabletView
@@ -75,7 +69,7 @@
           path=path)}}
     </aside>
   {{/if}}
-  
+
   {{#if showMobileMenu}}
     <div class="layouts-mobile-menu">
       {{#each mobileMenuItems as |item|}}

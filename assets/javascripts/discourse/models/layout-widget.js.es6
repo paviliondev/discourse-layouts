@@ -1,18 +1,27 @@
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import discourseComputed from "discourse-common/utils/decorators";
+import { generateDisplayName } from "../lib/layouts";
+import { equal } from "@ember/object/computed";
 import EmberObject from "@ember/object";
 import { A } from "@ember/array";
 
 const LayoutWidget = EmberObject.extend({
+  @discourseComputed("name")
+  displayName(name) {
+    return generateDisplayName(name);
+  },
+
   @discourseComputed("theme_id")
-  settingsUrl(themeId) {
+  themeUrl(themeId) {
     let url = '/admin/customize/themes';
     if (themeId) {
       url = `${url}/${themeId}`;
     }
     return url;
-  }
+  },
+
+  isNew: equal("id", "new")
 });
 
 LayoutWidget.reopenClass({
@@ -23,7 +32,7 @@ LayoutWidget.reopenClass({
   },
 
   save(widget) {
-    return ajax(`/admin/layouts/widgets/${widget.name}`, {
+    return ajax(`/admin/layouts/widgets/${widget.id}`, {
       type: widget.isNew ? "POST" : "PUT",
       data: {
         widget: JSON.parse(JSON.stringify(widget)),
@@ -32,7 +41,7 @@ LayoutWidget.reopenClass({
   },
 
   remove(widget) {
-    return ajax(`/admin/layouts/widgets/${widget.name}`, {
+    return ajax(`/admin/layouts/widgets/${widget.id}`, {
       type: "DELETE",
     }).catch(popupAjaxError);
   },

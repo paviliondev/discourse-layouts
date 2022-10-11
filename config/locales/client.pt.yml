@@ -14,7 +14,7 @@ pt:
           select: "Selecionar"
           select_widget: "Selecionar um widget..."
           remove: "Excluir"
-          order:
+          widget_order:
             label: "Encomendar"
             start: "Iniciar"
             end: "Encerrar"

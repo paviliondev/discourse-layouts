@@ -1,7 +1,7 @@
 import EmberObject, { set } from "@ember/object";
 import Controller, { inject as controller }  from "@ember/controller";
 import showModal from "discourse/lib/show-modal";
-import { LAYOUTS_WIDGETS } from "../lib/layouts-widgets";
+import { LAYOUTS_WIDGETS, findTheme } from "../lib/layouts-widgets";
 import { listLayoutsWidgets, generateDisplayName } from "../lib/layouts";
 import discourseComputed from "discourse-common/utils/decorators";
 import LayoutWidget from "../models/layout-widget";
@@ -37,16 +37,6 @@ export default Controller.extend({
     });
   },
 
-  // clone of adminInstallTheme.themeHasSameUrl
-  themeHasSameUrl(theme, url) {
-    const themeUrl = theme.remote_theme && theme.remote_theme.remote_url;
-    return (
-      themeUrl &&
-      url &&
-      url.replace(/\.git$/, "") === themeUrl.replace(/\.git$/, "")
-    );
-  },
-
   actions: {
     addWidget() {
       showModal("admin-install-layout-widget");
@@ -65,9 +55,7 @@ export default Controller.extend({
       } else {
         // Theme was already installed.
         widget = theme;
-        theme = this.installedAndAddedThemes.find((t) => {
-          return this.themeHasSameUrl(t, theme.value);
-        });
+        theme = findTheme(this.installedAndAddedThemes, widget);
       }
 
       set(theme, "layouts_id", widget.layouts_id);
@@ -78,8 +66,10 @@ export default Controller.extend({
 
       this.get("widgets").unshiftObject(
         LayoutWidget.create({
-          isNew: true,
+          id: "new",
+          editing: true,
           name: theme.layouts_id,
+          nickname: I18n.t("admin.layouts.widgets.default_nickname", { name: generateDisplayName(theme.layouts_id) }),
           theme_id: theme.id
         })
       );

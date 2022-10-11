@@ -14,7 +14,7 @@ ta:
           select: "தேர்ந்தெடு"
           select_widget: "விட்ஜெட்டைத் தேர்ந்தெடுக்கவும்..."
           remove: "வெளியே எடு"
-          order:
+          widget_order:
             label: "வரிசை முறை"
             start: "தொடங்கு"
             end: "முடிவு"

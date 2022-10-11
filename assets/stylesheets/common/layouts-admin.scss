@@ -8,12 +8,12 @@
 
 .admin-layouts-widget {
   border-top: 1px solid var(--primary-low);
-  margin-top: 20px;
-  padding: 20px 0;
+  padding: 1rem 0;
 
   .top {
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
     margin-bottom: 5px;
     min-height: 30px;
 
@@ -24,25 +24,33 @@
     .details {
       display: flex;
       align-items: center;
+
+      .nickname {
+        font-weight: 700;
+      }
     }
 
     .control-group {
       margin-right: 1rem;
+      margin-bottom: 0;
     }
 
     .enabled {
       display: flex;
       align-items: center;
-      margin-top: 12px;
 
       input {
-        margin: 0 7px 0 30px;
+        margin: 0 .5rem;
       }
     }
 
     .controls {
       display: flex;
       align-items: center;
+
+      .inline-spinner {
+        margin-right: 1rem;
+      }
 
       button {
         margin-left: 15px;

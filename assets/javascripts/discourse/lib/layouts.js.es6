@@ -41,27 +41,28 @@ const contexts = [
   },
 ];
 
-function addSidebarProps(props, container = null) {
+const positionContexts = {
+  left: ["*"],
+  right: ["*"],
+  center: ["discovery"]
+}
+
+let _container;
+
+export function setLayoutsContainer(container) {
+  _container = container;
+}
+
+function addSidebarProps(props) {
   if ($.isEmptyObject(props)) {
     return;
   }
 
-  if (!container) {
-    deprecated(
-      "you must pass 'container' as a second argument to addSidebarProps",
-      {
-        dropFrom: "3.0.0",
-      }
-    );
-  }
-
-  // eslint-disable-next-line no-undef
-  container = container || Discourse.__container__;
-  const appEvents = container.lookup("service:app-events");
+  const appEvents = _container.lookup("service:app-events");
 
   contexts.forEach((context) => {
     const controllerName = contextAttr(context, "controller");
-    const controller = container.lookup(`controller:${controllerName}`);
+    const controller = _container.lookup(`controller:${controllerName}`);
 
     if (controller) {
       controller.set(
@@ -227,10 +228,17 @@ function getContextFromAttr(value, attr) {
   return result;
 }
 
-function listNormalisedContexts() {
-  return contexts.map((context) =>
+function listNormalisedContexts(position = null) {
+  let result = contexts.map((context) =>
     normalizeContext(contextAttr(context, "name"))
   );
+  if (position) {
+    let pcs = positionContexts[position];
+    if (!pcs.includes("*")) {
+      result = result.filter(c => pcs.includes(c));
+    }
+  }
+  return result;
 }
 
 function setupContext(context) {

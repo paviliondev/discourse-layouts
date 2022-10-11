@@ -10,6 +10,7 @@ import {
   layoutsNamespace,
   normalizeContext,
   setupContexts,
+  setLayoutsContainer,
 } from "../lib/layouts";
 import { withPluginApi } from "discourse/lib/plugin-api";
 
@@ -29,6 +30,7 @@ export default {
       return;
     }
 
+    setLayoutsContainer(container);
     setupContexts();
 
     router.on("routeDidChange", (transition) => {
@@ -57,33 +59,6 @@ export default {
     });
 
     withPluginApi("0.8.32", (api) => {
-      api.modifyClass("controller:discovery", {
-        pluginId: PLUGIN_ID,
-        router: service(),
-        currentPath: readOnly("router.currentRouteName"),
-        navigationDefault: controller("navigation/default"),
-        navigationCategory: controller("navigation/category"),
-
-        @discourseComputed(
-          "navigationDefault.filterType",
-          "navigationCategory.filterType",
-          "currentPath"
-        )
-        sidebarFilter(defaultFilter, categoryFilter, currentPath) {
-          if (!currentPath) {
-            return undefined;
-          }
-          let path = currentPath.toLowerCase();
-          if (path.indexOf("categories") > -1) {
-            return "categories";
-          }
-          if (path.indexOf("category") > -1) {
-            return categoryFilter;
-          }
-          return defaultFilter;
-        },
-      });
-
       api.modifyClass("controller:topic", {
         pluginId: PLUGIN_ID,
         category: alias("model.category"),

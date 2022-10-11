@@ -71,7 +71,7 @@ plugins:
     default: 550
   layouts_sidebar_tablet_threshold:
     client: true
-    default: 850 
+    default: 850
   layouts_mobile_enabled:
     client: true
     default: false
@@ -79,3 +79,6 @@ plugins:
     client: true
     type: list
     default: ''
+  layouts_center_above_navigation:
+    default: true
+    client: true

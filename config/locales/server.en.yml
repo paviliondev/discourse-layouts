@@ -20,3 +20,4 @@ en:
       icon can be either a fontawesome class or an absolute image url.
       type can be either 'left' or 'right' for mobile sidebar toggle, or 'link' for link.
       url is only necessary for 'link' type.
+    layouts_center_above_navigation: Layouts center position appears above topic list navigation

@@ -14,7 +14,7 @@ bs:
           select: "Select"
           select_widget: "Select a widget..."
           remove: "Remove"
-          order:
+          widget_order:
             label: "Order"
             start: "Start"
             end: "End"

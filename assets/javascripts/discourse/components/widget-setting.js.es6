@@ -1,7 +1,7 @@
 import Component from "@ember/component";
 import { equal } from "@ember/object/computed";
 import discourseComputed from "discourse-common/utils/decorators";
-import EmberObject from "@ember/object";
+import EmberObject, { get } from "@ember/object";
 
 export default Component.extend({
   isText: equal('setting.type', 'text'),
@@ -14,7 +14,7 @@ export default Component.extend({
     if (!this.widget.settings) {
       this.widget.set("settings", EmberObject.create());
     } else {
-      currentValue = this.widget.settings.get(this.setting.name);
+      currentValue = get(this.widget.settings, this.setting.name);
     }
 
     this.set('currentValue', currentValue);

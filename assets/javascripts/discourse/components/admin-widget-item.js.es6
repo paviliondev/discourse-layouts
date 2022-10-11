@@ -16,7 +16,7 @@ function buildSelectKit(items, type = null) {
     let name = item;
     let id = item;
 
-    if (["position", "order"].indexOf(type) > -1 && isNaN(item)) {
+    if (["position", "widget_order"].indexOf(type) > -1 && isNaN(item)) {
       name = I18n.t(`admin.layouts.widgets.${type}.${item}`);
     }
 
@@ -50,7 +50,7 @@ export default Component.extend({
   dirty: false,
 
   positionList: computed(function () {
-    return buildSelectKit(["left", "right"], "position");
+    return buildSelectKit(["left", "right", "center"], "position");
   }),
 
   @discourseComputed("widgets.length")
@@ -61,11 +61,11 @@ export default Component.extend({
         items.push(i.toString());
       }
     }
-    return buildSelectKit(items, "order");
+    return buildSelectKit(items, "widget_order");
   },
 
-  contextList: computed(function () {
-    return buildSelectKit(listNormalisedContexts(), "context");
+  contextList: computed("widget.position", function () {
+    return buildSelectKit(listNormalisedContexts(this.widget.position), "context");
   }),
 
   filterList: computed(function () {
@@ -93,9 +93,7 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-    if (!this.widget.isNew) {
-      this.set("existingWidget", JSON.parse(JSON.stringify(this.widget)));
-    }
+    this.set("existingWidget", JSON.parse(JSON.stringify(this.widget)));
   },
 
   update(type, value) {
@@ -127,15 +125,15 @@ export default Component.extend({
 
   actions: {
     updateOrder(order) {
-      this.update("order", order);
+      this.update("widget_order", order);
     },
 
     updatePosition(position) {
       this.update("position", position);
     },
 
-    updateGroups(groups) {
-      this.update("groups", groups);
+    updateGroups(groupIds) {
+      this.update("group_ids", groupIds);
     },
 
     updateEnabled(enabled) {
@@ -177,6 +175,7 @@ export default Component.extend({
 
       LayoutWidget.save(widget)
         .then((result) => {
+          console.log(result.widget, this.existingWidget)
           if (result.widget) {
             this.setProperties({
               widget: LayoutWidget.create(result.widget),
@@ -209,6 +208,10 @@ export default Component.extend({
 
     setDirty() {
       this.set("dirty", true);
+    },
+
+    edit() {
+      this.toggleProperty('widget.editing');
     }
   },
 });

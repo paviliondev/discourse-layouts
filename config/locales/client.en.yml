@@ -9,16 +9,16 @@ en:
           add_widget: "Add Widget"
           add: "Add"
           install_and_add: "Install and Add"
-          widget: "Widget"
           save: "Save"
+          edit: "Edit"
           enabled: "Enabled"
           none: "No widgets"
           select: "Select"
           select_widget: "Select a widget..."
           remove: "Remove"
-          settings: settings
-          nickname: Nickname
-          order:
+          nickname: Name
+          default_nickname: "%{name} Widget"
+          widget_order:
             label: "Order"
             start: "Start"
             end: "End"
@@ -26,6 +26,7 @@ en:
             label: "Position"
             left: "Left"
             right: "Right"
+            center: "Center"
           filter:
             label: "Filters"
           context:

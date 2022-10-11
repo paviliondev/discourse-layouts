@@ -3,6 +3,7 @@ import { alias, and, equal, not, or } from "@ember/object/computed";
 import Mixin from "@ember/object/mixin";
 import { bind, debounce, scheduleOnce } from "@ember/runloop";
 import { inject as service } from "@ember/service";
+import { inject as controller } from "@ember/controller";
 import { htmlSafe } from "@ember/template";
 import { iconHTML } from "discourse-common/lib/icon-library";
 import {
@@ -20,6 +21,8 @@ function hasWidgets(widgets, widgetsSet) {
 export default Mixin.create({
   router: service(),
   path: alias("router._router.currentPath"),
+  navigationDefault: controller("navigation/default"),
+  navigationCategory: controller("navigation/category"),
   mobileView: false,
   tabletView: false,
   showMobileMenu: and("mobileView", "mobileMenuItems.length"),
@@ -54,10 +57,10 @@ export default Mixin.create({
     return this.canHide(context, "left", mobileView);
   },
 
-  canHide(context, side, mobileView) {
+  canHide(context, position, mobileView) {
     return (
       !mobileView &&
-      this.siteSettings[`layouts_sidebar_${side}_can_hide`]
+      this.siteSettings[`layouts_sidebar_${position}_can_hide`]
         .split("|")
         .map(normalizeContext)
         .includes(normalizeContext(context))
@@ -186,18 +189,18 @@ export default Mixin.create({
     this.appEvents.off("sidebar:toggle", this, this.toggleSidebars);
   },
 
-  sidebarVisibleDefault(side) {
+  sidebarVisibleDefault(position) {
     if (this.mobileView) {
       return false;
     }
     return (
-      this.siteSettings[`layouts_sidebar_${side}_default_visibility`] === "show"
+      this.siteSettings[`layouts_sidebar_${position}_default_visibility`] === "show"
     );
   },
 
   toggleSidebars(opts) {
     const mobileView = this.mobileView;
-    const { side, value, target } = opts;
+    const { position, value, target } = opts;
     let type = opts.type || "visibility";
 
     if (
@@ -207,19 +210,19 @@ export default Mixin.create({
       return;
     }
 
-    let sides = side ? [side] : ["left", "right"];
+    let positions = position ? [position] : ["left", "right"];
 
-    sides.forEach((s) => {
+    positions.forEach((p) => {
       if (type === "minimize") {
         localStorage.setItem("layouts-left-sidebar-minimized", value);
-        this.set(`${s}SidebarMinimized`, value);
+        this.set(`${p}SidebarMinimized`, value);
       } else {
         let newVal = [true, false].includes(value)
           ? value
-          : !Boolean(this[`${s}SidebarVisible`]);
+          : !Boolean(this[`${p}SidebarVisible`]);
 
         if (mobileView) {
-          const $sidebar = $(`.sidebar.${s}`);
+          const $sidebar = $(`.sidebar.${p}`);
           const $sidebarCloak = $(".sidebar-cloak");
 
           if (newVal) {
@@ -233,7 +236,7 @@ export default Mixin.create({
           }
         }
 
-        this.set(`${s}SidebarVisible`, newVal);
+        this.set(`${p}SidebarVisible`, newVal);
       }
     });
   },
@@ -345,7 +348,7 @@ export default Mixin.create({
     return this.buildSidebarClasses(mobileView, tabletView, visible, "right");
   },
 
-  buildSidebarClasses(mobileView, tabletView, visible, side) {
+  buildSidebarClasses(mobileView, tabletView, visible, position) {
     let classes = "";
 
     if (mobileView) {
@@ -363,7 +366,7 @@ export default Mixin.create({
       }
     }
 
-    classes += ` ${this.siteSettings[`layouts_sidebar_${side}_position`]}`;
+    classes += ` ${this.siteSettings[`layouts_sidebar_${position}_position`]}`;
     return classes;
   },
 
@@ -495,14 +498,33 @@ export default Mixin.create({
     }, []);
   },
 
+  @discourseComputed(
+    "navigationDefault.filterType",
+    "navigationCategory.filterType",
+    "path"
+  )
+  layoutsFilter(defaultFilter, categoryFilter, path) {
+    if (!path) {
+      return undefined;
+    }
+    path = path.toLowerCase();
+    if (path.indexOf("categories") > -1) {
+      return "categories";
+    }
+    if (path.indexOf("category") > -1) {
+      return categoryFilter;
+    }
+    return defaultFilter;
+  },
+
   actions: {
-    toggleSidebar(side) {
-      this.appEvents.trigger("sidebar:toggle", { side });
+    toggleSidebar(position) {
+      this.appEvents.trigger("sidebar:toggle", { position });
     },
 
-    setWidgets(side, widgets) {
-      this.set(`${side}Widgets`, widgets);
-      this.set(`${side}WidgetsSet`, true);
+    setWidgets(position, widgets) {
+      this.set(`${position}Widgets`, widgets);
+      this.set(`${position}WidgetsSet`, true);
     },
 
     goToLink(link) {

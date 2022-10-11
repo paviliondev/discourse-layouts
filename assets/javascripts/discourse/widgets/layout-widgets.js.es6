@@ -1,30 +1,12 @@
 import { createWidget } from "discourse/widgets/widget";
 import { lookupLayoutsWidget, normalizeContext } from "../lib/layouts";
 
-const customWidgets = [];
-const addCustomWidget = function (widget) {
-  let added = false;
-
-  // replace existing widget record if it exists
-  customWidgets.forEach((w, i) => {
-    if (w.name === widget.name) {
-      added = true;
-      customWidgets[i] = widget;
-    }
-  });
-
-  if (!added) {
-    customWidgets.push(widget);
-  }
-};
-export { addCustomWidget };
-
-export default createWidget("sidebar", {
-  tagName: "div.sidebar-content",
+export default createWidget("layouts-widgets", {
+  tagName: "div.widgets-content",
 
   html(args) {
     let {
-      side,
+      position,
       context,
       controller,
       path,
@@ -38,16 +20,13 @@ export default createWidget("sidebar", {
     } = args;
 
     let siteWidgets = this.site.layout_widgets || [];
-    if (customWidgets.length) {
-      siteWidgets = siteWidgets.concat(customWidgets);
-    }
 
     context = normalizeContext(context);
 
     let props = {
       topic,
       category,
-      side,
+      position,
       path,
       mobileView,
       tabletView,
@@ -62,9 +41,10 @@ export default createWidget("sidebar", {
 
     let widgets = siteWidgets
       .filter((w) => {
+        console.log(w, filter)
         if (
           !this.widgetExists(w.name) ||
-          w.position !== side ||
+          w.position !== position ||
           w.contexts.indexOf(context) === -1 ||
           (!category && w.category_ids.length) ||
           (category &&
@@ -78,6 +58,7 @@ export default createWidget("sidebar", {
                 );
               }).length === 0) ||
           (category &&
+            w.excluded_category_ids &&
             w.excluded_category_ids.length &&
             w.excluded_category_ids
               .map((id) => Number(id))
@@ -88,6 +69,7 @@ export default createWidget("sidebar", {
                 );
               })) ||
           (context === "discovery" &&
+            w.filters &&
             w.filters.length &&
             w.filters.indexOf(filter) === -1)
         ) {
@@ -101,16 +83,16 @@ export default createWidget("sidebar", {
         }
       })
       .sort(function (a, b) {
-        if (a.order === b.order) {
+        if (a.widget_order === b.widget_order) {
           return 0;
         }
-        if (a.order === "start") {
+        if (a.widget_order === "start") {
           return -1;
         }
-        if (a.order === "end" || b.order === "start") {
+        if (a.widget_order === "end" || b.widget_order === "start") {
           return 1;
         }
-        return Number(a.order) - Number(b.order);
+        return Number(a.widget_order) - Number(b.widget_order);
       });
 
     let contents = [];
@@ -121,14 +103,14 @@ export default createWidget("sidebar", {
       });
     }
 
-    controller.send("setWidgets", side, widgets);
+    controller.send("setWidgets", position, widgets);
 
     return contents;
   },
 
   clickOutside() {
     this.appEvents.trigger("sidebar:toggle", {
-      side: this.attrs.side,
+      position: this.attrs.position,
       value: false,
       target: "mobile",
     });

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 DiscourseLayouts::Engine.routes.draw do
   get 'widgets' => 'widgets#index'
-  put 'widgets/:name' => 'widgets#save'
-  post 'widgets/:name' => 'widgets#create'
-  delete 'widgets/:name' => 'widgets#remove'
+  post 'widgets/new' => 'widgets#create'
+  put 'widgets/:id' => 'widgets#save'
+  delete 'widgets/:id' => 'widgets#remove'
 end
 
 Discourse::Application.routes.append do
