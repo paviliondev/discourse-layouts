@@ -3,7 +3,7 @@ class CreateDiscourseLayoutsWidgets < ActiveRecord::Migration[7.0]
     create_table :discourse_layouts_widgets do |t|
       t.string :nickname
       t.string :name, null: false
-      t.references :theme, null: false
+      t.references :theme
       t.string :position
       t.string :widget_order
       t.integer :group_ids, array: true, default: []
