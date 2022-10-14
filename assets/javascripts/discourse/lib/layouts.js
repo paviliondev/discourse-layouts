@@ -94,6 +94,10 @@ function createLayoutsWidget(name, opts) {
         shouldRender(attrs) {
           return true;
         },
+
+        buildAttributes(attrs) {
+          return { "data-widget-id": attrs.widget_id }
+        }
       },
       opts
     )
@@ -106,6 +110,10 @@ function createLayoutsWidget(name, opts) {
   }
 
   return widget;
+}
+
+function layoutsWidgetRegistry() {
+  return _layouts_widget_registry;
 }
 
 function lookupLayoutsWidget(name) {
@@ -292,6 +300,7 @@ export {
   createLayoutsWidget,
   lookupLayoutsWidget,
   lookupLayoutsWidgetSettings,
+  layoutsWidgetRegistry,
   listLayoutsWidgets,
   normalizeContext,
   setupContexts,

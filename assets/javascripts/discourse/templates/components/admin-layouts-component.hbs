@@ -1,0 +1,38 @@
+<div class="about">
+  <h3 class="nickname">
+    {{layoutComponent.nickname}}
+  </h3>
+  <div class="description">
+    {{layoutComponent.description}}
+  </div>
+</div>
+
+<div class="links">
+  {{d-button
+    href=layoutComponent.url
+    icon="code"
+    label="admin.layouts.component.code.label"
+    title="admin.layouts.component.code.title"}}
+  {{d-button
+    href=layoutComponent.meta_url
+    icon="question-circle"
+    label="admin.layouts.component.about.label"
+    title="admin.layouts.component.about.title"}}
+</div>
+
+<div class="controls">
+  {{#if layoutComponent.installed}}
+    {{d-button
+      icon="puzzle-piece"
+      label="admin.layouts.component.installed"
+      title="admin.layouts.component.installed"
+      href=layoutComponent.themeUrl
+      class="btn-success"}}
+  {{else}}
+    {{d-button
+      action=(action "install")
+      icon="download"
+      label="admin.layouts.component.install.label"
+      title="admin.layouts.component.install.title"}}
+  {{/if}}
+</div>

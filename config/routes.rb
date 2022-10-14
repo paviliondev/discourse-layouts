@@ -4,6 +4,7 @@ DiscourseLayouts::Engine.routes.draw do
   post 'widgets/new' => 'widgets#create'
   put 'widgets/:id' => 'widgets#save'
   delete 'widgets/:id' => 'widgets#remove'
+  get 'components' => 'components#index'
 end
 
 Discourse::Application.routes.append do

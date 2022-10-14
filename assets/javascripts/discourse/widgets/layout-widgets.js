@@ -41,9 +41,9 @@ export default createWidget("layouts-widgets", {
 
     let widgets = siteWidgets
       .filter((w) => {
-        console.log(w, filter)
         if (
           !this.widgetExists(w.name) ||
+          !w.enabled ||
           w.position !== position ||
           w.contexts.indexOf(context) === -1 ||
           (!category && w.category_ids.length) ||
@@ -99,7 +99,8 @@ export default createWidget("layouts-widgets", {
 
     if (widgets.length > 0) {
       widgets.forEach((w) => {
-        contents.push(this.attach(w.name, Object.assign({}, props, (w.settings || {}))));
+        let wProps = Object.assign({}, w.settings, { widget_id: w.id });
+        contents.push(this.attach(w.name, Object.assign({}, props, wProps)));
       });
     }
 

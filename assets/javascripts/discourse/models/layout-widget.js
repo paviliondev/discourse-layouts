@@ -1,22 +1,16 @@
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import discourseComputed from "discourse-common/utils/decorators";
-import { generateDisplayName } from "../lib/layouts";
 import { equal } from "@ember/object/computed";
 import EmberObject from "@ember/object";
 import { A } from "@ember/array";
 
 const LayoutWidget = EmberObject.extend({
-  @discourseComputed("name")
-  displayName(name) {
-    return generateDisplayName(name);
-  },
-
-  @discourseComputed("theme_id")
-  themeUrl(themeId) {
+  @discourseComputed("component.id")
+  componentUrl(componentId) {
     let url = '/admin/customize/themes';
-    if (themeId) {
-      url = `${url}/${themeId}`;
+    if (componentId) {
+      url = `${url}/${componentId}`;
     }
     return url;
   },
@@ -56,9 +50,8 @@ LayoutWidget.reopenClass({
     return this._super(attrs);
   },
 
-  createtList(data) {
-    let list = data.map((w) => LayoutWidget.create(w));
-    return A(list);
+  createArray(data) {
+    return A(data.map((w) => LayoutWidget.create(w)));
   }
 });
 

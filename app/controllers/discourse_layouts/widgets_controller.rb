@@ -2,14 +2,13 @@
 module DiscourseLayouts
   class WidgetsController < ::Admin::AdminController
     before_action :ensure_admin
-    before_action :find_widget, only: [:save, :remove]
+    before_action :find_widget, only: [:save]
 
     def index
-      widgets = Widget.list(all: true)
       render json: ActiveModel::ArraySerializer.new(
-        widgets,
+        Widget.list(all: true),
         each_serializer: DiscourseLayouts::WidgetSerializer,
-        root: false
+        root: "widgets"
       )
     end
 
@@ -19,17 +18,13 @@ module DiscourseLayouts
       if widget.errors.any?
         render_json_error(widget)
       else
-        render json: success_json.merge(
-          WidgetSerializer.new(widget, root: "widget").to_json
-        )
+        render_serialized(widget, WidgetSerializer, root: "widget")
       end
     end
 
     def save
       if @widget.update(widget_params)
-        render json: success_json.merge(
-          WidgetSerializer.new(@widget, root: "widget").as_json
-        )
+        render_serialized(@widget, WidgetSerializer, root: "widget")
       else
         render_json_error(@widget)
       end
@@ -38,7 +33,7 @@ module DiscourseLayouts
     def remove
       params.require(:id)
 
-      if Widget.where(id: params[:id]).destroy
+      if Widget.destroy(params[:id])
         render json: success_json
       else
         render json: failed_json

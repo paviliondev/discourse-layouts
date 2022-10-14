@@ -1,51 +1,68 @@
 <div class="top">
   <div class="details">
-    <div class="control-group nickname">
-      <div class="controls">
-        {{#if widget.editing}}
-          {{input type="text" value=widget.nickname}}
-        {{else}}
-          {{widget.nickname}}
-        {{/if}}
-      </div>
+    <div class="nickname">
+      {{#if widget.editing}}
+        {{input
+          type="text"
+          value=widget.nickname
+          placeholder=(i18n "admin.layouts.widgets.nickname")}}
+      {{else}}
+        <h3>{{widget.nickname}}</h3>
+      {{/if}}
     </div>
 
-    {{d-button
-      icon="puzzle-piece"
-      class="btn-small"
-      translatedLabel=widget.displayName
-      translatedTitle=widget.displayName
-      href=widget.themeUrl}}
+    {{#if widget.component}}
+      {{d-button
+        icon=widgetComponentIcon
+        translatedLabel=widget.component.name
+        translatedTitle=widget.component.name
+        class=widgetComponentClass
+        href=widget.componentUrl}}
+    {{else}}
+      {{combo-box
+        value=widget.theme_id
+        content=installedComponents
+        onChange=(action "updateThemeId")
+        options=(hash
+          none='admin.layouts.widgets.select_component'
+          allowAny=true
+        )}}
+    {{/if}}
   </div>
 
   <div class="controls">
-    {{conditional-loading-spinner size="small" condition=loading}}
-
     <div class="enabled">
-      {{input
-        type="checkbox"
-        checked=widget.enabled
-        click=(action "updateEnabled" value="target.checked")}}
-      <span>{{i18n 'admin.layouts.widgets.enabled'}}</span>
+      {{d-button
+        action=(action "updateEnabled")
+        class=enabledButtonClass
+        icon=enabledButtonIcon
+        title=enabledButtonTitle
+        label=enabledButtonLabel
+        disabled=enableDisabled}}
     </div>
 
-    {{d-button
-      action=(action "edit")
-      label="admin.layouts.widgets.edit"
-      icon="pencil-alt"}}
-
-    {{d-button
-      action=(action "save")
-      class="btn btn-primary"
-      label="admin.layouts.widgets.save"
-      icon="save"
-      disabled=saveDisabled}}
-
-    {{d-button
-      action=(action "remove")
-      class="btn"
-      label="admin.layouts.widgets.remove"
-      icon="times"}}
+    <div class="buttons">
+      {{conditional-loading-spinner
+        size="small"
+        condition=loading}}
+      {{d-button
+        action=(action "edit")
+        label="admin.layouts.widgets.edit"
+        icon="pencil-alt"
+        class=editClass
+        disabled=editDisabled}}
+      {{d-button
+        action=(action "remove")
+        class="btn"
+        label="admin.layouts.widgets.remove"
+        icon="times"}}
+      {{d-button
+        action=(action "save")
+        class="btn btn-primary"
+        label="admin.layouts.widgets.save"
+        icon="save"
+        disabled=saveDisabled}}
+    </div>
   </div>
 </div>
 
@@ -171,7 +188,11 @@
   {{#if widgetSettings}}
     <div class="settings">
       {{#each widgetSettings as |setting|}}
-        {{widget-setting setting=setting widget=widget dirty=dirty setDirty=(action "setDirty")}}
+        {{widget-setting
+          setting=setting
+          widget=widget
+          dirty=dirty
+          setDirty=(action "setDirty")}}
       {{/each}}
     </div>
   {{/if}}

@@ -1,5 +1,7 @@
 .admin-layouts-widget-title {
   margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .admin-layouts-widget-list {
@@ -8,52 +10,35 @@
 
 .admin-layouts-widget {
   border-top: 1px solid var(--primary-low);
+  border-bottom: 1px solid var(--primary-low);
   padding: 1rem 0;
 
   .top {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 5px;
-    min-height: 30px;
-
-    h3 {
-      margin: 0;
-    }
 
     .details {
       display: flex;
-      align-items: center;
-
-      .nickname {
-        font-weight: 700;
-      }
-    }
-
-    .control-group {
-      margin-right: 1rem;
-      margin-bottom: 0;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .enabled {
       display: flex;
       align-items: center;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
 
-      input {
-        margin: 0 .5rem;
-      }
+    .buttons {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
 
     .controls {
-      display: flex;
-      align-items: center;
-
       .inline-spinner {
         margin-right: 1rem;
-      }
-
-      button {
-        margin-left: 15px;
       }
     }
 
@@ -101,8 +86,54 @@
   }
 }
 
-.admin-install-layout-widget-modal {
-  .modal-inner-container {
-    width: 100%;
+.admin-layouts-component-list {
+  ul {
+    list-style: none;
+    margin: 0;
+
+    li {
+      border-top: 1px solid var(--primary-low);
+
+      &:first-of-type {
+        border-top: none;
+      }
+    }
+  }
+
+  .admin-layouts-component {
+    display: flex;
+
+    .about {
+      flex: 1 1 auto;
+      padding: 0.5rem;
+    }
+
+    .links,
+    .controls {
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 150px;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.btn-success {
+  background: var(--success);
+  color: var(--secondary);
+
+  .d-icon {
+    color: var(--secondary);
+  }
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: var(--secondary);
+
+  .d-icon {
+    color: var(--secondary);
   }
 }

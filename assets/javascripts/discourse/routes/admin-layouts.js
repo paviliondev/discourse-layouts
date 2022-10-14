@@ -1,12 +1,10 @@
 import DiscourseRoute from "discourse/routes/discourse";
 
 export default DiscourseRoute.extend({
-  redirect() {
-    this.transitionTo("adminLayouts.widgets");
-  },
-
-  model() {
-    return this.store.findAll("theme");
+  afterModel(model, transition) {
+    if (transition.to.name === "adminLayouts.index") {
+      this.transitionTo("adminLayouts.widgets");
+    }
   },
 
   actions: {

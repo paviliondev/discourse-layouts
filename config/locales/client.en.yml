@@ -3,21 +3,34 @@ en:
     admin:
       layouts:
         label: "Layouts"
+        components:
+          nav: Components
+        component:
+          code:
+            label: Code
+            title: Component code
+          about:
+            label: About
+            title: About the Component
+          installed: Installed
+          install:
+            label: Install
+            title: Install this component
         widgets:
           nav: "Widgets"
-          title: "Layouts Widgets"
+          title: "Widgets"
           add_widget: "Add Widget"
           add: "Add"
-          install_and_add: "Install and Add"
           save: "Save"
           edit: "Edit"
           enabled: "Enabled"
+          enable: "Enable"
+          disabled: "Disabled"
           none: "No widgets"
           select: "Select"
-          select_widget: "Select a widget..."
+          select_component: "Select component..."
           remove: "Remove"
           nickname: Name
-          default_nickname: "%{name} Widget"
           widget_order:
             label: "Order"
             start: "Start"

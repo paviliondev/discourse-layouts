@@ -1,17 +1,19 @@
 <div class="admin-layouts-widget-title">
+  <h2>{{i18n "admin.layouts.widgets.title"}}</h2>
   {{d-button
     action=(action "addWidget")
     label="admin.layouts.widgets.add_widget"
-    icon="plus"}}
+    icon="plus"
+    disabled=addWidgetDisabled}}
 </div>
 
 <div class="admin-layouts-widget-list">
   {{#if widgets}}
     {{#each widgets as |widget|}}
-      {{admin-widget-item
+      {{admin-layouts-widget
         widget=widget
         widgets=widgets
-        widgetList=widgetList
+        installedComponents=installedComponents
         removeWidget=(action 'removeWidget')}}
     {{/each}}
   {{else}}

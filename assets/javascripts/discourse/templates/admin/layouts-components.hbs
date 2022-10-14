@@ -1,0 +1,10 @@
+<div class="admin-layouts-component-title">
+</div>
+
+<div class="admin-layouts-component-list">
+  <ul>
+    {{#each components as |layoutComponent|}}
+      <li>{{admin-layouts-component layoutComponent=layoutComponent}}</li>
+    {{/each}}
+  </ul>
+</div>

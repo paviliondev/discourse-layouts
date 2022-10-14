@@ -6,6 +6,7 @@ export default {
       { path: "/layouts", resetNamespace: true },
       function () {
         this.route("widgets", { path: "/widgets" });
+        this.route("components", { path: "/components" });
       }
     );
   },

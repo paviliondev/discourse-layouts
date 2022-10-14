@@ -6,7 +6,7 @@ import {
   lookupLayoutsWidgetSettings
 } from "../lib/layouts";
 import discourseComputed, { observes } from "discourse-common/utils/decorators";
-import { not } from "@ember/object/computed";
+import { or, not } from "@ember/object/computed";
 import { computed } from "@ember/object";
 import Component from "@ember/component";
 import I18n from "I18n";
@@ -46,18 +46,71 @@ function buildSelectKit(items, type = null) {
 
 export default Component.extend({
   classNames: "admin-layouts-widget",
-  saveDisabled: not("dirty"),
   dirty: false,
+  enableDisabled: or("widget.isNew", "componentDisabled"),
 
   positionList: computed(function () {
     return buildSelectKit(["left", "right", "center"], "position");
   }),
 
-  @discourseComputed("widgets.length")
-  orderList(widgetCount) {
+  @discourseComputed("widget.component.enabled")
+  componentDisabled() {
+    return this.widget.component && !this.widget.component.enabled;
+  },
+
+  @discourseComputed("widget.enabled", "componentDisabled")
+  enabledButtonClass(enabled, componentDisabled) {
+    if (componentDisabled) return "btn-danger";
+    return enabled ? "btn-success" : "";
+  },
+
+  @discourseComputed("widget.enabled", "componentDisabled")
+  enabledButtonTitle(enabled, componentDisabled) {
+    if (componentDisabled) return "disabled";
+    return enabled ? "admin.layouts.widgets.enabled" : "admin.layouts.widgets.enable";
+  },
+
+  @discourseComputed("widget.enabled", "componentDisabled")
+  enabledButtonLabel(enabled, componentDisabled) {
+    if (componentDisabled) return "admin.layouts.widgets.disabled";
+    return enabled ? "admin.layouts.widgets.enabled" : "admin.layouts.widgets.enable";
+  },
+
+  @discourseComputed("componentDisabled")
+  widgetComponentClass(componentDisabled) {
+    return componentDisabled ? "btn-danger" : "";
+  },
+
+  @discourseComputed("componentDisabled")
+  widgetComponentIcon(componentDisabled) {
+    return componentDisabled ? "ban" : "puzzle-piece";
+  },
+
+  @discourseComputed("dirty", "widget.name", "widget.nickname", "widget.theme_id", "widget.position", "widget.contexts.[]")
+  saveDisabled(dirty, name, nickname, themeId, position, contexts) {
+    return !dirty || !name || !nickname || nickname.length < 3 || !themeId || !position || !contexts || contexts.length === 0;
+  },
+
+  @discourseComputed("widget.editing")
+  editClass(editing) {
+    return editing ? "btn-primary" : "";
+  },
+
+  @discourseComputed("widget.isNew")
+  editDisabled(isNew) {
+    return isNew;
+  },
+
+  @discourseComputed("widgets.[]", "widget.position")
+  positionWidgets(widgets, position) {
+    return widgets.filter(w => w.position === position);
+  },
+
+  @discourseComputed("positionWidgets")
+  orderList(positionWidgets) {
     const items = ["start", "end"];
-    if (widgetCount > 0) {
-      for (let i = 1; i <= widgetCount; i++) {
+    if (positionWidgets > 0) {
+      for (let i = 1; i <= positionWidgets; i++) {
         items.push(i.toString());
       }
     }
@@ -136,8 +189,8 @@ export default Component.extend({
       this.update("group_ids", groupIds);
     },
 
-    updateEnabled(enabled) {
-      this.update("enabled", enabled);
+    updateEnabled() {
+      this.update("enabled", !this.widget.enabled);
     },
 
     updateCategoryIds(categoryIds) {
@@ -160,6 +213,12 @@ export default Component.extend({
       this.set("widget.name", widget);
     },
 
+    updateThemeId(themeId) {
+      const component = this.installedComponents.find(c => c.id === themeId);
+      this.update("name", component.component_name);
+      this.update("theme_id", themeId);
+    },
+
     save() {
       if (!this.dirty) {
         return false;
@@ -167,7 +226,7 @@ export default Component.extend({
 
       const widget = this.widget;
 
-      if (widget.isNew && !widget.name) {
+      if (widget.isNew && (!widget.name || !widget.theme_id)) {
         return false;
       }
 
@@ -175,7 +234,6 @@ export default Component.extend({
 
       LayoutWidget.save(widget)
         .then((result) => {
-          console.log(result.widget, this.existingWidget)
           if (result.widget) {
             this.setProperties({
               widget: LayoutWidget.create(result.widget),
@@ -194,6 +252,11 @@ export default Component.extend({
       const widget = this.widget;
       if (!widget) {
         return false;
+      }
+
+      if (widget.isNew) {
+        this.removeWidget(widget);
+        return true;
       }
 
       this.set("saving", true);
