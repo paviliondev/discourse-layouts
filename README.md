@@ -1,6 +1,6 @@
 # 📐 Custom Layouts Plugin
 
-This plugin is a framework for custom Discourse layouts. Currently, its primary use case is adding sidebars to Discourse.
+The page builder plugin for Discourse. Build your ideal Discourse look and feel with the Layouts plugin.
 
 | Desktop                                                                                                                                  | Mobile (closed)                                                                                                                                     | Mobile (open)                                                                                                                                      |
 | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
