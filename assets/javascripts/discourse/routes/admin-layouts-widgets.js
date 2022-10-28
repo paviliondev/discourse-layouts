@@ -15,9 +15,11 @@ export default DiscourseRoute.extend({
     });
   },
 
-  setupController(controller, model) {
-    let props = {
-      widgets: LayoutWidget.createArray(model.widgets)
+  setupController(controller, model = {}) {
+    let props = {};
+
+    if (model.widgets) {
+      props.widgets = LayoutWidget.createArray(model.widgets)
     }
 
     if (model.components) {
