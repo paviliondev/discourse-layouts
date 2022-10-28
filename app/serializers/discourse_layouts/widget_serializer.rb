@@ -24,6 +24,8 @@ class DiscourseLayouts::WidgetSerializer < ::ApplicationSerializer
   end
 
   def component
+    return nil unless object.theme
+
     {
       id: object.theme.id,
       name: object.theme.name,
