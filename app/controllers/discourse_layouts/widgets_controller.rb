@@ -2,7 +2,7 @@
 module DiscourseLayouts
   class WidgetsController < ::Admin::AdminController
     before_action :ensure_admin
-    before_action :find_widget, only: [:save]
+    before_action :find_widget, only: [:save, :toggle]
 
     def index
       render json: ActiveModel::ArraySerializer.new(
@@ -19,6 +19,16 @@ module DiscourseLayouts
         render_json_error(widget)
       else
         render_serialized(widget, WidgetSerializer, root: "widget")
+      end
+    end
+
+    def toggle
+      @widget.enabled = ActiveRecord::Type::Boolean.new.cast(params[:state])
+
+      if @widget.save
+        render json: success_json
+      else
+        render json: failed_json
       end
     end
 

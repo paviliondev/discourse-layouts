@@ -17,8 +17,8 @@ en:
             label: Install
             title: Install this component
         widgets:
-          nav: "Widgets"
-          title: "Widgets"
+          nav: "Layouts"
+          title: "Layouts"
           add_widget: "Add Widget"
           add: "Add"
           save: "Save"
@@ -29,6 +29,7 @@ en:
           none: "No widgets"
           select: "Select"
           select_component: "Select component..."
+          install_components: "Install Components"
           remove: "Remove"
           nickname: Name
           widget_order:

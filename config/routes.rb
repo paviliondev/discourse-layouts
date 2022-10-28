@@ -3,6 +3,7 @@ DiscourseLayouts::Engine.routes.draw do
   get 'widgets' => 'widgets#index'
   post 'widgets/new' => 'widgets#create'
   put 'widgets/:id' => 'widgets#save'
+  put 'widgets/:id/toggle' => 'widgets#toggle'
   delete 'widgets/:id' => 'widgets#remove'
   get 'components' => 'components#index'
 end

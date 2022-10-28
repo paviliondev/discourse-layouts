@@ -8,10 +8,7 @@ import { A } from "@ember/array";
 const LayoutWidget = EmberObject.extend({
   @discourseComputed("component.id")
   componentUrl(componentId) {
-    let url = '/admin/customize/themes';
-    if (componentId) {
-      url = `${url}/${componentId}`;
-    }
+    let url = '/admin/layouts/components';
     return url;
   },
 
@@ -31,6 +28,15 @@ LayoutWidget.reopenClass({
       data: {
         widget: JSON.parse(JSON.stringify(widget)),
       },
+    }).catch(popupAjaxError);
+  },
+
+  toggle(widget, state) {
+    return ajax(`/admin/layouts/widgets/${widget.id}/toggle`, {
+      type: "PUT",
+      data: {
+        state
+      }
     }).catch(popupAjaxError);
   },
 

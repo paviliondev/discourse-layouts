@@ -1,7 +1,7 @@
 {{#admin-nav}}
   {{nav-item route='adminLayouts.widgets' label='admin.layouts.widgets.nav'}}
-  {{nav-item route='adminLayouts.components' label='admin.layouts.components.nav'}}
-  <li><a {{action 'showSettings'}} data-auto-route="true">{{i18n 'admin.layouts.settings.label'}}</a></li>
+  {{nav-item route='adminLayouts.components' label='admin.layouts.components.nav' icon='plug'}}
+  <li>{{d-button action=(route-action 'showSettings') icon="cog" label="admin.layouts.settings.label"}}</li>
 {{/admin-nav}}
 
 <div class="admin-container">

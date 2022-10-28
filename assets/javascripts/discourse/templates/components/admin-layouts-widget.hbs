@@ -11,29 +11,38 @@
       {{/if}}
     </div>
 
-    {{#if widget.component}}
-      {{d-button
-        icon=widgetComponentIcon
-        translatedLabel=widget.component.name
-        translatedTitle=widget.component.name
-        class=widgetComponentClass
-        href=widget.componentUrl}}
-    {{else}}
-      {{combo-box
-        value=widget.theme_id
-        content=installedComponents
-        onChange=(action "updateThemeId")
-        options=(hash
-          none='admin.layouts.widgets.select_component'
-          allowAny=true
-        )}}
-    {{/if}}
+    <div class="component">
+      {{#if widget.component}}
+        {{d-button
+          icon=widgetComponentIcon
+          translatedLabel=widget.component.name
+          translatedTitle=widget.component.name
+          class=widgetComponentClass
+          href=componentsUrl}}
+      {{else}}
+        {{combo-box
+          value=widget.theme_id
+          content=installedComponents
+          onChange=(action "updateThemeId")
+          options=(hash
+            none='admin.layouts.widgets.select_component'
+            allowAny=true
+          )}}
+
+        <a href={{componentsUrl}} title={{i18n "admin.layouts.widgets.install_components"}} class="install-components">
+          {{i18n "admin.layouts.widgets.install_components"}}
+        </a>
+      {{/if}}
+    </div>
   </div>
 
   <div class="controls">
     <div class="enabled">
+      {{conditional-loading-spinner
+        size="small"
+        condition=toggling}}
       {{d-button
-        action=(action "updateEnabled")
+        action=(action "toggle")
         class=enabledButtonClass
         icon=enabledButtonIcon
         title=enabledButtonTitle
@@ -45,17 +54,21 @@
       {{conditional-loading-spinner
         size="small"
         condition=loading}}
+
+      {{#if widget.editing}}
+        {{d-button
+          action=(action "remove")
+          class="btn btn-danger"
+          label="admin.layouts.widgets.remove"
+          icon="times"}}
+      {{/if}}
+
       {{d-button
         action=(action "edit")
         label="admin.layouts.widgets.edit"
         icon="pencil-alt"
-        class=editClass
         disabled=editDisabled}}
-      {{d-button
-        action=(action "remove")
-        class="btn"
-        label="admin.layouts.widgets.remove"
-        icon="times"}}
+
       {{d-button
         action=(action "save")
         class="btn btn-primary"

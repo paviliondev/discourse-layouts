@@ -48,6 +48,7 @@ export default Component.extend({
   classNames: "admin-layouts-widget",
   dirty: false,
   enableDisabled: or("widget.isNew", "componentDisabled"),
+  componentsUrl: "/admin/layouts/components",
 
   positionList: computed(function () {
     return buildSelectKit(["left", "right", "center"], "position");
@@ -61,7 +62,7 @@ export default Component.extend({
   @discourseComputed("widget.enabled", "componentDisabled")
   enabledButtonClass(enabled, componentDisabled) {
     if (componentDisabled) return "btn-danger";
-    return enabled ? "btn-success" : "";
+    return enabled ? "btn-success" : "btn-caution";
   },
 
   @discourseComputed("widget.enabled", "componentDisabled")
@@ -83,17 +84,12 @@ export default Component.extend({
 
   @discourseComputed("componentDisabled")
   widgetComponentIcon(componentDisabled) {
-    return componentDisabled ? "ban" : "puzzle-piece";
+    return componentDisabled ? "ban" : "plug";
   },
 
   @discourseComputed("dirty", "widget.name", "widget.nickname", "widget.theme_id", "widget.position", "widget.contexts.[]")
   saveDisabled(dirty, name, nickname, themeId, position, contexts) {
     return !dirty || !name || !nickname || nickname.length < 3 || !themeId || !position || !contexts || contexts.length === 0;
-  },
-
-  @discourseComputed("widget.editing")
-  editClass(editing) {
-    return editing ? "btn-primary" : "";
   },
 
   @discourseComputed("widget.isNew")
@@ -189,10 +185,6 @@ export default Component.extend({
       this.update("group_ids", groupIds);
     },
 
-    updateEnabled() {
-      this.update("enabled", !this.widget.enabled);
-    },
-
     updateCategoryIds(categoryIds) {
       this.update("category_ids", categoryIds);
     },
@@ -217,6 +209,21 @@ export default Component.extend({
       const component = this.installedComponents.find(c => c.id === themeId);
       this.update("name", component.component_name);
       this.update("theme_id", themeId);
+    },
+
+    toggle() {
+      const widget = this.widget;
+      const state = !widget.enabled;
+
+      this.set("toggling", true);
+
+      LayoutWidget.toggle(widget, state)
+        .then((result) => {
+          if (result.success) {
+            this.widget.set("enabled", state);
+          }
+        })
+        .finally(() => this.set("toggling", false));
     },
 
     save() {

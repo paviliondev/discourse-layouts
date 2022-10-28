@@ -2,6 +2,10 @@
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
+
+  h2 {
+    margin: 0;
+  }
 }
 
 .admin-layouts-widget-list {
@@ -23,6 +27,18 @@
       justify-content: space-between;
     }
 
+    .component {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+
+      .install-components {
+        padding: .15em .5em;
+        background-color: var(--primary-low);
+        color: var(--primary);
+      }
+    }
+
     .enabled {
       display: flex;
       align-items: center;
@@ -37,6 +53,9 @@
     }
 
     .controls {
+      display: flex;
+      flex-direction: column;
+
       .inline-spinner {
         margin-right: 1rem;
       }
@@ -121,7 +140,7 @@
 }
 
 .btn-success {
-  background: var(--success);
+  background: var(--success) !important;
   color: var(--secondary);
 
   .d-icon {
@@ -130,7 +149,18 @@
 }
 
 .btn-danger {
-  background: var(--danger);
+  background: var(--quaternary);
+  color: var(--secondary);
+
+  .d-icon {
+    color: var(--secondary);
+  }
+}
+
+$caution: #ffb347;
+
+.btn-caution {
+  background: $caution !important;
   color: var(--secondary);
 
   .d-icon {
