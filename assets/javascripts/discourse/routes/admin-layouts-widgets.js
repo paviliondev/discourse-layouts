@@ -7,20 +7,25 @@ export default DiscourseRoute.extend({
     return LayoutWidget.list();
   },
 
-  afterModel(model) {
+  afterModel(model = {}) {
     return LayoutComponent.list().then(result => {
-      model.components = result.components;
+      if (result.components) {
+        model.components = result.components;
+      }
     });
   },
 
   setupController(controller, model) {
-    const installedComponents = model.components
-      .filter(c => c.installed)
-      .map(c => ({ id: c.theme_id, name: c.theme_name, component_name: c.name }));
+    let props = {
+      widgets: LayoutWidget.createArray(model.widgets)
+    }
 
-    controller.setProperties({
-      widgets: LayoutWidget.createArray(model.widgets),
-      installedComponents
-    });
+    if (model.components) {
+      props.installedComponents = model.components
+        .filter(c => c.installed)
+        .map(c => ({ id: c.theme_id, name: c.theme_name, component_name: c.name }));
+    }
+
+    controller.setProperties(props);
   },
 });
