@@ -44,7 +44,9 @@ const contexts = [
 const positionContexts = {
   left: ["*"],
   right: ["*"],
-  center: ["discovery"]
+  center: ["discovery"],
+  hero: ["discovery"],
+  footer: ["discovery"]
 }
 
 let _container;

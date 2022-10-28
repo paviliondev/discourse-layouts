@@ -51,7 +51,7 @@ export default Component.extend({
   componentsUrl: "/admin/layouts/components",
 
   positionList: computed(function () {
-    return buildSelectKit(["left", "right", "center"], "position");
+    return buildSelectKit(["left", "right", "center", "hero", "footer"], "position");
   }),
 
   @discourseComputed("widget.component.enabled")
@@ -242,10 +242,10 @@ export default Component.extend({
       LayoutWidget.save(widget)
         .then((result) => {
           if (result.widget) {
-            this.setProperties({
-              widget: LayoutWidget.create(result.widget),
-              existingWidget: JSON.parse(JSON.stringify(result.widget)),
-            });
+            this.updateWidget(
+              widget,
+              LayoutWidget.create(result.widget)
+            );
           } else if (this.existingWidget) {
             this.set("widget", this.existingWidget);
           }
@@ -266,14 +266,12 @@ export default Component.extend({
         return true;
       }
 
-      this.set("saving", true);
+      this.set("loading", true);
       LayoutWidget.remove(widget).then((result) => {
         if (result.success) {
           this.removeWidget(widget);
-        } else {
-          this.set("saving", false);
         }
-      });
+      }).finally(() => (this.set("loading", false)));
     },
 
     setDirty() {

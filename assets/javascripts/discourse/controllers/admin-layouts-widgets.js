@@ -18,6 +18,11 @@ export default Controller.extend({
       );
     },
 
+    updateWidget(oldWidget, newWidget) {
+      const widgets = this.get("widgets");
+      widgets.replace(widgets.indexOf(oldWidget), 1, [newWidget]);
+    },
+
     removeWidget(widget) {
       this.get("widgets").removeObject(widget);
     },
