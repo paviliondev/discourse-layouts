@@ -120,6 +120,14 @@ class ::DiscourseLayouts::Component
         url: "https://github.com/paviliondev/layouts-topic-lists-widget.git",
         meta_url: "https://discourse.pluginmanager.org/t/topic-lists-widget/280",
         theme_name: "Layouts Topic Lists Widget"
+      },
+      {
+        name: "layouts-event-list",
+        nickname: "Event List",
+        description: "Display a list of events from the Events Plugin.",
+        url: "https://github.com/paviliondev/layouts-event-list-widget.git",
+        meta_url: "https://discourse.pluginmanager.org/t/event-list-widget/286",
+        theme_name: "Layouts Event List Widget"
       }
     ]
   end
