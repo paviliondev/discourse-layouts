@@ -42,7 +42,7 @@ export default createWidget("layouts-widgets", {
     let widgets = siteWidgets
       .filter((w) => {
         if (
-          !this.widgetExists(w.name) ||
+          !this.widgetComponentExists(w.component.name) ||
           !w.enabled ||
           w.position !== position ||
           w.contexts.indexOf(context) === -1 ||
@@ -75,7 +75,7 @@ export default createWidget("layouts-widgets", {
         ) {
           return false;
         } else {
-          let LayoutsWidgetClass = this.lookupWidgetClass(w.name);
+          let LayoutsWidgetClass = this.lookupWidgetClass(w.component.name);
           return (
             LayoutsWidgetClass &&
             LayoutsWidgetClass.prototype.shouldRender(props)
@@ -100,7 +100,7 @@ export default createWidget("layouts-widgets", {
     if (widgets.length > 0) {
       widgets.forEach((w) => {
         let wProps = Object.assign({}, w.settings, { widget_id: w.id });
-        contents.push(this.attach(w.name, Object.assign({}, props, wProps)));
+        contents.push(this.attach(w.component.name, Object.assign({}, props, wProps)));
       });
     }
 
@@ -117,10 +117,10 @@ export default createWidget("layouts-widgets", {
     });
   },
 
-  widgetExists(widgetName) {
+  widgetComponentExists(widgetComponentName) {
     return (
-      lookupLayoutsWidget(widgetName) ||
-      this.register.lookupFactory(`widget:${widgetName}`)
+      lookupLayoutsWidget(widgetComponentName) ||
+      this.register.lookupFactory(`widget:${widgetComponentName}`)
     );
   },
 });

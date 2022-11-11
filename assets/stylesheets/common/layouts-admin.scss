@@ -105,6 +105,12 @@
   }
 }
 
+.admin-layouts-component-title {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
 .admin-layouts-component-list {
   ul {
     list-style: none;
@@ -121,6 +127,7 @@
 
   .admin-layouts-component {
     display: flex;
+    align-items: flex-start;
 
     .about {
       flex: 1 1 auto;
@@ -133,8 +140,36 @@
       display: flex;
       align-items: center;
       gap: 1rem;
-      width: 150px;
       justify-content: flex-end;
+    }
+
+    .inputs {
+      display: flex;
+      flex-flow: wrap;
+      flex: 1 1 auto;
+      gap: 1em;
+      padding: .5rem;
+
+      textarea,
+      input {
+        margin: 0;
+      }
+
+      textarea {
+        width: 600px;
+        max-width: 100%;
+        min-height: 150px;
+      }
+
+      .description {
+        flex: 1 1 auto;
+      }
+
+      * > .description {
+        margin-top: .25em;
+        color: var(--primary-medium);
+        font-size: .95em;
+      }
     }
   }
 }

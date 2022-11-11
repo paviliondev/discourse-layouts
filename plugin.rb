@@ -20,17 +20,17 @@ after_initialize do
   %w[
     ../lib/discourse_layouts/engine.rb
     ../lib/discourse_layouts/category.rb
-    ../lib/discourse_layouts/component.rb
     ../extensions/category_bumped_at.rb
     ../extensions/remote_theme.rb
     ../config/routes.rb
     ../app/models/discourse_layouts/widget_group.rb
     ../app/models/discourse_layouts/widget_category.rb
     ../app/models/discourse_layouts/widget.rb
-    ../app/serializers/discourse_layouts/widget_serializer.rb
-    ../app/controllers/discourse_layouts/widgets_controller.rb
+    ../app/models/discourse_layouts/component.rb
     ../app/serializers/discourse_layouts/component_serializer.rb
     ../app/controllers/discourse_layouts/components_controller.rb
+    ../app/serializers/discourse_layouts/widget_serializer.rb
+    ../app/controllers/discourse_layouts/widgets_controller.rb
   ].each do |key|
     load File.expand_path(key, __FILE__)
   end

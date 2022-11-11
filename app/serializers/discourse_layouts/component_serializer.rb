@@ -1,11 +1,14 @@
 # frozen_string_literal: true
-class DiscourseLayouts::ComponentSerializer < ::ApplicationSerializer
-  attributes  :name,
-              :nickname,
-              :description,
-              :url,
-              :meta_url,
-              :installed,
-              :theme_id,
-              :theme_name
+module DiscourseLayouts
+  class ComponentSerializer < ::ApplicationSerializer
+    attributes  :id,
+                :name,
+                :nickname,
+                :description,
+                :default,
+                :url,
+                :about_url,
+                :theme_id,
+                :enabled
+  end
 end

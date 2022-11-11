@@ -8,7 +8,7 @@ export default DiscourseRoute.extend({
   },
 
   afterModel(model = {}) {
-    return LayoutComponent.list().then(result => {
+    return LayoutComponent.list({ installed: true }).then(result => {
       if (result.components) {
         model.components = result.components;
       }
@@ -23,9 +23,7 @@ export default DiscourseRoute.extend({
     }
 
     if (model.components) {
-      props.installedComponents = model.components
-        .filter(c => c.installed)
-        .map(c => ({ id: c.theme_id, name: c.theme_name, component_name: c.name }));
+      props.components = model.components.map(c => ({ id: c.id, name: c.nickname }));
     }
 
     controller.setProperties(props);

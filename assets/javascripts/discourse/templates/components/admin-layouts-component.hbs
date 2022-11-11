@@ -1,38 +1,113 @@
-<div class="about">
-  <h3 class="nickname">
-    {{layoutComponent.nickname}}
-  </h3>
-  <div class="description">
-    {{layoutComponent.description}}
+{{#if layoutComponent.isNew}}
+  <div class="inputs">
+    <div class="theme">
+      {{combo-box
+        value=layoutComponent.theme_id
+        content=themes
+        onChange=(action "updateThemeId")
+        options=(hash
+          none='admin.layouts.component.theme.label'
+          allowAny=true
+        )}}
+
+      <div class="description">
+        {{i18n "admin.layouts.component.theme.description"}}
+      </div>
+    </div>
+
+    <div class="name">
+      {{input
+        type="text"
+        value=layoutComponent.name
+        placeholder=(i18n "admin.layouts.component.name.label")}}
+
+      <div class="description">
+        {{i18n "admin.layouts.component.name.description"}}
+      </div>
+    </div>
+
+    <div class="nickname">
+      {{input
+        type="text"
+        value=layoutComponent.nickname
+        placeholder=(i18n "admin.layouts.component.nickname.label")}}
+
+      <div class="description">
+        {{i18n "admin.layouts.component.nickname.description"}}
+      </div>
+    </div>
+
+    <div class="description">
+      {{textarea
+        value=layoutComponent.description
+        placeholder=(i18n "admin.layouts.component.description.label")}}
+
+      <div class="description">
+        {{i18n "admin.layouts.component.description.description"}}
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="links">
-  {{d-button
-    href=layoutComponent.url
-    icon="code"
-    label="admin.layouts.component.code.label"
-    title="admin.layouts.component.code.title"}}
-  {{d-button
-    href=layoutComponent.meta_url
-    icon="question-circle"
-    label="admin.layouts.component.about.label"
-    title="admin.layouts.component.about.title"}}
-</div>
+  <div class="controls">
+    {{conditional-loading-spinner condition=loading size="small"}}
 
-<div class="controls">
-  {{#if layoutComponent.installed}}
     {{d-button
-      icon="puzzle-piece"
-      label="admin.layouts.component.installed"
-      title="admin.layouts.component.installed"
-      href=layoutComponent.themeUrl
-      class="btn-success"}}
-  {{else}}
+      action=(action "createComponent")
+      label="admin.layouts.component.create.label"
+      title="admin.layouts.component.create.title"
+      icon="save"
+      disabled=loading}}
+  </div>
+{{else}}
+  <div class="about">
+    <h3 class="nickname">
+      {{layoutComponent.nickname}}
+    </h3>
+    <div class="description">
+      {{layoutComponent.description}}
+    </div>
+  </div>
+
+  <div class="links">
     {{d-button
-      action=(action "install")
-      icon="download"
-      label="admin.layouts.component.install.label"
-      title="admin.layouts.component.install.title"}}
-  {{/if}}
-</div>
+      href=layoutComponent.url
+      icon="code"
+      label="admin.layouts.component.code.label"
+      title="admin.layouts.component.code.title"}}
+    {{d-button
+      href=layoutComponent.about_url
+      icon="question-circle"
+      label="admin.layouts.component.about.label"
+      title="admin.layouts.component.about.title"}}
+  </div>
+
+  <div class="controls">
+    {{conditional-loading-spinner condition=loading size="small"}}
+
+    {{#if layoutComponent.default}}
+      {{#if layoutComponent.enabled}}
+        {{d-button
+          icon="puzzle-piece"
+          label="admin.layouts.component.installed"
+          title="admin.layouts.component.installed"
+          href=layoutComponent.themeUrl
+          class="btn-success"}}
+      {{else}}
+        {{d-button
+          action=(action "installComponent")
+          icon="download"
+          label="admin.layouts.component.install.label"
+          title="admin.layouts.component.install.title"
+          disabled=loading}}
+      {{/if}}
+    {{else}}
+      {{d-button
+        action=(action "removeComponent")
+        icon="times"
+        label="admin.layouts.component.remove.label"
+        title="admin.layouts.component.remove.title"
+        class="btn-danger"
+        disabled=loading}}
+    {{/if}}
+  </div>
+{{/if}}

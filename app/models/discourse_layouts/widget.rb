@@ -4,21 +4,12 @@ module DiscourseLayouts
   class Widget < ActiveRecord::Base
     self.table_name = 'discourse_layouts_widgets'
 
-    NAMESPACE = "layouts"
-
     has_many :widget_groups, foreign_key: 'widget_id', class_name: 'DiscourseLayouts::WidgetGroup', dependent: :destroy
     has_many :groups, through: :widget_groups
     has_many :widget_categories, foreign_key: 'widget_id', class_name: 'DiscourseLayouts::WidgetCategory', dependent: :destroy
     has_many :categories, through: :widget_categories
 
-    belongs_to :theme
-
-    validates :theme_id, presence: true, if: :enabled
-
-    before_save do
-      self.name = "#{NAMESPACE}-#{self.name}" unless self.name.starts_with?("#{NAMESPACE}-")
-      self.theme_id = nil if !Theme.find_by_id(self.theme_id)
-    end
+    belongs_to :component, foreign_key: 'component_id', class_name: 'DiscourseLayouts::Component'
 
     after_save do
       Site.clear_anon_cache!
@@ -26,7 +17,7 @@ module DiscourseLayouts
     end
 
     def enabled
-      self[:enabled] && self.theme&.enabled
+      self[:enabled] && self.component&.enabled
     end
 
     def permitted?(guardian = nil)
@@ -50,7 +41,7 @@ module DiscourseLayouts
     def self.list(guardian: Guardian.new, all: false)
       widgets = self.all
       widgets = widgets.select { |w| w.enabled && w.permitted?(guardian) } if !all
-      widgets.sort_by { |widget| widget.name }
+      widgets
     end
   end
 end
@@ -61,8 +52,6 @@ end
 #
 #  id                    :bigint           not null, primary key
 #  nickname              :string
-#  name                  :string           not null
-#  theme_id              :bigint           not null
 #  position              :string
 #  widget_order          :string
 #  excluded_category_ids :integer          default([]), is an Array
@@ -70,9 +59,14 @@ end
 #  contexts              :string           default([]), is an Array
 #  enabled               :boolean          default(FALSE)
 #  settings              :json
+#  component_id          :bigint
 #
 # Indexes
 #
-#  index_discourse_layouts_widgets_on_nickname  (nickname) UNIQUE
-#  index_discourse_layouts_widgets_on_theme_id  (theme_id)
+#  index_discourse_layouts_widgets_on_component_id  (component_id)
+#  index_discourse_layouts_widgets_on_nickname      (nickname) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (component_id => discourse_layouts_components.id)
 #

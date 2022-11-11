@@ -8,7 +8,8 @@ export default DiscourseRoute.extend({
 
   setupController(controller, model) {
     controller.setProperties({
-      components: LayoutComponent.createArray(model.components)
+      components: LayoutComponent.createArray(model.components),
+      themes: model.themes
     });
   },
 });

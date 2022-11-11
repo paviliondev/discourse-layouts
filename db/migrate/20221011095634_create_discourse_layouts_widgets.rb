@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CreateDiscourseLayoutsWidgets < ActiveRecord::Migration[7.0]
   def up
     create_table :discourse_layouts_widgets do |t|

@@ -5,6 +5,8 @@ en:
         label: "Layouts"
         components:
           nav: Components
+          title: Components
+          add: Add Custom
         component:
           code:
             label: Code
@@ -16,6 +18,24 @@ en:
           install:
             label: Install
             title: Install this component
+          theme:
+            label: "Select theme component..."
+            description: Theme component containing the widget
+          name:
+            label: Name
+            description: Starts with "layouts-"
+          nickname:
+            label: Nickname
+            description: Displayed in Admin UI
+          description:
+            label: Description
+            description: Displayed in Admin UI
+          create:
+            label: Create
+            title: Create custom component
+          remove:
+            label: Remove
+            title: Remove custom component
         widgets:
           nav: "Layouts"
           title: "Layouts"

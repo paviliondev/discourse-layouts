@@ -47,17 +47,13 @@ function buildSelectKit(items, type = null) {
 export default Component.extend({
   classNames: "admin-layouts-widget",
   dirty: false,
+  componentDisabled: not("widget.component.enabled"),
   enableDisabled: or("widget.isNew", "componentDisabled"),
   componentsUrl: "/admin/layouts/components",
 
   positionList: computed(function () {
     return buildSelectKit(["left", "right", "center", "hero", "footer"], "position");
   }),
-
-  @discourseComputed("widget.component.enabled")
-  componentDisabled() {
-    return this.widget.component && !this.widget.component.enabled;
-  },
 
   @discourseComputed("widget.enabled", "componentDisabled")
   enabledButtonClass(enabled, componentDisabled) {
@@ -87,9 +83,9 @@ export default Component.extend({
     return componentDisabled ? "ban" : "plug";
   },
 
-  @discourseComputed("dirty", "widget.name", "widget.nickname", "widget.theme_id", "widget.position", "widget.contexts.[]")
-  saveDisabled(dirty, name, nickname, themeId, position, contexts) {
-    return !dirty || !name || !nickname || nickname.length < 3 || !themeId || !position || !contexts || contexts.length === 0;
+  @discourseComputed("dirty", "widget.nickname", "widget.component_id", "widget.position", "widget.contexts.[]")
+  saveDisabled(dirty, nickname, componentId, position, contexts) {
+    return !dirty || !nickname || nickname.length < 3 || !componentId || !position || !contexts || contexts.length === 0;
   },
 
   @discourseComputed("widget.isNew")
@@ -150,7 +146,7 @@ export default Component.extend({
 
     const widget = this.widget;
     if (widget.isNew) {
-      this.set("dirty", !!widget.name);
+      this.set("dirty", !!widget.nickname);
     } else {
       this.set("dirty", value !== this.existingWidget[type]);
     }
@@ -162,14 +158,9 @@ export default Component.extend({
     this.set("dirty", this.widget.nickname !== existingNickname);
   },
 
-  @discourseComputed("widget.name")
-  widgetDisplayName(name) {
-    return generateDisplayName(name);
-  },
-
-  @discourseComputed("widget.name")
-  widgetSettings(name) {
-    return lookupLayoutsWidgetSettings(name);
+  @discourseComputed("widget.component.name")
+  widgetSettings(componentName) {
+    return lookupLayoutsWidgetSettings(componentName);
   },
 
   actions: {
@@ -201,14 +192,8 @@ export default Component.extend({
       this.update("contexts", contexts);
     },
 
-    updateNewWidgetName(widget) {
-      this.set("widget.name", widget);
-    },
-
-    updateThemeId(themeId) {
-      const component = this.installedComponents.find(c => c.id === themeId);
-      this.update("name", component.component_name);
-      this.update("theme_id", themeId);
+    updateComponentId(componentId) {
+      this.update("component_id", componentId);
     },
 
     toggle() {
@@ -233,7 +218,7 @@ export default Component.extend({
 
       const widget = this.widget;
 
-      if (widget.isNew && (!widget.name || !widget.theme_id)) {
+      if (widget.isNew && (!widget.nickname || !widget.component_id)) {
         return false;
       }
 

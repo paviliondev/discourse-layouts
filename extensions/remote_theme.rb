@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module LayoutsRemoteThemeExtension
   def import_theme(url, user = Discourse.system_user, private_key: nil, branch: nil)
     theme = super

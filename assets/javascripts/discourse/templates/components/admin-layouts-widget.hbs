@@ -21,9 +21,9 @@
           href=componentsUrl}}
       {{else}}
         {{combo-box
-          value=widget.theme_id
-          content=installedComponents
-          onChange=(action "updateThemeId")
+          value=widget.component_id
+          content=components
+          onChange=(action "updateComponentId")
           options=(hash
             none='admin.layouts.widgets.select_component'
             allowAny=true

@@ -1,10 +1,22 @@
 <div class="admin-layouts-component-title">
+  <h2>{{i18n "admin.layouts.components.title"}}</h2>
+  {{d-button
+    action=(action "addComponent")
+    label="admin.layouts.components.add"
+    icon="plus"
+    disabled=addComponentDisabled}}
 </div>
 
 <div class="admin-layouts-component-list">
   <ul>
     {{#each components as |layoutComponent|}}
-      <li>{{admin-layouts-component layoutComponent=layoutComponent}}</li>
+      <li>
+        {{admin-layouts-component
+          layoutComponent=layoutComponent
+          themes=themes
+          updateComponent=(action "updateComponent")
+          removeComponent=(action "removeComponent")}}
+      </li>
     {{/each}}
   </ul>
 </div>

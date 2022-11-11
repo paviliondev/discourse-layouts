@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 module DiscourseLayouts
   class WidgetsController < ::Admin::AdminController
-    before_action :ensure_admin
     before_action :find_widget, only: [:save, :toggle]
 
     def index
@@ -58,7 +57,7 @@ module DiscourseLayouts
           .permit(
             :name,
             :nickname,
-            :theme_id,
+            :component_id,
             :position,
             :widget_order,
             :enabled,
