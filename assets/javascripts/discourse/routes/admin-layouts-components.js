@@ -3,7 +3,7 @@ import LayoutComponent from "../models/layout-component";
 
 export default DiscourseRoute.extend({
   model() {
-    return LayoutComponent.list();
+    return LayoutComponent.list({ all: true, themes: true });
   },
 
   setupController(controller, model) {

@@ -19,7 +19,7 @@ module DiscourseLayouts
     belongs_to :theme
 
     before_save do
-      self.name = "#{NAMESPACE}-#{self.name}" unless self.name.starts_with?("#{NAMESPACE}-")
+      self.name = "#{NAMESPACE}-#{name}" unless name.starts_with?("#{NAMESPACE}-")
     end
 
     def enabled
@@ -27,7 +27,7 @@ module DiscourseLayouts
     end
 
     def default
-      theme ? !!self.class.theme_component(self.theme) : _default
+      theme ? !!self.class.find_default_attrs(theme_name: theme.name) : _default
     end
 
     def url
@@ -38,7 +38,7 @@ module DiscourseLayouts
       default ? default_about_url : theme&.remote_theme&.about_url
     end
 
-    def self.all_and_default
+    def self.list(opts = {})
       components = self.all.to_a
       component_names = []
 
@@ -49,7 +49,7 @@ module DiscourseLayouts
       default_components.each do |attrs|
         next if component_names.include?(attrs[:name])
 
-        theme = component_theme(attrs)
+        theme = find_default_theme(attrs)
         attrs[:theme_id] = theme[:id] if theme
 
         component = self.new(attrs.slice(*BASE_ATTRS))
@@ -59,23 +59,31 @@ module DiscourseLayouts
         components << component
       end
 
+      unless opts[:all]
+        components = components.select { |component| component.enabled }
+      end
+
       components
     end
 
-    def self.component_theme(component)
-      return nil unless component
+    def self.find_default_theme(attrs)
+      return nil unless attrs
 
       if Rails.env.development?
-        default_themes.select { |theme| theme[:name] === component[:theme_name] }.first
+        default_themes.select { |theme| theme[:name] === attrs[:theme_name] }.first
       else
-        default_themes.select { |theme| theme[:url] === component[:url] }.first
+        default_themes.select { |theme| theme[:url] === attrs[:url] }.first
       end
     end
 
-    def self.theme_component(theme)
-      return nil unless theme
+    def self.find_default_attrs(opts = {})
+      return nil unless opts
 
-      default_components.select { |component| component[:theme_name] === theme.name }.first
+      default_components.select do |component|
+        opts.all? do |key, value|
+          component[key] === value
+        end
+      end.first
     end
 
     def self.theme_component_query

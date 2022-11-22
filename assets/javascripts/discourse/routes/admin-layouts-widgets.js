@@ -8,7 +8,7 @@ export default DiscourseRoute.extend({
   },
 
   afterModel(model = {}) {
-    return LayoutComponent.list({ installed: true }).then(result => {
+    return LayoutComponent.list().then(result => {
       if (result.components) {
         model.components = result.components;
       }

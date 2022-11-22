@@ -10,5 +10,10 @@ module DiscourseLayouts
                 :about_url,
                 :theme_id,
                 :enabled
+
+    def id
+      # Default components not yet saved don't have an id.
+      object.id.present? ? object.id : object.name
+    end
   end
 end

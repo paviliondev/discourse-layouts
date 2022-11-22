@@ -53,7 +53,7 @@ module DiscourseLayouts
 
     def widget_params
       @widget_params ||= begin
-        params.require(:widget)
+        result = params.require(:widget)
           .permit(
             :name,
             :nickname,
@@ -68,6 +68,35 @@ module DiscourseLayouts
             contexts: [],
             settings: {}
           ).to_h
+
+        if result[:component_id]
+          if result[:component_id].include?(Component::NAMESPACE)
+            raise Discourse::InvalidParameters.new(:component_id) if Component.exists?(name: result[:component_id])
+
+            attrs = Component.find_default_attrs(name: result[:component_id])
+
+            raise Discourse::InvalidParameters.new(:component_id) unless attrs.present?
+
+            theme = Component.find_default_theme(attrs)
+
+            raise Discourse::InvalidParameters.new(:component_id) unless theme.present?
+
+            component = Component.create!(
+              name: attrs[:name],
+              nickname: attrs[:nickname],
+              description: attrs[:description],
+              theme_id: theme[:id]
+            )
+
+            raise Discourse::InvalidParameters.new(:component_id) if component.errors.any?
+
+            result[:component_id] = component.id
+          else
+            raise Discourse::InvalidParameters.new(:component_id) unless Component.exists?(result[:component_id])
+          end
+        end
+
+        result
       end
     end
 

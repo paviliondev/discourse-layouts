@@ -2,22 +2,20 @@
 module DiscourseLayouts
   class ComponentsController < ::Admin::AdminController
     def index
-      if params[:installed]
-        json = {
-          components: Component.all
-        }
-      else
-        json = {
-          components: ActiveModel::ArraySerializer.new(
-            Component.all_and_default,
-            each_serializer: ComponentSerializer,
-            root: false
-          ),
-          themes: DiscourseLayouts::Component.non_default_themes_query
-        }
+      components = Component.list(all: !!params[:all])
+      result = {
+        components: ActiveModel::ArraySerializer.new(
+          components,
+          each_serializer: ComponentSerializer,
+          root: false
+        )
+      }
+
+      if params[:themes]
+        result[:themes] = DiscourseLayouts::Component.non_default_themes_query
       end
 
-      render_json_dump(json)
+      render_json_dump(result)
     end
 
     def install
