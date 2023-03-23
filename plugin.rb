@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # name: discourse-layouts
 # about: A framework for custom Discourse layouts.
-# version: 0.3.1
+# version: 0.3.2
 # authors: Angus McLeod, Keegan George
 # contact_emails: development@pavilion.tech
 # url: https://github.com/paviliondev/discourse-layouts
