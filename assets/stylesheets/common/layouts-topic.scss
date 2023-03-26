@@ -92,6 +92,7 @@ body:not(.layouts-left-full) .main-content.topic {
     .container.posts {
       display: grid;
       grid-template-areas: "posts timeline";
+      grid-template-columns: auto 0px;
     }
 
     .topic-navigation {
