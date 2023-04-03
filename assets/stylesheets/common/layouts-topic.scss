@@ -90,7 +90,23 @@ body:not(.layouts-left-full) .main-content.topic {
     }
 
     .container.posts {
-      display: block;
+      display: grid;
+      grid-template-areas: "posts timeline";
+      grid-template-columns: auto 0px;
+    }
+
+    .topic-navigation {
+      grid-area: posts;
+      grid-row: 2;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+
+      #topic-progress-wrapper {
+        &.docked {
+          margin: unset;
+        }
+      }
     }
   }
 }
