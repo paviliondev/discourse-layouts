@@ -19,7 +19,7 @@ The page builder plugin for Discourse. Build your ideal Discourse look and feel 
 
 ## ⚙️ Official Widgets
 
-Since the plugin is a "Framework" for layouts, you will need to install widgets to show in the sidebars. Below is a list of official widgets released by the [Pavilion Team](https://thepavilion.io/members):
+Since the plugin is a "Framework" for layouts, you will need to install widgets to show in the sidebars. Below is a list of official widgets released by the Pavilion Team:
 
 | Widget                                                                         | Description                                                                                                                  |
 | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
