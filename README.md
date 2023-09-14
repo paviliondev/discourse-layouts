@@ -11,11 +11,11 @@ The page builder plugin for Discourse. Build your ideal Discourse look and feel 
 | Title                  | Link                                                                        |
 | ---------------------- | --------------------------------------------------------------------------- |
 | #️⃣ **Version**         | `0.2`                                                                       |
-| 📄 **Documentation**   | [Read the Docs](https://thepavilion.io/t/layouts-plugin/2891)               |
-| ❓ **How to Install**  | [Installation Guide](https://thepavilion.io/t/installation-and-setup/3200)  |
-| 🐛 **Found a bug?**    | [Submit a bug report](https://thepavilion.io/w/bug-report/steps/intro)      |
-| ✋ **Have an idea?**   | [Submit a feature request](https://thepavilion.io/w/bug-report/steps/intro) |
-| 📰 **Discourse Topic** | [Read Topic](https://meta.discourse.org/t/custom-layouts-plugin/55208)      |
+| 📄 **Documentation**   | [Read the Docs](https://coop.pavilion.tech/docs?ascending=false&category=92&solved=false)               |
+| ❓ **How to Install**  | [Installation Guide](https://coop.pavilion.tech/docs?topic=1606)  |
+| 🐛 **Found a bug?**    | [Submit a bug report](https://coop.pavilion.tech/w/bug-report/steps/plugin)      |
+| ✋ **Have an idea?**   | [Submit a feature request](https://coop.pavilion.tech/c/support/discourse-layouts/93) |
+| 📰 **Meta Topic**      | [Read Topic](https://meta.discourse.org/t/custom-layouts-plugin/55208)      |
 
 ## ⚙️ Official Widgets
 
@@ -28,6 +28,6 @@ Since the plugin is a "Framework" for layouts, you will need to install widgets 
 | [📅 Event List](https://github.com/paviliondev/layouts-event-list-widget)      | Display an agenda list of events from the [Discourse Calendar Plugin](https://meta.discourse.org/t/discourse-calendar/97376) |
 | [👨 Profile Widget](https://github.com/paviliondev/layouts-profile-widget)     | Display the information about the current user.                                                                              |
 | [🗞 Topic List](https://github.com/paviliondev/layouts-topic-lists-widget)      | Display topic list(s) in a sidebar both vertically and/or horizontally                                                       |
-| [🗺 Map Widget](https://thepavilion.io/t/map-widget/4112)                       | Display a map widget from the [Locations Plugin](https://thepavilion.io/t/locations-plugin/3997)                             |
+| [🗺 Map Widget](https://coop.pavilion.tech/docs?topic=1610)                       | Display a map widget from the [Locations Plugin](https://meta.discourse.org/t/locations-plugin/69742)                             |
 
-Interested in creating your own widget? See the [widget development guide](https://thepavilion.io/t/widget-development/3214).
+Interested in creating your own widget? See the [widget development guide](https://coop.pavilion.tech/docs?topic=1618).
