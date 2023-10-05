@@ -5,7 +5,7 @@ import {
   on,
 } from "discourse-common/utils/decorators";
 import { alias } from "@ember/object/computed";
-import { getOwner } from "discourse-common/lib/get-owner";
+import { getOwner } from "@ember/application";
 import { scheduleOnce } from "@ember/runloop";
 import { getAttrFromContext } from "../lib/layouts";
 import { inject as service } from "@ember/service";
