@@ -234,7 +234,7 @@ function setupContext(context) {
   withPluginApi("0.8.32", (api) => {
     const currentUser = api.getCurrentUser();
 
-    if (!((!currentUser || currentUser.admin === false) && route === 'admin')) {
+    if (!((!currentUser || currentUser.admin === false) && route === "admin")) {
       api.modifyClass(`route:${route}`, {
         pluginId: PLUGIN_ID,
 
