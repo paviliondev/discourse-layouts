@@ -232,33 +232,37 @@ function setupContext(context) {
   const model = contextAttr(context, "model");
 
   withPluginApi("0.8.32", (api) => {
-    api.modifyClass(`route:${route}`, {
-      pluginId: PLUGIN_ID,
+    const currentUser = api.getCurrentUser();
 
-      renderTemplate() {
-        this.render("sidebar-wrapper");
-        this.render(template, {
-          into: "sidebar-wrapper",
-          outlet: "main-content",
-          controller,
-          model: this.modelFor(model),
-        });
-      },
-    });
-
-    let controllerClass = `controller:${controller}`;
-    let controllerExists = api._resolveClass(controllerClass);
-
-    if (controllerExists) {
-      const klass = api._resolveClass(controllerClass, {});
-      klass.class.reopen(Sidebars);
-      api.modifyClass(controllerClass, {
+    if (!((!currentUser || currentUser.admin === false) && route === "admin")) {
+      api.modifyClass(`route:${route}`, {
         pluginId: PLUGIN_ID,
-        layouts_context: name,
+
+        renderTemplate() {
+          this.render("sidebar-wrapper");
+          this.render(template, {
+            into: "sidebar-wrapper",
+            outlet: "main-content",
+            controller,
+            model: this.modelFor(model),
+          });
+        },
       });
-    } else {
-      // eslint-disable-next-line no-console
-      console.warn("Layouts context is missing a controller: ", name);
+
+      let controllerClass = `controller:${controller}`;
+      let controllerExists = api._resolveClass(controllerClass);
+
+      if (controllerExists) {
+        const klass = api._resolveClass(controllerClass, {});
+        klass.class.reopen(Sidebars);
+        api.modifyClass(controllerClass, {
+          pluginId: PLUGIN_ID,
+          layouts_context: name,
+        });
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn("Layouts context is missing a controller: ", name);
+      }
     }
   });
 }
