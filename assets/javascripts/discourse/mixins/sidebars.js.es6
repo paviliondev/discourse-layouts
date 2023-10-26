@@ -478,7 +478,7 @@ export default Mixin.create({
           let iconUrl = new URL(icon);
           iconHtml = htmlSafe(`<img src=${iconUrl.href} class="image-icon">`);
         } catch (_) {
-          iconHtml = iconHTML(icon).htmlSafe();
+          iconHtml = htmlSafe(iconHTML(icon));
         }
 
         if (iconHtml && iconClass && action && actionParam) {
