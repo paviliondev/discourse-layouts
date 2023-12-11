@@ -19,6 +19,8 @@ function hasWidgets(widgets, widgetsSet) {
 
 export default Mixin.create({
   router: service(),
+  siteSettings: service(),
+  appEvents: service(),
   path: alias("router._router.currentPath"),
   mobileView: false,
   tabletView: false,
@@ -84,11 +86,21 @@ export default Mixin.create({
   setupMixin() {
     const settings = this.siteSettings;
     const sidebarPadding = 20;
+    console.log("settings", settings);
+    console.log(
+      "layouts_sidebar_left_width",
+      settings.layouts_sidebar_left_width
+    );
+    console.log(
+      "layouts_sidebar_right_width",
+      settings.layouts_sidebar_right_width
+    );
     const mainLeftOffset = settings.layouts_sidebar_left_width + sidebarPadding;
     const mainRightOffset =
       settings.layouts_sidebar_right_width + sidebarPadding;
 
     scheduleOnce("afterRender", () => {
+      console.log("appEvents", this.appEvents);
       this.handleWindowResize();
       $(window).on("resize", () =>
         debounce(this, this.handleWindowResize, 100)
@@ -408,7 +420,8 @@ export default Mixin.create({
     "leftSidebarMinimized"
   )
   leftStyle(path, mobileView, visible, leftSidebarMinimized) {
-    const width = this.siteSettings.layouts_sidebar_left_width;
+    // const width = this.siteSettings.layouts_sidebar_left_width;
+    const width = 250;
 
     let string;
     if (mobileView) {
