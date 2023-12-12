@@ -225,7 +225,6 @@ function listNormalisedContexts() {
 }
 
 function setupContext(context) {
-  console.log("context", context);
   const name = contextAttr(context, "name");
   const route = contextAttr(context, "route");
   const controller = contextAttr(context, "controller");
