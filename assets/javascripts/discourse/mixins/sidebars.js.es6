@@ -86,21 +86,11 @@ export default Mixin.create({
   setupMixin() {
     const settings = this.siteSettings;
     const sidebarPadding = 20;
-    console.log("settings", settings);
-    console.log(
-      "layouts_sidebar_left_width",
-      settings.layouts_sidebar_left_width
-    );
-    console.log(
-      "layouts_sidebar_right_width",
-      settings.layouts_sidebar_right_width
-    );
     const mainLeftOffset = settings.layouts_sidebar_left_width + sidebarPadding;
     const mainRightOffset =
       settings.layouts_sidebar_right_width + sidebarPadding;
 
     scheduleOnce("afterRender", () => {
-      console.log("appEvents", this.appEvents);
       this.handleWindowResize();
       $(window).on("resize", () =>
         debounce(this, this.handleWindowResize, 100)
