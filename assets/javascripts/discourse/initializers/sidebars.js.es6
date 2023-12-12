@@ -18,11 +18,10 @@ const PLUGIN_ID = "discourse-layouts";
 export default {
   name: "sidebars",
   initialize(container) {
-    console.log("initalization");
     const site = container.lookup("site:main");
     const siteSettings = container.lookup("site-settings:main");
     const router = container.lookup("router:main");
-
+    
     if (
       !siteSettings.layouts_enabled ||
       (site.mobileView && !siteSettings.layouts_mobile_enabled)
@@ -30,16 +29,13 @@ export default {
       return;
     }
 
-    console.log("initalization setupContexts");
     setupContexts();
-    console.log("after setupContexts");
 
     router.on("routeDidChange", (transition) => {
       if (!transition.from) {
-        console.log("transition", transition);
         return;
       }
-      console.log(transition);
+
       const routeInfos = transition.router.currentRouteInfos;
       const routeNames = routeInfos.map((ri) => ri.name);
       let changedToContext;
@@ -58,20 +54,22 @@ export default {
           .filter((c) => !c.startsWith(`${layoutsNamespace}-`));
         document.body.className = classes.join(" ").trim();
       }
-      console.log("good here");
     });
 
     withPluginApi("0.8.32", (api) => {
-      api.modifyClass("component:discovery/navigation", {
-        pluginId: PLUGIN_ID,
+      api.modifyClass("controller:discovery", {
+        pluginId: `${PLUGIN_ID}-v2`,
         router: service(),
         currentPath: readOnly("router.currentRouteName"),
-        discoveryService: service("discovery-service"),
+        navigationDefault: controller("navigation/default"),
+        navigationCategory: controller("navigation/category"),
 
-        @discourseComputed("discoveryService.category", "currentPath")
-        sidebarFilter(category, currentPath) {
-          console.log("category", category);
-          console.log("currentPath", currentPath);
+        @discourseComputed(
+          "navigationDefault.filterType",
+          "navigationCategory.filterType",
+          "currentPath"
+        )
+        sidebarFilter(defaultFilter, categoryFilter, currentPath) {
           if (!currentPath) {
             return undefined;
           }
@@ -80,14 +78,14 @@ export default {
             return "categories";
           }
           if (path.indexOf("category") > -1) {
-            return category ? category.filterType : undefined;
+            return categoryFilter;
           }
           return defaultFilter;
         },
       });
 
       api.modifyClass("controller:topic", {
-        pluginId: PLUGIN_ID,
+        pluginId: `${PLUGIN_ID}-v2`,
         category: alias("model.category"),
         userHideRightSidebar: false,
       });
