@@ -9,14 +9,50 @@ const layoutsNamespace = "layouts";
 const PLUGIN_ID = "discourse-layouts";
 
 const contexts = [
-  "discovery",
+  {
+    name: "discovery-categories",
+    route: "discovery/categories",
+    controller: "discovery/categories",
+    template: "discovery/categories",
+  },
+  {
+    name: "discovery-filter",
+    route: "discovery/filter",
+    controller: "discovery/filter",
+    template: "discovery/filter",
+  },
+  {
+    name: "discovery-latest",
+    route: "discovery/latest",
+    controller: "discovery/list",
+    template: "discovery/list",
+  },
+  {
+    name: "discovery-unread",
+    route: "discovery/unread",
+    controller: "discovery/list",
+    template: "discovery/list",
+  },
+  {
+    name: "discovery-top",
+    route: "discovery/top",
+    controller: "discovery/list",
+    template: "discovery/list",
+  },
+  {
+    name: "discovery-category",
+    route: "discovery/category",
+    controller: "discovery/list",
+    template: "discovery/list",
+  },
   "topic",
   "user",
   "users",
   "tags-index",
   {
     name: "tag-show",
-    template: "tag-show",
+    route: "tag/show",
+    controller: "discovery/list",
   },
   "groups-index",
   "groups-new",
@@ -112,14 +148,7 @@ function listLayoutsWidgets() {
 
 function normalizeContext(input, opts = {}) {
   let map = {
-    discovery: [
-      "topics",
-      "discovery",
-      "topic list",
-      "Topics",
-      "Discovery",
-      "Topic List",
-    ],
+    discovery: ["Discovery Latest"],
     topic: ["topic", "Topic"],
     user: ["user", "profile", "User", "Profile"],
     users: ["users"],
@@ -144,7 +173,6 @@ function normalizeContext(input, opts = {}) {
         group: "groups.title.one",
         badge: "admin.badges.badge",
         review: "review.title",
-        admin: "admin_title",
         search: "search.search_button",
       }[context]
     );
@@ -230,11 +258,18 @@ function setupContext(context) {
   const controller = contextAttr(context, "controller");
   const template = contextAttr(context, "template");
   const model = contextAttr(context, "model");
+  if (name.startsWith("discovery")) {
+    console.log("name", name);
+    console.log("route", route);
+    console.log("controller", controller);
+    console.log("template", template);
+    console.log("model", model);
+  }
 
   withPluginApi("0.8.32", (api) => {
     const currentUser = api.getCurrentUser();
 
-    if (!((!currentUser || currentUser.admin === false) && route === "admin")) {
+    if (!(route === "admin")) {
       api.modifyClass(`route:${route}`, {
         pluginId: PLUGIN_ID,
 

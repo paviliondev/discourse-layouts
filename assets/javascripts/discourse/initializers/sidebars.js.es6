@@ -21,7 +21,7 @@ export default {
     const site = container.lookup("site:main");
     const siteSettings = container.lookup("site-settings:main");
     const router = container.lookup("router:main");
-    
+
     if (
       !siteSettings.layouts_enabled ||
       (site.mobileView && !siteSettings.layouts_mobile_enabled)
@@ -31,6 +31,7 @@ export default {
 
     setupContexts();
 
+    // This router is working correctly detecting changes
     router.on("routeDidChange", (transition) => {
       if (!transition.from) {
         return;
@@ -57,8 +58,8 @@ export default {
     });
 
     withPluginApi("0.8.32", (api) => {
-      api.modifyClass("controller:discovery", {
-        pluginId: `${PLUGIN_ID}-v2`,
+      api.modifyClass("controller:discovery/list", {
+        pluginId: PLUGIN_ID,
         router: service(),
         currentPath: readOnly("router.currentRouteName"),
         navigationDefault: controller("navigation/default"),
@@ -70,10 +71,68 @@ export default {
           "currentPath"
         )
         sidebarFilter(defaultFilter, categoryFilter, currentPath) {
+          console.log("sidebarFilter");
           if (!currentPath) {
             return undefined;
           }
           let path = currentPath.toLowerCase();
+          console.log("path", path);
+          if (path.indexOf("categories") > -1) {
+            return "categories";
+          }
+          if (path.indexOf("category") > -1) {
+            return categoryFilter;
+          }
+          return defaultFilter;
+        },
+      });
+      api.modifyClass("controller:discovery/categories", {
+        pluginId: PLUGIN_ID,
+        router: service(),
+        currentPath: readOnly("router.currentRouteName"),
+        navigationDefault: controller("navigation/default"),
+        navigationCategory: controller("navigation/category"),
+
+        @discourseComputed(
+          "navigationDefault.filterType",
+          "navigationCategory.filterType",
+          "currentPath"
+        )
+        sidebarFilter(defaultFilter, categoryFilter, currentPath) {
+          console.log("sidebarFilter");
+          if (!currentPath) {
+            return undefined;
+          }
+          let path = currentPath.toLowerCase();
+          console.log("path", path);
+          if (path.indexOf("categories") > -1) {
+            return "categories";
+          }
+          if (path.indexOf("category") > -1) {
+            return categoryFilter;
+          }
+          return defaultFilter;
+        },
+      });
+      api.modifyClass("controller:discovery/filter", {
+        pluginId: PLUGIN_ID,
+        router: service(),
+        currentPath: readOnly("router.currentRouteName"),
+        navigationDefault: controller("navigation/default"),
+        navigationCategory: controller("navigation/category"),
+
+        @discourseComputed(
+          "navigationDefault.filterType",
+          "navigationCategory.filterType",
+          "currentPath"
+        )
+        sidebarFilter(defaultFilter, categoryFilter, currentPath) {
+          console.log("sidebarFilter");
+          if (!currentPath) {
+            return undefined;
+          }
+          let path = currentPath.toLowerCase();
+          console.log("path", path);
           if (path.indexOf("categories") > -1) {
             return "categories";
           }
