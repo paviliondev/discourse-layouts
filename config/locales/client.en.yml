@@ -27,6 +27,11 @@ en:
           context:
             label: "Contexts"
             discovery: "Topic List"
+            latest: "Latest"
+            top: "Top"
+            unread: "Unread"
+            categories: "Categories"
+            category: "Topic List"
           group:
             label: "Groups"
             users: "Users"
