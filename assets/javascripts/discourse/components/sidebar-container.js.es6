@@ -49,7 +49,7 @@ export default MountWidget.extend({
       sidebarMinimized,
     };
 
-    if (context === "discovery") {
+    if (context === "discovery/categories") {
       args.filter = this.filter;
     }
     if (
