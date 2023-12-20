@@ -71,12 +71,10 @@ export default {
           "currentPath"
         )
         sidebarFilter(defaultFilter, categoryFilter, currentPath) {
-          console.log("sidebarFilter");
           if (!currentPath) {
             return undefined;
           }
           let path = currentPath.toLowerCase();
-          console.log("path", path);
           if (path.indexOf("categories") > -1) {
             return "categories";
           }
@@ -99,12 +97,10 @@ export default {
           "currentPath"
         )
         sidebarFilter(defaultFilter, categoryFilter, currentPath) {
-          console.log("sidebarFilter");
           if (!currentPath) {
             return undefined;
           }
           let path = currentPath.toLowerCase();
-          console.log("path", path);
           if (path.indexOf("categories") > -1) {
             return "categories";
           }
@@ -127,12 +123,10 @@ export default {
           "currentPath"
         )
         sidebarFilter(defaultFilter, categoryFilter, currentPath) {
-          console.log("sidebarFilter");
           if (!currentPath) {
             return undefined;
           }
           let path = currentPath.toLowerCase();
-          console.log("path", path);
           if (path.indexOf("categories") > -1) {
             return "categories";
           }
