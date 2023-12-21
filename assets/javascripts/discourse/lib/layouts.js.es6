@@ -39,6 +39,18 @@ const contexts = [
     controller: "discovery/list",
     template: "discovery/list",
   },
+  {
+    name: "latest-category",
+    route: "discovery/latest-category",
+    controller: "discovery/list",
+    template: "discovery/list",
+  },
+  {
+    name: "top-category",
+    route: "discovery/top-category",
+    controller: "discovery/list",
+    template: "discovery/list",
+  },
   "topic",
   "user",
   "users",
