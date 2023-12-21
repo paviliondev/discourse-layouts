@@ -32,6 +32,8 @@ en:
             unread: "Unread"
             categories: "Categories"
             category: "Topic List"
+            top_category: "Top Category List"
+            latest_category: "Latest Category List"
           group:
             label: "Groups"
             users: "Users"
