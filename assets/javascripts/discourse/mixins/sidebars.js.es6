@@ -19,6 +19,8 @@ function hasWidgets(widgets, widgetsSet) {
 
 export default Mixin.create({
   router: service(),
+  siteSettings: service(),
+  appEvents: service(),
   path: alias("router._router.currentPath"),
   mobileView: false,
   tabletView: false,

@@ -9,14 +9,57 @@ const layoutsNamespace = "layouts";
 const PLUGIN_ID = "discourse-layouts";
 
 const contexts = [
-  "discovery",
+  {
+    name: "discovery-categories",
+    route: "discovery/categories",
+    controller: "discovery/categories",
+    template: "discovery/categories",
+  },
+  {
+    name: "discovery-latest",
+    route: "discovery/latest",
+    controller: "discovery/list",
+    template: "discovery/list",
+  },
+  {
+    name: "discovery-unread",
+    route: "discovery/unread",
+    controller: "discovery/list",
+    template: "discovery/list",
+  },
+  {
+    name: "discovery-top",
+    route: "discovery/top",
+    controller: "discovery/list",
+    template: "discovery/list",
+  },
+  {
+    name: "discovery-category",
+    route: "discovery/category",
+    controller: "discovery/list",
+    template: "discovery/list",
+  },
+  {
+    name: "latest-category",
+    route: "discovery/latest-category",
+    controller: "discovery/list",
+    template: "discovery/list",
+  },
+  {
+    name: "top-category",
+    route: "discovery/top-category",
+    controller: "discovery/list",
+    template: "discovery/list",
+  },
   "topic",
   "user",
   "users",
   "tags-index",
   {
     name: "tag-show",
-    template: "tag-show",
+    route: "tag-show",
+    controller: "discovery/list",
+    template: "discovery/list",
   },
   "groups-index",
   "groups-new",
@@ -112,14 +155,13 @@ function listLayoutsWidgets() {
 
 function normalizeContext(input, opts = {}) {
   let map = {
-    discovery: [
-      "topics",
-      "discovery",
-      "topic list",
-      "Topics",
-      "Discovery",
-      "Topic List",
-    ],
+    "discovery-latest": ["discovery-latest"],
+    "discovery-categories": ["discovery-categories"],
+    "discovery-unread": ["discovery-unread"],
+    "discovery-top": ["discovery-top"],
+    "discovery-category": ["discovery-category"],
+    "latest-category": ["latest-category"],
+    "top-category": ["top-category"],
     topic: ["topic", "Topic"],
     user: ["user", "profile", "User", "Profile"],
     users: ["users"],
@@ -136,7 +178,13 @@ function normalizeContext(input, opts = {}) {
   if (opts.name) {
     context = I18n.t(
       {
-        discovery: "admin.layouts.widgets.context.discovery",
+        "discovery-latest": "admin.layouts.widgets.context.latest",
+        "discovery-categories": "admin.layouts.widgets.context.categories",
+        "discovery-unread": "admin.layouts.widgets.context.unread",
+        "discovery-top": "admin.layouts.widgets.context.top",
+        "discovery-category": "admin.layouts.widgets.context.category",
+        "latest-category": "admin.layouts.widgets.context.latest_category",
+        "top-category": "admin.layouts.widgets.context.top_category",
         topic: "topic.title",
         user: "user.profile",
         users: "user.users",

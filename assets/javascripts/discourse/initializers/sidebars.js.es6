@@ -57,7 +57,59 @@ export default {
     });
 
     withPluginApi("0.8.32", (api) => {
-      api.modifyClass("controller:discovery", {
+      api.modifyClass("controller:discovery/list", {
+        pluginId: PLUGIN_ID,
+        router: service(),
+        currentPath: readOnly("router.currentRouteName"),
+        navigationDefault: controller("navigation/default"),
+        navigationCategory: controller("navigation/category"),
+
+        @discourseComputed(
+          "navigationDefault.filterType",
+          "navigationCategory.filterType",
+          "currentPath"
+        )
+        sidebarFilter(defaultFilter, categoryFilter, currentPath) {
+          if (!currentPath) {
+            return undefined;
+          }
+          let path = currentPath.toLowerCase();
+          if (path.indexOf("categories") > -1) {
+            return "categories";
+          }
+          if (path.indexOf("category") > -1) {
+            return categoryFilter;
+          }
+          return defaultFilter;
+        },
+      });
+      api.modifyClass("controller:discovery/categories", {
+        pluginId: PLUGIN_ID,
+        router: service(),
+        currentPath: readOnly("router.currentRouteName"),
+        navigationDefault: controller("navigation/default"),
+        navigationCategory: controller("navigation/category"),
+
+        @discourseComputed(
+          "navigationDefault.filterType",
+          "navigationCategory.filterType",
+          "currentPath"
+        )
+        sidebarFilter(defaultFilter, categoryFilter, currentPath) {
+          if (!currentPath) {
+            return undefined;
+          }
+          let path = currentPath.toLowerCase();
+          if (path.indexOf("categories") > -1) {
+            return "categories";
+          }
+          if (path.indexOf("category") > -1) {
+            return categoryFilter;
+          }
+          return defaultFilter;
+        },
+      });
+      api.modifyClass("controller:discovery/filter", {
         pluginId: PLUGIN_ID,
         router: service(),
         currentPath: readOnly("router.currentRouteName"),
@@ -85,7 +137,7 @@ export default {
       });
 
       api.modifyClass("controller:topic", {
-        pluginId: PLUGIN_ID,
+        pluginId: `${PLUGIN_ID}-v2`,
         category: alias("model.category"),
         userHideRightSidebar: false,
       });
