@@ -174,6 +174,7 @@ function normalizeContext(input, opts = {}) {
   };
 
   let context = Object.keys(map).find((c) => map[c].includes(input));
+  
   if (opts.name) {
     context = I18n.t(
       {
