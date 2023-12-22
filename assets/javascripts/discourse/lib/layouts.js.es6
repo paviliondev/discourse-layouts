@@ -184,7 +184,6 @@ function normalizeContext(input, opts = {}) {
         "discovery-category": "admin.layouts.widgets.context.category",
         "latest-category": "admin.layouts.widgets.context.latest_category",
         "top-category": "admin.layouts.widgets.context.top_category",
-        admin: "admin_title",
         topic: "topic.title",
         user: "user.profile",
         users: "user.users",
@@ -192,6 +191,7 @@ function normalizeContext(input, opts = {}) {
         group: "groups.title.one",
         badge: "admin.badges.badge",
         review: "review.title",
+        admin: "admin_title",
         search: "search.search_button",
       }[context]
     );
@@ -277,6 +277,7 @@ function setupContext(context) {
   const controller = contextAttr(context, "controller");
   const template = contextAttr(context, "template");
   const model = contextAttr(context, "model");
+
   withPluginApi("0.8.32", (api) => {
     const currentUser = api.getCurrentUser();
 

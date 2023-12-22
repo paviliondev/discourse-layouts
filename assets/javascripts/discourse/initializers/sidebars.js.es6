@@ -31,7 +31,6 @@ export default {
 
     setupContexts();
 
-    // This router is working correctly detecting changes
     router.on("routeDidChange", (transition) => {
       if (!transition.from) {
         return;
