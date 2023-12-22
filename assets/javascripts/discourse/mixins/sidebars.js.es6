@@ -410,9 +410,8 @@ export default Mixin.create({
     "leftSidebarMinimized"
   )
   leftStyle(path, mobileView, visible, leftSidebarMinimized) {
-    // const width = this.siteSettings.layouts_sidebar_left_width;
-    const width = 250;
-
+    const width = this.siteSettings.layouts_sidebar_left_width;
+    
     let string;
     if (mobileView) {
       string = `width: 100vw; transform: translateX(${
