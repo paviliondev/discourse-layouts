@@ -35,6 +35,9 @@ export default {
       if (!transition.from) {
         return;
       }
+      if (transition.from === transition.to) {
+        return;
+      }
 
       const routeInfos = transition.router.currentRouteInfos;
       const routeNames = routeInfos.map((ri) => ri.name);
